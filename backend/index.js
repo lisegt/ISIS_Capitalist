@@ -5,12 +5,18 @@ const { ApolloServer, gql } = require('apollo-server-express');
 const typeDefs = require("./schema")
 
 // Provide resolver functions for your schema fields
-const resolvers = {
-    Query: {
-        hello: () => 'Hello world!',
-    },
-};
-const server = new ApolloServer({ typeDefs, resolvers})
+const resolvers = require("./resolvers")
+
+//inclure le monde complet défini dans world.js
+let world = require("./world")
+
+const server = new ApolloServer({
+    typeDefs, resolvers,
+    context: async ({ req }) => ({
+        world: world
+    })
+});
+
 const app = express();
 app.use(express.static('public'));
 server.start().then( res => {
