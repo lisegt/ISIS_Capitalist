@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {gql} from "@apollo/client";
@@ -75,6 +75,19 @@ const GET_WORLD=gql`
 }`
 
 function App() {
+    const [username, setUsername] = useState("")
+    useEffect(() => {
+        let username = localStorage.getItem("username");
+        if(username == undefined) {
+            localStorage.setItem("username", "Player" + Math.floor(Math.random() * 10000));
+        }else{setUsername(username);}
+    },[]);
+    const onUserNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+        localStorage.setItem("username", event.currentTarget.value);
+        setUsername(event.currentTarget.value);
+    };
+
   return (
     <div className="App">
       <header className="header">
@@ -82,6 +95,7 @@ function App() {
           <div> argent </div>
           <div> multiplicateur </div>
           <div> ID du joueur </div>
+          <input type="text" value={username} onChange={onUserNameChanged}/>
       </header>
         <main className="main">
             <div> liste des boutons de menu </div>
@@ -97,5 +111,8 @@ function App() {
     </div>
   );
 }
+
+
+
 
 export default App;
