@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {gql} from "@apollo/client";
+import {gql, useApolloClient, useQuery} from "@apollo/client";
+import Main from "./Main";
+import './assets/styles.css';
 
 const GET_WORLD=gql`
     query getWorld {
@@ -76,43 +78,42 @@ const GET_WORLD=gql`
 
 function App() {
     const [username, setUsername] = useState("")
+    const client = useApolloClient();
     useEffect(() => {
         let username = localStorage.getItem("username");
-        if(username == undefined) {
+        if (username == undefined) {
             localStorage.setItem("username", "Player" + Math.floor(Math.random() * 10000));
-        }else{setUsername(username);}
-    },[]);
+        } else {
+            setUsername(username);
+        }
+    }, []);
     const onUserNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
 
         localStorage.setItem("username", event.currentTarget.value);
         setUsername(event.currentTarget.value);
+        //Quand le nom d'utilisateur change --> forcer le client à refabriquer la requête.
+        client.resetStore();
     };
+    const {loading, error, data, refetch} = useQuery(GET_WORLD, {
+        context: {headers: {"x-user": username}}
+    });
+    let corps = undefined
+    if (loading) corps = <div> Loading... </div>
+    else if (error) corps = <div> Erreur de chargement du monde ! </div>
+    else corps = <Main loadworld={data.getWorld} username={username} />
+    return (
+        <div>
+            <div> Your ID :</div>
+            <input type="text" value={username} onChange={onUserNameChanged}/>
+            {corps}
+        </div>
+    );
 
-  return (
-    <div className="App">
-      <header className="header">
-          <div> logo monde </div>
-          <div> argent </div>
-          <div> multiplicateur </div>
-          <div> ID du joueur </div>
-          <input type="text" value={username} onChange={onUserNameChanged}/>
-      </header>
-        <main className="main">
-            <div> liste des boutons de menu </div>
-            <div className="product">
-                <div> premier produit</div>
-                <div> second produit</div>
-                <div> troisième produit</div>
-                <div> quatrième produit</div>
-                <div> cinquième produit</div>
-                <div> sixième produit</div>
-            </div>
-        </main>
-    </div>
-  );
 }
 
 
 
 
 export default App;
+
+//début page 24
