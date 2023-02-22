@@ -10,7 +10,7 @@ const resolvers = require("./resolvers")
 //inclure le monde complet défini dans world.js
 let world = require("./world")
 
-const fs = require("fs");
+const fs = require("fs").promises;
 
 //fonction pour que l'utilisateur récupère son monde et pas celui d'origine
 // fonction qui tente de lire le monde associé au joueur
