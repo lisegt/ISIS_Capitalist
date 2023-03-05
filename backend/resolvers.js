@@ -70,8 +70,20 @@ function appliquerBoost(palier, context){
     //on récupère l'id du produit associé à l'unlock
     let idProduit = palier.idcible;
     //on récupère le produit grâce à son id
-    let produit = context.world.products.find((p) => p.id === idProduit);
+    if (idProduit > 0) {
+        let produit = context.world.products.find((p) => p.id === idProduit);
+        appliquerBoostSurProduit(produit, palier, context)
 
+    } else if (idProduit === 0){ //concerne tous les produits
+        context.world.products.forEach((produit) => {
+            appliquerBoostSurProduit(produit, palier, context)
+        })
+    } else { // si -1 : le bonus augmente l'efficacité des anges
+
+    }
+}
+
+function appliquerBoostSurProduit(produit,palier, context){
     //type de boost
     //boost de revenu
     if (palier.typeratio == "gain") {
@@ -108,15 +120,8 @@ function verifierAllUnlocks(seuil, context){
 
         //on applique le boost du allUnlock : le revenu de chaque produit est multiplié par le ratio
         produits.forEach((produit) => {
-            if (allUnlockADebloquer.typeratio == "gain") {
-                produit.revenu = produit.revenu*allUnlockADebloquer.ratio
-            } else if (allUnlockADebloquer.typeratio == "vitesse"){ // boost de vitesse
-                produit.vitesse = produit.vitesse/allUnlockADebloquer.ratio
-            } else { //boost d'ange
-
-            }
+            appliquerBoostSurProduit(produit, allUnlockADebloquer,context)
         })
-
     }
 }
 
@@ -220,6 +225,29 @@ module.exports = {
             saveWorld(context) ;
 
             return manager ;
+        },
+        acheterCashUpgrade(parent, args, context){
+            calcul_score(context)
+
+            //on cherche le cashUpgrade d'après son nom
+            let nomCashUpgrade = args.name
+            let cashUpgrade = context.world.upgrades.find((cu) => cu.name === nomCashUpgrade)
+
+            if (cashUpgrade === undefined) {
+                throw new Error(`Le cash upgrade ${args.name} n'existe pas.`)
+            } else {
+                //on débloque le cashupgrade
+                cashUpgrade.unlocked = true
+
+                //on déduit le prix du cashUpgrade à la money du monde
+                context.world.money -= cashUpgrade.seuil
+
+                //appliquer le boost
+                appliquerBoost(cashUpgrade, context);
+            }
+            saveWorld(context)
+            return cashUpgrade
         }
+
     }
 };
