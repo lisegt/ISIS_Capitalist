@@ -1,6 +1,9 @@
 //pour la sauvegarde des mondes des joueurs dans le dossier userworlds
 const fs = require("fs");
 
+// le monde de base défini dans world.js
+let world = require("./world")
+
 function saveWorld(context) {
     fs.writeFile("userworlds/" + context.user + "-world.json", JSON.stringify(context.world), err => {
         if (err) {
@@ -56,7 +59,7 @@ function calcul_score(context) {
                 produit.timeleft = temps_ecoule % produit.vitesse
             }
         }
-        gain += nb_production * produit.quantite * produit.revenu
+        gain += nb_production * produit.quantite * produit.revenu * (1 + context.world.activeangels*context.world.angelbonus/100)
         //pb gain quand un produit est managé --> conversion Date en ms pr etre divisible par vitesse de production
     }
 
@@ -226,6 +229,7 @@ module.exports = {
 
             return manager ;
         },
+
         acheterCashUpgrade(parent, args, context){
             calcul_score(context)
 
@@ -247,6 +251,25 @@ module.exports = {
             }
             saveWorld(context)
             return cashUpgrade
+        },
+
+        resetWorld(context){
+            //accumuler les anges supplémentaires gagnés lors de la partie en cours
+            context.world.totalangels += 150*Math.sqrt(context.world.score/(Math.pow(10,15)))
+
+            //stockage des propriétés du monde en cours de reset
+            let scoreEnCours = context.world.score
+            let totalAngelsEnCours = context.world.totalangels
+            let activeAngelsEnCours = context.world.activeangels
+
+            //réinitialisation du monde
+            context.world = world
+
+            //récupération des propriétés de l'ancien monde
+            context.world.score = scoreEnCours
+            context.world.totalangels = totalAngelsEnCours
+            context.world.activeangels = activeAngelsEnCours
+
         }
 
     }
