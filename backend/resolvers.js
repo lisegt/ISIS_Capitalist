@@ -57,7 +57,7 @@ function calcul_score(context) {
             }
         }
         gain += nb_production * produit.quantite * produit.revenu
-
+        //pb gain quand un produit est managé --> conversion Date en ms pr etre divisible par vitesse de production
     }
 
     context.world.score += gain
@@ -65,7 +65,7 @@ function calcul_score(context) {
     console.log("gain = " + gain)
 }
 
-function appliquerUnlock(palier, context){
+function appliquerBoost(palier, context){
 
     //on récupère l'id du produit associé à l'unlock
     let idProduit = palier.idcible;
@@ -101,9 +101,22 @@ function verifierAllUnlocks(seuil, context){
     //on teste les booléens du tableau etatsUnlocks
     if (etatsUnlocks.every(bool => bool)){
         //tous les unlocks sont true, on peut débloquer le allUnlock du seuil correspondant
+
         //unlock à débloquer
         let allUnlockADebloquer = context.world.allunlocks.find((allunlock) => allunlock.seuil === seuil)
         allUnlockADebloquer.unlocked = true
+
+        //on applique le boost du allUnlock : le revenu de chaque produit est multiplié par le ratio
+        produits.forEach((produit) => {
+            if (allUnlockADebloquer.typeratio == "gain") {
+                produit.revenu = produit.revenu*allUnlockADebloquer.ratio
+            } else if (allUnlockADebloquer.typeratio == "vitesse"){ // boost de vitesse
+                produit.vitesse = produit.vitesse/allUnlockADebloquer.ratio
+            } else { //boost d'ange
+
+            }
+        })
+
     }
 }
 
@@ -154,7 +167,7 @@ module.exports = {
                     //on les unlock
                     palier.unlocked = true ;
                     //appliquer l'effet du seuil
-                    appliquerUnlock(palier, context)
+                    appliquerBoost(palier, context)
 
                     //vérifier l'état de tous les unlocks
                     verifierAllUnlocks(palier.seuil, context)
