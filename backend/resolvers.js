@@ -82,7 +82,7 @@ function appliquerBoost(palier, context){
             appliquerBoostSurProduit(produit, palier, context)
         })
     } else { // si -1 : le bonus augmente l'efficacité des anges
-
+        appliquerBoostSurAnge(palier, context)
     }
 }
 
@@ -93,10 +93,16 @@ function appliquerBoostSurProduit(produit,palier, context){
         produit.revenu = produit.revenu*palier.ratio
     } else if (palier.typeratio == "vitesse"){ // boost de vitesse
         produit.vitesse = produit.vitesse/palier.ratio
-    } else { //boost d'ange
-
+    } else { //boost d'ange --> est-il possible d'avoir un idcible différent de -1 et de booster les anges ?
+        appliquerBoostSurAnge(palier, context)
     }
 }
+
+function appliquerBoostSurAnge(palier, context){
+    //on augmente le bonus de production apporté par les anges selon la quantité de bonus de l’upgrade
+    context.world.angelbonus += palier.ratio
+}
+
 
 function verifierAllUnlocks(seuil, context){
     let produits = context.world.products
@@ -253,6 +259,29 @@ module.exports = {
             return cashUpgrade
         },
 
+        acheterAngelUpgrade(parent, args, context){
+            calcul_score(context)
+
+            //on cherche le cashUpgrade d'après son nom
+            let nomAngelUpgrade = args.name
+            let angelUpgrade = context.world.angelupgrades.find((au) => au.name === nomAngelUpgrade)
+
+            if (angelUpgrade === undefined) {
+                throw new Error(`L'angel upgrade ${args.name} n'existe pas.`)
+            } else {
+                //on débloque l'angel upgrade
+                angelUpgrade.unlocked = true
+
+                //on déduit le coût de l'angel upgrade au nombre d'anges actifs
+                context.world.activeangels -= angelUpgrade.seuil
+
+                //appliquer le boost
+                appliquerBoost(angelUpgrade, context);
+            }
+            saveWorld(context)
+            return angelUpgrade
+        },
+
         resetWorld(context){
             //accumuler les anges supplémentaires gagnés lors de la partie en cours
             context.world.totalangels += 150*Math.sqrt(context.world.score/(Math.pow(10,15)))
@@ -271,6 +300,5 @@ module.exports = {
             context.world.activeangels = activeAngelsEnCours
 
         }
-
     }
 };
