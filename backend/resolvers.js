@@ -83,6 +83,30 @@ function appliquerUnlock(palier, context){
     }
 }
 
+function verifierAllUnlocks(seuil, context){
+    let produits = context.world.products
+
+    //tableau contenant les états des unlocks de tous les produits, pour un seuil donné
+    let etatsUnlocks = [];
+
+    //on suppose que tous les produits ont les mêmes paliers
+    produits.forEach((produit) => {
+        //pour chaque produit, on récupère l'unlock correspondant au seuil passé en paramètre
+        let unlockToTest = produit.paliers.find((palier) => palier.seuil === seuil)
+
+        //on remplit le tableau de booléens
+        etatsUnlocks.append(unlockToTest.unlocked)
+    })
+
+    //on teste les booléens du tableau etatsUnlocks
+    if (etatsUnlocks.every(bool => bool)){
+        //tous les unlocks sont true, on peut débloquer le allUnlock du seuil correspondant
+        //unlock à débloquer
+        let allUnlockADebloquer = context.world.allunlocks.find((allunlock) => allunlock.seuil === seuil)
+        allUnlockADebloquer.unlocked = true
+    }
+}
+
 module.exports = {
     Query: {
         getWorld(parent, args, context)  {
@@ -121,7 +145,7 @@ module.exports = {
                 produit.cout = Math.pow(q,quantiteAjout)*produit.cout
 
                 //prise en compte des unlocks
-                //on récupère tous les paliers qui sont encore lock et dont la quantité est supérieure au seuil
+                //on récupère tous les paliers qui sont encore lock et dont la quantité de produit est supérieure au seuil du palier
                 //autrement dit, tous les paliers qu'on va débloquer
                 paliers = paliers.filter(palier => !palier.unlocked && produit.quantite>=palier.seuil)
 
@@ -131,6 +155,9 @@ module.exports = {
                     palier.unlocked = true ;
                     //appliquer l'effet du seuil
                     appliquerUnlock(palier, context)
+
+                    //vérifier l'état de tous les unlocks
+                    verifierAllUnlocks(palier.seuil, context)
                 });
             }
 
