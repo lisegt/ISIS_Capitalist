@@ -8,17 +8,74 @@ function saveWorld(context) {
             throw new Error("Erreur d'écriture du monde côté serveur...")
         }
     })
-    context.world.lastupdate = Date.now() ;
+    context.world.lastupdate = Date.now().toString() ;
+}
+// à appeler ds toutes mutations et getWorld
+function calcul_score(context) {
+    let liste_produits = context.world.products
+    let temps_ecoule = Date.now() - parseInt(context.world.lastupdate)
+    console.log("tps "+ temps_ecoule)
+
+    // le gain
+    let gain = 0;
+
+    for (let p in liste_produits) {
+
+        let produit = liste_produits[p]
+
+        //la production pendant le temps d'absence
+        let nb_production = 0
+        let en_production = false
+
+        //s'il reste du timeleft, le produit est encore en production
+        if (produit.timeleft > 0) {
+            en_production = true
+        }
+
+        if (temps_ecoule < produit.timeleft) {
+            produit.timeleft = produit.timeleft - temps_ecoule
+            console.log("pas assez de tps pr production")
+        } else {
+            console.log("assez de tps pr production")
+            //le produit n'est pas automatisé
+            if (!produit.managerUnlocked) {
+                console.log("pas de manager")
+                // il restait du timeleft
+                if (en_production) {
+                    console.log("reste timeleft")
+                    nb_production = 1
+                    produit.timeleft = 0
+                }
+            } else {
+                console.log("manager")
+                // le produit est automatisé
+                nb_production = ((temps_ecoule - produit.timeleft) / produit.vitesse) + 1
+                console.log("tps ecoule = "+ (temps_ecoule - produit.timeleft))
+                console.log("vitesse " + produit.vitesse)
+                console.log("nb production = " + nb_production)
+                produit.timeleft = temps_ecoule % produit.vitesse
+            }
+        }
+        gain += nb_production * produit.quantite * produit.revenu
+
+    }
+
+    context.world.score += gain
+    context.world.money += gain
+    console.log("gain = " + gain)
 }
 
 module.exports = {
     Query: {
         getWorld(parent, args, context)  {
+            calcul_score(context)
             saveWorld(context)
             return context.world
         } },
     Mutation: {
         acheterQtProduit(parent, args, context) {
+            calcul_score(context)
+
             //trouver le produit
             let idProduit = args.id;
             let quantiteAjout = args.quantite;
@@ -41,7 +98,6 @@ module.exports = {
 
                 //màj du cout d'achat produit, coût du produit n+1
                 produit.cout = Math.pow(q,quantiteAjout)*produit.cout
-
             }
 
             //sauver le monde pour mémoriser changements opérés
@@ -51,6 +107,7 @@ module.exports = {
         },
 
         lancerProductionProduit(parent, args, context) {
+            calcul_score(context)
 
             //on récupère le produit associé à l'identifiant
             let idProduit = args.id;
@@ -68,6 +125,7 @@ module.exports = {
         },
 
         engagerManager(parent, args, context) {
+            calcul_score(context)
 
             //on cherche le manager
             let nomManager = args.name;
