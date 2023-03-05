@@ -65,6 +65,24 @@ function calcul_score(context) {
     console.log("gain = " + gain)
 }
 
+function appliquerUnlock(palier, context){
+
+    //on récupère l'id du produit associé à l'unlock
+    let idProduit = palier.idcible;
+    //on récupère le produit grâce à son id
+    let produit = context.world.products.find((p) => p.id === idProduit);
+
+    //type de boost
+    //boost de revenu
+    if (palier.typeratio == "gain") {
+        produit.revenu = produit.revenu*palier.ratio
+    } else if (palier.typeratio == "vitesse"){ // boost de vitesse
+        produit.vitesse = produit.vitesse/palier.ratio
+    } else { //boost d'ange
+
+    }
+}
+
 module.exports = {
     Query: {
         getWorld(parent, args, context)  {
@@ -83,6 +101,9 @@ module.exports = {
             //on récupère le produit associé à l'identifiant
             let produit = context.world.products.find((p) => p.id === idProduit)
 
+            //les paliers du produit
+            let paliers = produit.paliers
+
             if (produit === undefined) {
                 throw new Error(`Le produit avec l'id ${args.id} n'existe pas.`)
             } else {
@@ -98,6 +119,19 @@ module.exports = {
 
                 //màj du cout d'achat produit, coût du produit n+1
                 produit.cout = Math.pow(q,quantiteAjout)*produit.cout
+
+                //prise en compte des unlocks
+                //on récupère tous les paliers qui sont encore lock et dont la quantité est supérieure au seuil
+                //autrement dit, tous les paliers qu'on va débloquer
+                paliers = paliers.filter(palier => !palier.unlocked && produit.quantite>=palier.seuil)
+
+                // on parcourt la liste des paliers à débloquer
+                paliers.forEach((palier) => {
+                    //on les unlock
+                    palier.unlocked = true ;
+                    //appliquer l'effet du seuil
+                    appliquerUnlock(palier, context)
+                });
             }
 
             //sauver le monde pour mémoriser changements opérés
