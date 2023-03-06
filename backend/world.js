@@ -1,5 +1,5 @@
 module.exports = {
-    "name": "Nom du monde",
+    "name": "Music world",
     "logo": "icones/logomonde.jpg",
     "money": 0,
     "score": 0,
@@ -155,19 +155,37 @@ module.exports = {
         {
             "name": "Mariah Carey",
             "logo": "icones/MariahCarey.png",
-            "seuil": 10,
+            "seuil": 100,
             "idcible": 1,
             "ratio": 0,
-            "typeratio": "gain",
+            "typeratio": "vitesse",
             "unlocked": false
         },
         {
             "name": "Jean-Sebastien Bach",
             "logo": "icones/Bach.png",
-            "seuil": 20,
-            "idcible": 1,
+            "seuil": 1500,
+            "idcible": 2,
             "ratio": 0,
-            "typeratio": "gain",
+            "typeratio": "vitesse",
+            "unlocked": false
+        },
+        {
+            "name": "Stradivarius",
+            "logo": "icones/Stradivarius.png",
+            "seuil": 10000,
+            "idcible": 3,
+            "ratio": 0,
+            "typeratio": "vitesse",
+            "unlocked": false
+        },
+        {
+            "name": "Guitariste de Sultan of Swing",
+            "logo": "icones/Guitariste.png",
+            "seuil": 50000,
+            "idcible": 4,
+            "ratio": 0,
+            "typeratio": "vitesse",
             "unlocked": false
         },
     ]

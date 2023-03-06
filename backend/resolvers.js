@@ -5,18 +5,21 @@ const fs = require("fs");
 let world = require("./world")
 
 function saveWorld(context) {
+    context.world.lastupdate = Date.now().toString() ;
+
     fs.writeFile("userworlds/" + context.user + "-world.json", JSON.stringify(context.world), err => {
         if (err) {
             console.error(err)
             throw new Error("Erreur d'écriture du monde côté serveur...")
         }
     })
-    context.world.lastupdate = Date.now().toString() ;
+
 }
 // à appeler ds toutes mutations et getWorld
 function calcul_score(context) {
     let liste_produits = context.world.products
     let temps_ecoule = Date.now() - parseInt(context.world.lastupdate)
+    console.log("last update" + context.world.lastupdate)
     console.log("tps "+ temps_ecoule)
 
     // le gain
