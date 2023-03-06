@@ -286,22 +286,18 @@ module.exports = {
         },
 
         resetWorld(context){
-            //accumuler les anges supplémentaires gagnés lors de la partie en cours
-            context.world.totalangels += 150*Math.sqrt(context.world.score/(Math.pow(10,15)))
 
-            //stockage des propriétés du monde en cours de reset
-            let scoreEnCours = context.world.score
-            let totalAngelsEnCours = context.world.totalangels
-            let activeAngelsEnCours = context.world.activeangels
+            //réinitialisation du monde avec monde de base
+            let newWorld = world
 
-            //réinitialisation du monde
-            context.world = world
+            //accumuler les anges supplémentaires gagnés lors de la partie en cours + récupération des propriétés de l'ancien monde
+            let totalAngelsToReset = context.world.totalangels + 150*Math.sqrt(context.world.score/(Math.pow(10,15))) - context.world.totalangels
+            let activeAngelsToReset = context.world.activeangels + 150*Math.sqrt(context.world.score/(Math.pow(10,15))) - context.world.totalangels
 
-            //récupération des propriétés de l'ancien monde
-            context.world.score = scoreEnCours
-            context.world.totalangels = totalAngelsEnCours
-            context.world.activeangels = activeAngelsEnCours
+            newWorld.totalangels = totalAngelsToReset
+            newWorld.activeangels = activeAngelsToReset
 
+            return newWorld
         }
     }
 };
