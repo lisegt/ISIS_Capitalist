@@ -1,6 +1,6 @@
 module.exports = {
-    "name": "Music world",
-    "logo": "icones/logomonde.jpg",
+    "name": "Music World",
+    "logo": "icones/logomonde.png",
     "money": 0,
     "score": 0,
     "totalangels": 0,
@@ -21,8 +21,8 @@ module.exports = {
             "managerUnlocked": false,
             "paliers": [
                 {
-                    "name": "1er Palier vitesse micro",
-                    "logo": "icones/palier1.jpg",
+                    "name": "Palier Opéra",
+                    "logo": "icones/micro.jpg",
                     "seuil": 25,
                     "idcible": 1,
                     "ratio": 2,
@@ -30,21 +30,30 @@ module.exports = {
                     "unlocked": false
                 },
                 {
-                    "name": "2e Palier gain micro",
-                    "logo": "icones/palier2.jpg",
+                    "name": "Palier Gospel",
+                    "logo": "icones/micro.jpg",
                     "seuil": 50,
                     "idcible": 1,
                     "ratio": 2,
-                    "typeratio": "gain",
+                    "typeratio": "vitesse",
                     "unlocked": false
                 },
                 {
-                    "name": "3e palier gain micro",
-                    "logo": "icones/palier3.jpg",
+                    "name": "Palier R&B",
+                    "logo": "icones/micro.jpg",
                     "seuil": 100,
                     "idcible": 1,
                     "ratio": 2,
-                    "typeratio": "gain",
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Palier Rap",
+                    "logo": "icones/micro.jpg",
+                    "seuil": 150,
+                    "idcible": 1,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
                     "unlocked": false
                 }
             ],
