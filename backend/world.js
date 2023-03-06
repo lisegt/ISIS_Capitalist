@@ -64,8 +64,8 @@ module.exports = {
             "logo": "icones/flute.png",
             "cout": 60,
             "croissance": 1.07,
-            "revenu": 1,
-            "vitesse": 1000,
+            "revenu": 60,
+            "vitesse": 3000,
             "quantite": 0,
             "timeleft": 0,
             "managerUnlocked": false,
@@ -106,6 +106,206 @@ module.exports = {
                     "typeratio": "vitesse",
                     "unlocked": false
                 }
+            ],
+        },
+        {
+            "id": 3,
+            "name": "violon",
+            "logo": "icones/violon.png",
+            "cout": 700,
+            "croissance": 1.07,
+            "revenu": 500,
+            "vitesse": 6000,
+            "quantite": 0,
+            "timeleft": 0,
+            "managerUnlocked": false,
+            "paliers": [
+                {
+                    "name": "Largo",
+                    "logo": "icones/violon.png",
+                    "seuil": 25,
+                    "idcible": 3,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Moderato",
+                    "logo": "icones/violon.png",
+                    "seuil": 50,
+                    "idcible": 3,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Allegro",
+                    "logo": "icones/violon.png",
+                    "seuil": 100,
+                    "idcible": 3,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Presto",
+                    "logo": "icones/violon.png",
+                    "seuil": 150,
+                    "idcible": 3,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+            ],
+        },
+        {
+            "id": 4,
+            "name": "guitare",
+            "logo": "icones/guitare.png",
+            "cout": 10000,
+            "croissance": 1.07,
+            "revenu": 5000,
+            "vitesse": 12000,
+            "quantite": 0,
+            "timeleft": 0,
+            "managerUnlocked": false,
+            "paliers": [
+                {
+                    "name": "Blues",
+                    "logo": "icones/guitare.png",
+                    "seuil": 25,
+                    "idcible": 4,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Country",
+                    "logo": "icones/guitare.png",
+                    "seuil": 50,
+                    "idcible": 4,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Rock",
+                    "logo": "icones/guitare.png",
+                    "seuil": 100,
+                    "idcible": 4,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Metal",
+                    "logo": "icones/guitare.png",
+                    "seuil": 150,
+                    "idcible": 4,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+            ],
+        },
+        {
+            "id": 5,
+            "name": "piano",
+            "logo": "icones/piano.png",
+            "cout": 100000,
+            "croissance": 1.07,
+            "revenu": 50000,
+            "vitesse": 18000,
+            "quantite": 0,
+            "timeleft": 0,
+            "managerUnlocked": false,
+            "paliers": [
+                {
+                    "name": "Classique",
+                    "logo": "icones/piano.png",
+                    "seuil": 25,
+                    "idcible": 5,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Pop",
+                    "logo": "icones/piano.png",
+                    "seuil": 50,
+                    "idcible": 5,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Musique de film",
+                    "logo": "icones/piano.png",
+                    "seuil": 100,
+                    "idcible": 5,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Boogie-woogie",
+                    "logo": "icones/piano.png",
+                    "seuil": 150,
+                    "idcible": 5,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+            ],
+        },
+        {
+            "id": 6,
+            "name": "platines DJ",
+            "logo": "icones/dj.png",
+            "cout": 1000000,
+            "croissance": 1.07,
+            "revenu": 500000,
+            "vitesse": 24000,
+            "quantite": 0,
+            "timeleft": 0,
+            "managerUnlocked": false,
+            "paliers": [
+                {
+                    "name": "Pop & Variété",
+                    "logo": "icones/dj.png",
+                    "seuil": 25,
+                    "idcible": 6,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Rock",
+                    "logo": "icones/dj.png",
+                    "seuil": 50,
+                    "idcible": 6,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Hip-Hop",
+                    "logo": "icones/dj.png",
+                    "seuil": 100,
+                    "idcible": 6,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Electro-woogie",
+                    "logo": "icones/dj.png",
+                    "seuil": 150,
+                    "idcible": 6,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
             ],
         }
     ],
@@ -149,14 +349,15 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Casser la voiiiiix - vitesse",
+            "name": "Casser la voiiiiix 2 - gain",
             "logo": "icones/micro.png",
             "seuil": 1e3,
             "idcible": 1,
-            "ratio": 2,
-            "typeratio": "vitesse",
+            "ratio": 3,
+            "typeratio": "gain",
             "unlocked": false
         },
+
         {
             "name": "Cash upgrade flute - gain",
             "logo": "icones/micro.png",
