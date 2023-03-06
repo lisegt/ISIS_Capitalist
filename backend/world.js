@@ -505,10 +505,73 @@ module.exports = {
     ],
     "angelupgrades": [
         {
-            "name": "Angel Sacrifice",
-            "logo": "icones/angel.png",
-            "seuil": 10,
+            "name": "Progression musicale angélique",
+            "logo": "icones/ange.png",
+            "seuil": 100,
+            "idcible": 0,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Bonous angélique",
+            "logo": "icones/ange.png",
+            "seuil": 500,
+            "idcible": -1,
+            "ratio": 2,
+            "typeratio": "ange",
+            "unlocked": false
+        },
+        {
+            "name": "Ange Chanteur",
+            "logo": "icones/ange.png",
+            "seuil": 1000,
             "idcible": 1,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Ange Flûtiste",
+            "logo": "icones/ange.png",
+            "seuil": 1500,
+            "idcible": 2,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Ange Violoniste",
+            "logo": "icones/ange.png",
+            "seuil": 2000,
+            "idcible": 3,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Ange Guitariste",
+            "logo": "icones/ange.png",
+            "seuil": 2500,
+            "idcible": 4,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Ange Pianiste",
+            "logo": "icones/ange.png",
+            "seuil": 3000,
+            "idcible": 5,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Ange DJ",
+            "logo": "icones/ange.png",
+            "seuil": 3500,
+            "idcible": 6,
             "ratio": 3,
             "typeratio": "gain",
             "unlocked": false
