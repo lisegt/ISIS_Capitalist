@@ -311,32 +311,41 @@ module.exports = {
     ],
     "allunlocks": [
         {
-            "name": "1er Unlock général gain",
-            "logo": "icones/unlock1.jpg",
+            "name": "Premier concert",
+            "logo": "icones/grammy.png",
             "seuil": 25,
             "idcible": 0,
             "ratio": 2,
-            "typeratio": "gain",
+            "typeratio": "vitesse",
             "unlocked": false
         },
         {
-            "name": "Nom du deuxieme unlock général",
-            "logo": "icones/unlock2.jpg",
+            "name": "Premier fan",
+            "logo": "icones/grammy.png",
             "seuil": 50,
             "idcible": 0,
             "ratio": 2,
-            "typeratio": "gain",
+            "typeratio": "vitesse",
             "unlocked": false
         },
         {
-            "name": "Nom du troisieme unlock général",
-            "logo": "icones/unlock3.jpg",
+            "name": "Premier contrat d'enregistrement",
+            "logo": "icones/grammy.png",
             "seuil": 100,
             "idcible": 0,
             "ratio": 2,
-            "typeratio": "gain",
+            "typeratio": "vitesse",
             "unlocked": false
-        }
+        },
+        {
+            "name": "Victoire aux Grammy Awards",
+            "logo": "icones/grammy.png",
+            "seuil": 200,
+            "idcible": 0,
+            "ratio": 2,
+            "typeratio": "vitesse",
+            "unlocked": false
+        },
     ],
     "upgrades": [
         {
