@@ -50,7 +50,7 @@ module.exports = {
                 {
                     "name": "Rap",
                     "logo": "icones/micro.jpg",
-                    "seuil": 150,
+                    "seuil": 200,
                     "idcible": 1,
                     "ratio": 2,
                     "typeratio": "vitesse",
@@ -100,7 +100,7 @@ module.exports = {
                 {
                     "name": "Contemporain",
                     "logo": "icones/flute.png",
-                    "seuil": 150,
+                    "seuil": 200,
                     "idcible": 2,
                     "ratio": 2,
                     "typeratio": "vitesse",
@@ -150,7 +150,7 @@ module.exports = {
                 {
                     "name": "Presto",
                     "logo": "icones/violon.png",
-                    "seuil": 150,
+                    "seuil": 200,
                     "idcible": 3,
                     "ratio": 2,
                     "typeratio": "vitesse",
@@ -200,7 +200,7 @@ module.exports = {
                 {
                     "name": "Metal",
                     "logo": "icones/guitare.png",
-                    "seuil": 150,
+                    "seuil": 200,
                     "idcible": 4,
                     "ratio": 2,
                     "typeratio": "vitesse",
@@ -250,7 +250,7 @@ module.exports = {
                 {
                     "name": "Boogie-woogie",
                     "logo": "icones/piano.png",
-                    "seuil": 150,
+                    "seuil": 200,
                     "idcible": 5,
                     "ratio": 2,
                     "typeratio": "vitesse",
@@ -265,7 +265,7 @@ module.exports = {
             "cout": 1000000,
             "croissance": 1.07,
             "revenu": 500000,
-            "vitesse": 24000,
+            "vitesse": 60000,
             "quantite": 0,
             "timeleft": 0,
             "managerUnlocked": false,
@@ -300,7 +300,7 @@ module.exports = {
                 {
                     "name": "Electro-woogie",
                     "logo": "icones/dj.png",
-                    "seuil": 150,
+                    "seuil": 200,
                     "idcible": 6,
                     "ratio": 2,
                     "typeratio": "vitesse",
@@ -340,40 +340,165 @@ module.exports = {
     ],
     "upgrades": [
         {
-            "name": "Casser la voiiiiix - gain",
+            "name": "Chanter comme une casserole",
             "logo": "icones/micro.png",
-            "seuil": 1e3,
+            "seuil": 25e3,
             "idcible": 1,
             "ratio": 3,
             "typeratio": "gain",
             "unlocked": false
         },
         {
-            "name": "Casser la voiiiiix 2 - gain",
+            "name": "Souffler dans un tube",
+            "logo": "icones/flute.png",
+            "seuil": 50e3,
+            "idcible": 2,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Faire sortir un son",
+            "logo": "icones/violon.png",
+            "seuil": 100e3,
+            "idcible": 3,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Savoir tenir la guitare",
+            "logo": "icones/guitare.png",
+            "seuil": 150e3,
+            "idcible": 4,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Distinguer les touches blanches et noires",
+            "logo": "icones/piano.png",
+            "seuil": 200e3,
+            "idcible": 5,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Savoir allumer les platines",
+            "logo": "icones/dj.png",
+            "seuil": 250e3,
+            "idcible": 6,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Chanter comme un rossignol",
             "logo": "icones/micro.png",
-            "seuil": 1e3,
+            "seuil": 500e3,
             "idcible": 1,
             "ratio": 3,
             "typeratio": "gain",
             "unlocked": false
         },
-
         {
-            "name": "Cash upgrade flute - gain",
-            "logo": "icones/micro.png",
-            "seuil": 1e3,
+            "name": "Jouer les premières mesures de la Flûte Enchantée",
+            "logo": "icones/flute.png",
+            "seuil": 550e3,
             "idcible": 2,
             "ratio": 3,
             "typeratio": "gain",
             "unlocked": false
         },
         {
-            "name": "Cash upgrade flute - vitesse",
+            "name": "Jouer des gammes avec des fausses notes",
+            "logo": "icones/violon.png",
+            "seuil": 600e3,
+            "idcible": 3,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Jouer les accords de base",
+            "logo": "icones/guitare.png",
+            "seuil": 650e3,
+            "idcible": 4,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Jouer avec les deux mains",
+            "logo": "icones/piano.png",
+            "seuil": 700e3,
+            "idcible": 5,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Enchaîner deux chansons",
+            "logo": "icones/dj.png",
+            "seuil": 750e3,
+            "idcible": 6,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Chanter comme un ange",
             "logo": "icones/micro.png",
-            "seuil": 1e3,
+            "seuil": 1e6,
+            "idcible": 1,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Jouer la bande sonore de Titanic",
+            "logo": "icones/flute.png",
+            "seuil": 1500e3,
             "idcible": 2,
-            "ratio": 2,
-            "typeratio": "vitesse",
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Jouer le concerto de Mendelssohn",
+            "logo": "icones/violon.png",
+            "seuil": 2e6,
+            "idcible": 3,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Jouer un solo difficile",
+            "logo": "icones/guitare.png",
+            "seuil": 2500e3,
+            "idcible": 4,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Jouer une sonate de Beethoven",
+            "logo": "icones/piano.png",
+            "seuil": 3e6,
+            "idcible": 5,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Créer un mashup",
+            "logo": "icones/dj.png",
+            "seuil": 3500e3,
+            "idcible": 6,
+            "ratio": 3,
+            "typeratio": "gain",
             "unlocked": false
         }
 
