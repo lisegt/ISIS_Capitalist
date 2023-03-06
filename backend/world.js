@@ -21,7 +21,7 @@ module.exports = {
             "managerUnlocked": false,
             "paliers": [
                 {
-                    "name": "Palier Opéra",
+                    "name": "Opéra",
                     "logo": "icones/micro.jpg",
                     "seuil": 25,
                     "idcible": 1,
@@ -30,7 +30,7 @@ module.exports = {
                     "unlocked": false
                 },
                 {
-                    "name": "Palier Gospel",
+                    "name": "Gospel",
                     "logo": "icones/micro.jpg",
                     "seuil": 50,
                     "idcible": 1,
@@ -39,7 +39,7 @@ module.exports = {
                     "unlocked": false
                 },
                 {
-                    "name": "Palier R&B",
+                    "name": "R&B",
                     "logo": "icones/micro.jpg",
                     "seuil": 100,
                     "idcible": 1,
@@ -48,7 +48,7 @@ module.exports = {
                     "unlocked": false
                 },
                 {
-                    "name": "Palier Rap",
+                    "name": "Rap",
                     "logo": "icones/micro.jpg",
                     "seuil": 150,
                     "idcible": 1,
@@ -62,17 +62,17 @@ module.exports = {
             "id": 2,
             "name": "flute",
             "logo": "icones/flute.png",
-            "cout": 4,
+            "cout": 60,
             "croissance": 1.07,
             "revenu": 1,
-            "vitesse": 500,
+            "vitesse": 1000,
             "quantite": 0,
             "timeleft": 0,
             "managerUnlocked": false,
             "paliers": [
                 {
-                    "name": "1er Palier vitesse flute",
-                    "logo": "icones/palier1.jpg",
+                    "name": "Ballade",
+                    "logo": "icones/flute.png",
                     "seuil": 25,
                     "idcible": 2,
                     "ratio": 2,
@@ -80,23 +80,32 @@ module.exports = {
                     "unlocked": false
                 },
                 {
-                    "name": "2e Palier gain flute",
-                    "logo": "icones/palier2.jpg",
+                    "name": "Baroque",
+                    "logo": "icones/flute.png",
                     "seuil": 50,
                     "idcible": 2,
                     "ratio": 2,
-                    "typeratio": "gain",
+                    "typeratio": "vitesse",
                     "unlocked": false
                 },
                 {
-                    "name": "3e palier gain flute",
-                    "logo": "icones/palier3.jpg",
+                    "name": "Jazz",
+                    "logo": "icones/flute.png",
                     "seuil": 100,
                     "idcible": 2,
                     "ratio": 2,
-                    "typeratio": "gain",
+                    "typeratio": "vitesse",
                     "unlocked": false
                 },
+                {
+                    "name": "Contemporain",
+                    "logo": "icones/flute.png",
+                    "seuil": 150,
+                    "idcible": 2,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                }
             ],
         }
     ],
