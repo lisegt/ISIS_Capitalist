@@ -19,8 +19,6 @@ function saveWorld(context) {
 function calcul_score(context) {
     let liste_produits = context.world.products
     let temps_ecoule = Date.now() - parseInt(context.world.lastupdate)
-    console.log("last update" + context.world.lastupdate)
-    console.log("tps "+ temps_ecoule)
 
     // le gain
     let gain = 0;
@@ -40,25 +38,17 @@ function calcul_score(context) {
 
         if (temps_ecoule < produit.timeleft) {
             produit.timeleft = produit.timeleft - temps_ecoule
-            console.log("pas assez de tps pr production")
         } else {
-            console.log("assez de tps pr production")
             //le produit n'est pas automatisé
             if (!produit.managerUnlocked) {
-                console.log("pas de manager")
                 // il restait du timeleft
                 if (en_production) {
-                    console.log("reste timeleft")
                     nb_production = 1
                     produit.timeleft = 0
                 }
             } else {
-                console.log("manager")
                 // le produit est automatisé
                 nb_production = ((temps_ecoule - produit.timeleft) / produit.vitesse) + 1
-                console.log("tps ecoule = "+ (temps_ecoule - produit.timeleft))
-                console.log("vitesse " + produit.vitesse)
-                console.log("nb production = " + nb_production)
                 produit.timeleft = temps_ecoule % produit.vitesse
             }
         }
@@ -68,20 +58,23 @@ function calcul_score(context) {
 
     context.world.score += gain
     context.world.money += gain
-    console.log("gain = " + gain)
 }
 
 function appliquerBoost(palier, context){
 
     //on récupère l'id du produit associé à l'unlock
     let idProduit = palier.idcible;
+    console.log(idProduit)
     //on récupère le produit grâce à son id
     if (idProduit > 0) {
         let produit = context.world.products.find((p) => p.id === idProduit);
+        console.log("1 produit")
+        console.log(produit.name)
         appliquerBoostSurProduit(produit, palier, context)
 
     } else if (idProduit === 0){ //concerne tous les produits
         context.world.products.forEach((produit) => {
+            console.log("bonus sur tous les produits")
             appliquerBoostSurProduit(produit, palier, context)
         })
     } else { // si -1 : le bonus augmente l'efficacité des anges
@@ -92,10 +85,14 @@ function appliquerBoost(palier, context){
 function appliquerBoostSurProduit(produit,palier, context){
     //type de boost
     //boost de revenu
-    if (palier.typeratio == "gain") {
+    if (palier.typeratio === "gain") {
         produit.revenu = produit.revenu*palier.ratio
-    } else if (palier.typeratio == "vitesse"){ // boost de vitesse
+        console.log("gain sur " + produit.name)
+        console.log(palier.name)
+    } else if (palier.typeratio === "vitesse"){ // boost de vitesse
         produit.vitesse = produit.vitesse/palier.ratio
+        console.log("vitesse sur " + produit.name)
+        console.log(palier.name)
     } else { //boost d'ange --> est-il possible d'avoir un idcible différent de -1 et de booster les anges ?
         appliquerBoostSurAnge(palier, context)
     }
@@ -111,7 +108,8 @@ function verifierAllUnlocks(seuil, context){
     let produits = context.world.products
 
     //tableau contenant les états des unlocks de tous les produits, pour un seuil donné
-    let etatsUnlocks = [];
+    let etatsUnlocks = [] ;
+    console.log("tableau bool : " +etatsUnlocks)
 
     //on suppose que tous les produits ont les mêmes paliers
     produits.forEach((produit) => {
@@ -119,11 +117,13 @@ function verifierAllUnlocks(seuil, context){
         let unlockToTest = produit.paliers.find((palier) => palier.seuil === seuil)
 
         //on remplit le tableau de booléens
-        etatsUnlocks.append(unlockToTest.unlocked)
+        etatsUnlocks.push(unlockToTest.unlocked)
     })
+
 
     //on teste les booléens du tableau etatsUnlocks
     if (etatsUnlocks.every(bool => bool)){
+        console.log("allunlock débloqué")
         //tous les unlocks sont true, on peut débloquer le allUnlock du seuil correspondant
 
         //unlock à débloquer

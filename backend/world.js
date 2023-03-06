@@ -21,7 +21,7 @@ module.exports = {
             "managerUnlocked": false,
             "paliers": [
                 {
-                    "name": "Nom du premier palier",
+                    "name": "1er Palier vitesse micro",
                     "logo": "icones/palier1.jpg",
                     "seuil": 25,
                     "idcible": 1,
@@ -30,21 +30,21 @@ module.exports = {
                     "unlocked": false
                 },
                 {
-                    "name": "Nom deuxieme palier",
+                    "name": "2e Palier gain micro",
                     "logo": "icones/palier2.jpg",
                     "seuil": 50,
                     "idcible": 1,
                     "ratio": 2,
-                    "typeratio": "vitesse",
+                    "typeratio": "gain",
                     "unlocked": false
                 },
                 {
-                    "name": "Nom troisieme palier",
+                    "name": "3e palier gain micro",
                     "logo": "icones/palier3.jpg",
                     "seuil": 100,
                     "idcible": 1,
                     "ratio": 2,
-                    "typeratio": "vitesse",
+                    "typeratio": "gain",
                     "unlocked": false
                 }
             ],
@@ -62,30 +62,30 @@ module.exports = {
             "managerUnlocked": false,
             "paliers": [
                 {
-                    "name": "Nom du premier palier",
+                    "name": "1er Palier vitesse flute",
                     "logo": "icones/palier1.jpg",
                     "seuil": 25,
-                    "idcible": 1,
+                    "idcible": 2,
                     "ratio": 2,
                     "typeratio": "vitesse",
                     "unlocked": false
                 },
                 {
-                    "name": "Nom deuxième palier",
+                    "name": "2e Palier gain flute",
                     "logo": "icones/palier2.jpg",
                     "seuil": 50,
-                    "idcible": 1,
+                    "idcible": 2,
                     "ratio": 2,
-                    "typeratio": "vitesse",
+                    "typeratio": "gain",
                     "unlocked": false
                 },
                 {
-                    "name": "Nom troisieme palier",
+                    "name": "3e palier gain flute",
                     "logo": "icones/palier3.jpg",
                     "seuil": 100,
-                    "idcible": 1,
+                    "idcible": 2,
                     "ratio": 2,
-                    "typeratio": "vitesse",
+                    "typeratio": "gain",
                     "unlocked": false
                 },
             ],
@@ -93,7 +93,7 @@ module.exports = {
     ],
     "allunlocks": [
         {
-            "name": "Nom du premier unlock général",
+            "name": "1er Unlock général gain",
             "logo": "icones/unlock1.jpg",
             "seuil": 25,
             "idcible": 0,
@@ -135,10 +135,29 @@ module.exports = {
             "logo": "icones/micro.png",
             "seuil": 1e3,
             "idcible": 1,
+            "ratio": 2,
+            "typeratio": "vitesse",
+            "unlocked": false
+        },
+        {
+            "name": "Cash upgrade flute - gain",
+            "logo": "icones/micro.png",
+            "seuil": 1e3,
+            "idcible": 2,
             "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Cash upgrade flute - vitesse",
+            "logo": "icones/micro.png",
+            "seuil": 1e3,
+            "idcible": 2,
+            "ratio": 2,
             "typeratio": "vitesse",
             "unlocked": false
         }
+
     ],
     "angelupgrades": [
         {
