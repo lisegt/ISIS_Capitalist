@@ -135,10 +135,29 @@ module.exports = {
             "logo": "icones/micro.png",
             "seuil": 1e3,
             "idcible": 1,
+            "ratio": 2,
+            "typeratio": "vitesse",
+            "unlocked": false
+        },
+        {
+            "name": "Cash upgrade flute - gain",
+            "logo": "icones/micro.png",
+            "seuil": 1e3,
+            "idcible": 2,
             "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Cash upgrade flute - vitesse",
+            "logo": "icones/micro.png",
+            "seuil": 1e3,
+            "idcible": 2,
+            "ratio": 2,
             "typeratio": "vitesse",
             "unlocked": false
         }
+
     ],
     "angelupgrades": [
         {
