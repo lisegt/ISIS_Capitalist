@@ -115,5 +115,3 @@ function App() {
 
 
 export default App;
-
-//début page 24
