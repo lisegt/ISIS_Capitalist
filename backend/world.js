@@ -579,9 +579,9 @@ module.exports = {
     ],
     "managers": [
         {
-            "name": "Mariah Carey",
-            "logo": "icones/MariahCarey.png",
-            "seuil": 100,
+            "name": "Céline Dion",
+            "logo": "icones/dion.png",
+            "seuil": 500,
             "idcible": 1,
             "ratio": 0,
             "typeratio": "vitesse",
@@ -589,7 +589,7 @@ module.exports = {
         },
         {
             "name": "Jean-Sebastien Bach",
-            "logo": "icones/Bach.png",
+            "logo": "icones/bach.png",
             "seuil": 1500,
             "idcible": 2,
             "ratio": 0,
@@ -597,8 +597,8 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Stradivarius",
-            "logo": "icones/Stradivarius.png",
+            "name": "Lindsey Stirling",
+            "logo": "icones/stirling.png",
             "seuil": 10000,
             "idcible": 3,
             "ratio": 0,
@@ -606,10 +606,28 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Guitariste de Sultan of Swing",
-            "logo": "icones/Guitariste.png",
-            "seuil": 50000,
+            "name": "Jimi Hendrix",
+            "logo": "icones/hendrix.png",
+            "seuil": 15000,
             "idcible": 4,
+            "ratio": 0,
+            "typeratio": "vitesse",
+            "unlocked": false
+        },
+        {
+            "name": "Ray Charles",
+            "logo": "icones/charles.png",
+            "seuil": 20000,
+            "idcible": 5,
+            "ratio": 0,
+            "typeratio": "vitesse",
+            "unlocked": false
+        },
+        {
+            "name": "David Guetta",
+            "logo": "icones/guetta.png",
+            "seuil": 25000,
+            "idcible": 6,
             "ratio": 0,
             "typeratio": "vitesse",
             "unlocked": false
