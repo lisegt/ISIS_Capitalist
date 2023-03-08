@@ -523,7 +523,7 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Bonous angélique",
+            "name": "Bonus angélique",
             "logo": "icones/ange.png",
             "seuil": 500,
             "idcible": -1,
