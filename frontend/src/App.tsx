@@ -102,7 +102,7 @@ function App() {
     else if (error) corps = <div> Erreur de chargement du monde ! </div>
     else corps = <Main loadworld={data.getWorld} username={username} />
     return (
-        <div>
+        <div className = "nomJoueur">
             <div> Your ID :</div>
             <input type="text" value={username} onChange={onUserNameChanged}/>
             {corps}

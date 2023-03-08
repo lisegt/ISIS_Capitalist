@@ -2,22 +2,23 @@ import {Product} from "../world";
 import React, {useEffect, useRef, useState} from "react";
 import MyProgressbar, {Orientation} from "./ProgressBar";
 import {useInterval} from "./MyInterval";
-const url = 'https://isiscapitalistgraphql.kk.kurasawa.fr/'
+const url = 'http://localhost:4000/'
 
 
 type ProductProps = {
     product: Product
     onProductionDone: (product:Product, qt: number)=>void;
+    qtmulti: string
 }
 
-export default function ProductComponent({ product, onProductionDone} : ProductProps) {
+export default function ProductComponent({ product, onProductionDone, qtmulti} : ProductProps) {
 
-       const lastupdate= useRef(product.lastupdate);
+       const lastupdate= useRef(Date.now());
        const [timeleft, setTimeleft]=useState(product.timeleft);
+
 
     useInterval(() => calcScore(), 100)
     function calcScore() {
-
         let temps_ecoule=Date.now()-lastupdate.current;
 
         //la production pendant le temps d'absence
@@ -41,6 +42,7 @@ export default function ProductComponent({ product, onProductionDone} : ProductP
             if(product.managerUnlocked){
                 nb_production = ((temps_ecoule - timeleft)/product.vitesse)+1;
                 setTimeleft(temps_ecoule % product.vitesse);
+
             }
             }
         if(nb_production >0){
@@ -50,11 +52,12 @@ export default function ProductComponent({ product, onProductionDone} : ProductP
     function startFabrication(){
         setTimeleft( product.vitesse);
         lastupdate.current = Date.now();
+
     }
 
     return (
-        <div className="Product">
-            <div className="ProductLeft">
+        <div className="unproduit">
+            <div className="productLeft">
                 <button onClick={()=>{startFabrication()}}><img className = 'round' src={url + product.logo} /></button>
                 <div>{product.quantite}</div>
             </div>
@@ -80,4 +83,3 @@ export default function ProductComponent({ product, onProductionDone} : ProductP
 
 }
 //faire le code html d'affichage d'un produit
-// Implémenter StartFabrication + CalcScore

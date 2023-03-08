@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import ProductComponent from "./components/ProductComponent";
 import {transform} from "./utils";
 
-const url = 'https://isiscapitalistgraphql.kk.kurasawa.fr/'
+const url = 'http://localhost:4000/'
 
 
 // Affiche l'interface principale
@@ -14,6 +14,9 @@ type MainProps = {
 export default function Main({ loadworld, username } : MainProps) {
     const [world, setWorld] = useState(JSON.parse(JSON.stringify(loadworld)) as
         World);
+    const [score, setScore] = useState(world.score);
+    const [money, setMoney] = useState(world.money);
+    const[qtmulti, setQtmulti]=useState("x1");
 
     useEffect(() => {
         setWorld(JSON.parse(JSON.stringify(loadworld)) as World)
@@ -21,34 +24,47 @@ export default function Main({ loadworld, username } : MainProps) {
 
     function onProductionDone(p:Product, qt:number):void{
         let gain = qt*(p.quantite*p.revenu);
-        world.score+=gain;
+        console.log("qt = "+qt)
+        console.log("p.quantite = "+p.quantite)
+        console.log("p.revenu = "+p.revenu)
+        console.log("gain = "+gain)
         addToScore(gain);
     }
     function addToScore(gain:number){
-        world.score+=gain;
-        world.money+=gain;
+        setScore(world.score=world.score+gain);
+        setMoney(world.money=world.money+gain);
+
     }
 
     return (
         <div className="App">
             <header className="header">
-                <div className="worldName"> {world.name} </div>
-                <img className = 'round' src={url + world.logo} />
-                <span dangerouslySetInnerHTML={{__html: transform(world.money)}}></span>
+                <div className="nomLogoWorld"> <img className = 'round' src={url + world.logo} />{world.name} </div>
+
+                <span className="money" dangerouslySetInnerHTML={{__html: transform(world.money)}}></span>
+                <span className="score" dangerouslySetInnerHTML={{__html: transform(world.score)}}></span>
 
             <div> multiplicateur </div>
 
             </header>
             <main className="main">
-                <div>
-                    <button className="Unlocks">Unlocks</button>
-                    <button className="cashUpgrades">Cash Upgrades</button>
-                    <button className="AngelUpgrades">Angel Upgrades</button>
-                    <button className="Managers">Managers</button>
-                    <button className="Investors">Investors</button>
+                <div className="partieGauche">
+                        <button className="unlocks">Unlocks</button>
+                        <button className="cashUpgrades">Cash Upgrades</button>
+                        <button className="angelUpgrades">Angel Upgrades</button>
+                        <button className="managers">Managers</button>
+                        <button className="investors">Investors</button>
                 </div>
-                <div>
-                    <ProductComponent onProductionDone={onProductionDone} product ={world.products[0]}/>
+                <div className="partieCentrale">
+                    <div className="p0"><ProductComponent onProductionDone={onProductionDone}
+                                                          qtmulti={qtmulti}
+                                                          product ={world.products[0]}/>
+                    </div>
+                    <div className="p1"><ProductComponent onProductionDone={onProductionDone}
+                                                          qtmulti={qtmulti}
+                                                          product ={world.products[1]}/>
+                    </div>
+
                 </div>
 
             </main>
@@ -56,5 +72,4 @@ export default function Main({ loadworld, username } : MainProps) {
     );
 }
 
-//page 31/50
-// implémenter une méthode calcScore()
+//page 34/50
