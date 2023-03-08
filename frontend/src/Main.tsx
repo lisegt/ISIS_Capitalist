@@ -2,6 +2,7 @@ import {Product, World} from "./world";
 import React, {useEffect, useState} from "react";
 import ProductComponent from "./components/ProductComponent";
 import {transform} from "./utils";
+import Menu from "./components/Menu";
 
 const url = 'http://localhost:4000/'
 
@@ -49,6 +50,7 @@ export default function Main({ loadworld, username } : MainProps) {
             </header>
             <main className="main">
                 <div className="partieGauche">
+                        <Menu></Menu>
                         <button className="unlocks">Unlocks</button>
                         <button className="cashUpgrades">Cash Upgrades</button>
                         <button className="angelUpgrades">Angel Upgrades</button>
