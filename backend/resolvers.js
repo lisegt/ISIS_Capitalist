@@ -58,6 +58,8 @@ function calcul_score(context) {
 
     context.world.score += gain
     context.world.money += gain
+
+    context.world.totalangels = Math.floor(150*Math.sqrt(context.world.score/(Math.pow(10,15))) - context.world.totalangels)
 }
 
 function appliquerBoost(palier, context){
