@@ -44,6 +44,11 @@
 .money { grid-area: 1 / 2 / 2 / 3; }
 .nomJoueur { grid-area: 1 / 3 / 2 / 4; }
 
+.test{
+  position: fixed;
+  top: 0;
+  left: 0;
+}
 
 .modal {
   position: fixed; /* reste en place */

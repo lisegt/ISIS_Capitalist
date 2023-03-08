@@ -50,7 +50,7 @@ export default function Main({ loadworld, username } : MainProps) {
             </header>
             <main className="main">
                 <div className="partieGauche">
-                        <Menu></Menu>
+                        <Menu world={world}></Menu>
                         <button className="unlocks">Unlocks</button>
                         <button className="cashUpgrades">Cash Upgrades</button>
                         <button className="angelUpgrades">Angel Upgrades</button>

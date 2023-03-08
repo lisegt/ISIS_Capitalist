@@ -1,13 +1,14 @@
 import {Palier, World} from "../world";
 import {Button} from "@mui/material";
-import {useState} from "react";
+import React, {useState} from "react";
 
 type ManagerProps = {
-    manager : Palier
+    loadworld : World
 }
-export default function Manager({ manager}: ManagerProps){
+export default function Manager({ loadworld}: ManagerProps){
     const [showManagers, setShowManagers] = useState(true);
-    let world = require("./world")
+    //let world = require("../world")
+    const [world, setWorld] = useState(loadworld);
 
     function hireManager(manager:Palier){
 
@@ -19,9 +20,8 @@ export default function Manager({ manager}: ManagerProps){
                     <h1 className="title">Managers make you feel better !</h1>
                 </div>
                 <div>
-                    {
-                        world.managers.palier.filter( (manager: Palier) => !manager.unlocked).map(
-                        (manager : Palier) => {
+                    {world.managers.filter( manager => !manager.unlocked).map(
+                        manager =>
                             <div key={manager.idcible} className="managergrid">
                                 <div>
                                     <div className="logo">
@@ -32,7 +32,7 @@ export default function Manager({ manager}: ManagerProps){
                                 <div className="infosmanager">
                                     <div className="managername"> {manager.name} </div>
                                     <div className="managercible"> {
-                                        world.products.product[manager.idcible - 1].name} </div>
+                                        world.products[manager.idcible - 1].name} </div>
                                     <div className="managercost"> {manager.seuil} </div>
                                 </div>
                                 <div onClick={() => hireManager(manager)}>
@@ -40,9 +40,10 @@ export default function Manager({ manager}: ManagerProps){
                                         Hire !</Button>
                                 </div>
                             </div>
-                        }
+
                     )
                     }
+
 
                 </div>
             </div>

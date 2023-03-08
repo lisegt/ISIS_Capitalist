@@ -16,8 +16,8 @@ export default function Menu({ world} : MenuProps) {
     return (
         <div>
             <h1>Menu</h1>
-            <button onClick={() => setShowManager(true)}>Open Manager</button>
-            {showManager && <Manager manager={}/>}
+            <button className="test" onClick={() => setShowManager(!showManager)}>Manager</button>
+            {showManager && <Manager loadworld={world}/>}
 
         </div>
     );

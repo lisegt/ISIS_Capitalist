@@ -50,7 +50,9 @@ export default function ProductComponent({ product, onProductionDone, qtmulti} :
         }
         }
     function startFabrication(){
-        setTimeleft( product.vitesse);
+        if(product.quantite>0) {
+            setTimeleft(product.vitesse);
+        }
         lastupdate.current = Date.now();
 
     }
