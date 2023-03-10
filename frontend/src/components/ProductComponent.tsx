@@ -1,4 +1,4 @@
-import {Product} from "../world";
+import {Product, World} from "../world";
 import React, {useEffect, useRef, useState} from "react";
 import MyProgressbar, {Orientation} from "./ProgressBar";
 import {useInterval} from "./MyInterval";
@@ -9,12 +9,20 @@ type ProductProps = {
     product: Product
     onProductionDone: (product:Product, qt: number)=>void;
     qtmulti: string
+    qtAcheter : number
+    loadworld : World
+    acheter:(product:Product)=>void;
+    onProductionBuy: (p: Product, qt: number)=>void;
 }
 
-export default function ProductComponent({ product, onProductionDone, qtmulti} : ProductProps) {
+export default function ProductComponent({ product, onProductionDone, qtmulti, qtAcheter, loadworld, acheter, onProductionBuy} : ProductProps) {
 
        const lastupdate= useRef(Date.now());
        const [timeleft, setTimeleft]=useState(product.timeleft);
+       const [world, setWorld]=useState(loadworld);
+
+
+
 
 
     useInterval(() => calcScore(), 100)
@@ -52,10 +60,13 @@ export default function ProductComponent({ product, onProductionDone, qtmulti} :
     function startFabrication(){
         if(product.quantite>0) {
             setTimeleft(product.vitesse);
+            lastupdate.current = Date.now();
         }
-        lastupdate.current = Date.now();
+
 
     }
+
+
 
     return (
         <div className="unproduit">
@@ -70,13 +81,13 @@ export default function ProductComponent({ product, onProductionDone, qtmulti} :
                                                             run={product.managerUnlocked || timeleft>0} frontcolor="#ff8800" backcolor="#ffffff"
                                                             auto={product.managerUnlocked}
                                                             orientation={Orientation.horizontal} />
-                    <div className="gain">{product.revenu}</div>
+                    <div className="gain">revenu : {product.revenu}</div>
                 </div>
                 <div className="partieBasse">
-                    <button>Acheter</button>
-                    <div>Quantité achetée</div>
-                    <div>{product.cout}</div>
-                    <div>Compteur à rebourd : temps restant pour que la production du produit soit complète</div>
+                    <button className="test2" onClick={() => onProductionBuy(product, qtAcheter)}
+                    >{qtAcheter}</button>
+                    <div>cout : {product.cout}</div>
+                    <div>{timeleft}ms</div>
                 </div>
             </div>
         </div>

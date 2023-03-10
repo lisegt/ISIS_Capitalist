@@ -1,68 +1,70 @@
-.container {
-  display: grid;
-  grid-template-columns: 33% 33% 33%;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 0px 0px;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 10px;
 }
-.header { grid-area: 1 / 1 / 2 / 4; }
+
+.nomLogoWorld {
+  display: flex;
+  align-items: center;
+}
+
+.nomLogoWorld img.round {
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.money {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.test2 {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Style des produits */
+.main {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 10px;
+}
+
 .partieGauche {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-  gap: 51px 0px;
-  grid-template-areas:
-    "unlocks"
-    "cashUpgrades"
-    "angelUpgrades"
-    "managers"
-    "investors";
-  grid-area: 2 / 1 / 4 / 2;
+  width: 20%;
+  margin-right: 20px;
 }
-.unlocks { grid-area: unlocks; }
-.cashUpgrades { grid-area: cashUpgrades; }
-.angelUpgrades { grid-area: angelUpgrades; }
-.managers { grid-area: managers; }
-.investors { grid-area: investors; }
+
 .partieCentrale {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 0px 0px;
-  grid-template-areas:
-    "p0 p1"
-    "p2 p3"
-    "p4 p5";
-  grid-area: 2 / 2 / 4 / 4;
-}
-.p0 { grid-area: p0; }
-.p1 { grid-area: p1; }
-.p2 { grid-area: p2; }
-.p3 { grid-area: p3; }
-.p4 { grid-area: p4; }
-.p5 { grid-area: p5; }
-.nomLogoWorld { grid-area: 1 / 1 / 2 / 2; }
-.money { grid-area: 1 / 2 / 2 / 3; }
-.nomJoueur { grid-area: 1 / 3 / 2 / 4; }
-
-.test{
-  position: fixed;
-  top: 0;
-  left: 0;
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.modal {
-  position: fixed; /* reste en place */
-  z-index: 2; /* au dessus du reste */
-  width: 800px; /* largeur */
-  height: 800px; /* hauteur */
-  overflow: auto; /* barre de scroll si besoin */
-  background-color: white; /* opaque */
-  border: solid;
-  top:10%;/* a 10% du haut */
-  left:20%; /* a 20% de la gauche */
+.p0, .p1, .p2 {
+  width: 33%;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
 }
 
-
+.p0:hover, .p1:hover, .p2:hover {
+  background-color: #e0e0e0;
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

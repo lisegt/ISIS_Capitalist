@@ -7,7 +7,6 @@ type ManagerProps = {
 }
 export default function Manager({ loadworld}: ManagerProps){
     const [showManagers, setShowManagers] = useState(true);
-    //let world = require("../world")
     const [world, setWorld] = useState(loadworld);
 
     function hireManager(manager:Palier){
