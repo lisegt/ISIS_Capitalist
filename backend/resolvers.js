@@ -36,6 +36,7 @@ function calcul_score(context) {
             en_production = true
         }
 
+        //il reste du temps avant la fin de production
         if (temps_ecoule < produit.timeleft) {
             produit.timeleft = produit.timeleft - temps_ecoule
         } else {
@@ -59,7 +60,6 @@ function calcul_score(context) {
     context.world.score += gain
     context.world.money += gain
 
-    context.world.totalangels = Math.floor(150*Math.sqrt(context.world.score/(Math.pow(10,15))) - context.world.totalangels)
 }
 
 function appliquerBoost(palier, context){
@@ -89,12 +89,8 @@ function appliquerBoostSurProduit(produit,palier, context){
     //boost de revenu
     if (palier.typeratio === "gain") {
         produit.revenu = produit.revenu*palier.ratio
-        console.log("gain sur " + produit.name)
-        console.log(palier.name)
     } else if (palier.typeratio === "vitesse"){ // boost de vitesse
-        produit.vitesse = produit.vitesse/palier.ratio
-        console.log("vitesse sur " + produit.name)
-        console.log(palier.name)
+        produit.vitesse = Math.round(produit.vitesse/palier.ratio)
     } else { //boost d'ange --> est-il possible d'avoir un idcible différent de -1 et de booster les anges ?
         appliquerBoostSurAnge(palier, context)
     }
@@ -121,7 +117,6 @@ function verifierAllUnlocks(seuil, context){
         //on remplit le tableau de booléens
         etatsUnlocks.push(unlockToTest.unlocked)
     })
-
 
     //on teste les booléens du tableau etatsUnlocks
     if (etatsUnlocks.every(bool => bool)){
@@ -287,18 +282,34 @@ module.exports = {
             return angelUpgrade
         },
 
-        resetWorld(context){
+        resetWorld(parent, args, context){
+
+            let angesTotal = context.world.totalangels
+            let angesActifs = context.world.activeangels
+
+            console.log(angesTotal)
+            console.log(angesActifs)
 
             //réinitialisation du monde avec monde de base
             let newWorld = world
 
+            newWorld.totalangels = angesTotal
+            newWorld.activeangels = angesActifs
+
             //accumuler les anges supplémentaires gagnés lors de la partie en cours + récupération des propriétés de l'ancien monde
-            let totalAngelsToReset = context.world.totalangels + 150*Math.sqrt(context.world.score/(Math.pow(10,15))) - context.world.totalangels
-            let activeAngelsToReset = context.world.activeangels + 150*Math.sqrt(context.world.score/(Math.pow(10,15))) - context.world.totalangels
+            let totalAngelsToReset = Math.round(150*Math.sqrt(context.world.score/(Math.pow(10,15))) - context.world.totalangels)
+            let activeAngelsToReset = Math.round(150*Math.sqrt(context.world.score/(Math.pow(10,15))) - context.world.totalangels)
 
-            newWorld.totalangels = totalAngelsToReset
-            newWorld.activeangels = activeAngelsToReset
+            //si on reset avant que le nouveau score dépasse l'ancien score
+            //le nombre d'anges reste égal
+            if (totalAngelsToReset > 0){
+                newWorld.totalangels += totalAngelsToReset
+                newWorld.activeangels += activeAngelsToReset
+            }
 
+            newWorld.lastupdate = Date.now().toString()
+            context.world = newWorld
+            saveWorld(context)
             return newWorld
         }
     }
