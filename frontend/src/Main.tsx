@@ -4,6 +4,7 @@ import ProductComponent from "./components/ProductComponent";
 import {transform} from "./utils";
 import Menu from "./components/Menu";
 import Manager from "./components/Manager";
+import {useInterval} from "./components/MyInterval";
 
 const url = 'http://localhost:4000/'
 
@@ -19,7 +20,8 @@ export default function Main({ loadworld, username } : MainProps) {
     const [score, setScore] = useState(world.score);
     const [money, setMoney] = useState(world.money);
     const[qtmulti, setQtmulti]=useState("x1");
-    const[qtAcheter, setQtAcheter]=useState(1);
+    const[qtAcheter, setQtAcheter]=useState([1,1,1,1,1,1]);
+    const newQtAcheter = [...qtAcheter];
     const [quantite, setQuantite] = useState([world.products[0].quantite,
         world.products[1].quantite,
         world.products[2].quantite,
@@ -33,9 +35,38 @@ export default function Main({ loadworld, username } : MainProps) {
         setWorld(JSON.parse(JSON.stringify(loadworld)) as World)
     }, [loadworld])
 
+    function qtAchetable(){
+        if(qtmulti === "x1") {
+            for (let i = 0; i < 6; i++) {
+                newQtAcheter[world.products[i].id] = 10;
+                setQtAcheter(newQtAcheter);
+            }
+
+        }
+        if(qtmulti === "x10") {
+            for (let i = 0; i < 6; i++) {
+                newQtAcheter[world.products[i].id] = 100;
+                setQtAcheter(newQtAcheter);
+            }
+        }
+        if(qtmulti === "x100") {
+            for (let i = 0; i < 6; i++) {
+                calcMaxCanBuy(world.products[i]);
+            }
+        }
+        if(qtmulti === "Max") {
+            for (let i = 0; i < 6; i++) {
+                newQtAcheter[world.products[i].id] = 1;
+                setQtAcheter(newQtAcheter);
+            }
+        }
+    }
     function onProductionDone(p:Product, qt:number):void{
         let gain = qt*(p.quantite*p.revenu);
         addToScore(gain);
+        if(qtmulti==="Max") {
+            calcMaxCanBuy(p);
+        }
     }
     function addToScore(gain:number){
         setScore(world.score+gain);
@@ -44,8 +75,26 @@ export default function Main({ loadworld, username } : MainProps) {
         world.money = world.money+gain;
 
     }
+    //un = u0 × q^n .
+    function calcMaxCanBuy(p: Product){
+        let u0 = p.cout;
+        let un = u0;
+        let q = p.croissance;
+        let n = 0;
+        let coutAchat = u0;
+        //tant qu'on a plus d'argent que le coutAchat
+        while (world.money>=coutAchat){
+            //console.log("money="+world.money+"; coutAchat"+coutAchat)
+            n ++;
+            un = u0 * q**n;
+            coutAchat = coutAchat + un;
+            //console.log("n="+n+"; un="+un+"; unPlus1="+unPlus1+"; coutAchat ="+coutAchat)
+        }
+        newQtAcheter[p.id] = n;
+        //console.log("qt : "+newQtAcheter[p.id] )
+        setQtAcheter(newQtAcheter)
+    }
     function onProductionBuy(p: Product, qt: number){
-        p.cout=1
         //on déduit le cout de l'achat de l'argent du monde = somme d'une suite géométrique
         let q = p.croissance
         let coutAchat = p.cout * ((1 - Math.pow(q, qt)) / (1 - q))
@@ -62,24 +111,18 @@ export default function Main({ loadworld, username } : MainProps) {
                 //màj du cout d'achat produit, coût du produit n+1
                 p.cout = Math.pow(q, qt) * p.cout
             }
-        }
-    function acheter(product : Product) {
-
-        if (qtmulti === "x1" && world.money >= product.cout) {
-            setMoney(world.money - product.cout)
-            newQuantite[product.id] += 1; // incrémenter la première quantité dans la copie
-            setQuantite(newQuantite); // mettre à jour l'état avec la nouvelle copie modifiée du tableau
-        }
-        if (qtmulti === "x10" && world.money >= (product.cout * 10)) {
-            setMoney(world.money - product.cout * 10)
-            newQuantite[product.id] += 10;
-            setQuantite(newQuantite);
+        calcMaxCanBuy(p)
         }
 
-        if (qtmulti === "x100" && world.money >= (product.cout * 100)) {
-            setMoney(world.money - product.cout * 100)
-            newQuantite[product.id] += 100;
-            setQuantite(newQuantite);
+    function toogleQtmulti(){
+        if (qtmulti === "x1") {
+            setQtmulti("x10");
+        } else if (qtmulti === "x10") {
+            setQtmulti("x100");
+        } else if (qtmulti === "x100") {
+            setQtmulti("Max");
+        } else if (qtmulti === "Max"){
+            setQtmulti("x1");
         }
     }
 
@@ -91,18 +134,8 @@ export default function Main({ loadworld, username } : MainProps) {
                 <span className="money" dangerouslySetInnerHTML={{__html: transform(world.money)}}></span>
 
                 <button className="test2" onClick={() => {
-                    if (qtmulti === "x1") {
-                        setQtmulti("x10");
-                        setQtAcheter(10);
-                    } else if (qtmulti === "x10") {
-                        setQtmulti("x100");
-                        setQtAcheter(100);
-                    } else if (qtmulti === "x100") {
-                        setQtmulti("Max");
-                    } else if (qtmulti === "Max"){
-                        setQtmulti("x1");
-                        setQtAcheter(1);
-                    }
+                    toogleQtmulti()
+                    qtAchetable()
                 }}>{qtmulti}</button>
 
             <div> multiplicateur </div>
@@ -119,7 +152,6 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           product ={world.products[0]}
                                                           qtAcheter={qtAcheter}
                                                           loadworld={world}
-                                                            acheter={acheter}
                                                           onProductionBuy={onProductionBuy}/>
                     </div>
                     <div className="p1"><ProductComponent onProductionDone={onProductionDone}
@@ -127,23 +159,20 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           product ={world.products[1]}
                                                           qtAcheter={qtAcheter}
                                                           loadworld={world}
-                                                            acheter={acheter}
                                                           onProductionBuy={onProductionBuy}/>
                     </div>
                     <div className="p2"><ProductComponent onProductionDone={onProductionDone}
-                                                              qtmulti={qtmulti}
-                                                              product ={world.products[2]}
-                                                              qtAcheter={qtAcheter}
-                                                              loadworld={world}
-                                                              acheter={acheter}
-                                                              onProductionBuy={onProductionBuy}/>
+                                                          qtmulti={qtmulti}
+                                                          product ={world.products[2]}
+                                                          qtAcheter={qtAcheter}
+                                                          loadworld={world}
+                                                          onProductionBuy={onProductionBuy}/>
                     </div>
                     <div className="p2"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product ={world.products[3]}
                                                           qtAcheter={qtAcheter}
                                                           loadworld={world}
-                                                          acheter={acheter}
                                                           onProductionBuy={onProductionBuy}/>
                     </div>
                     <div className="p2"><ProductComponent onProductionDone={onProductionDone}
@@ -151,7 +180,6 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           product ={world.products[4]}
                                                           qtAcheter={qtAcheter}
                                                           loadworld={world}
-                                                          acheter={acheter}
                                                           onProductionBuy={onProductionBuy}/>
                     </div>
                     <div className="p2"><ProductComponent onProductionDone={onProductionDone}
@@ -159,7 +187,6 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           product ={world.products[5]}
                                                           qtAcheter={qtAcheter}
                                                           loadworld={world}
-                                                          acheter={acheter}
                                                           onProductionBuy={onProductionBuy}/>
                     </div>
 

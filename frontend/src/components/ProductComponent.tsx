@@ -9,13 +9,12 @@ type ProductProps = {
     product: Product
     onProductionDone: (product:Product, qt: number)=>void;
     qtmulti: string
-    qtAcheter : number
+    qtAcheter : number[]
     loadworld : World
-    acheter:(product:Product)=>void;
     onProductionBuy: (p: Product, qt: number)=>void;
 }
 
-export default function ProductComponent({ product, onProductionDone, qtmulti, qtAcheter, loadworld, acheter, onProductionBuy} : ProductProps) {
+export default function ProductComponent({ product, onProductionDone, qtmulti, qtAcheter, loadworld, onProductionBuy} : ProductProps) {
 
        const lastupdate= useRef(Date.now());
        const [timeleft, setTimeleft]=useState(product.timeleft);
@@ -66,8 +65,6 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
 
     }
 
-
-
     return (
         <div className="unproduit">
             <div className="productLeft">
@@ -84,8 +81,8 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
                     <div className="gain">revenu : {product.revenu}</div>
                 </div>
                 <div className="partieBasse">
-                    <button className="test2" onClick={() => onProductionBuy(product, qtAcheter)}
-                    >{qtAcheter}</button>
+                    <button className="test2" onClick={() => onProductionBuy(product, qtAcheter[product.id])}
+                    >{qtAcheter[product.id]}</button>
                     <div>cout : {product.cout}</div>
                     <div>{timeleft}ms</div>
                 </div>
