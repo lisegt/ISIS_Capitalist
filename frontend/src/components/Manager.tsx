@@ -1,17 +1,23 @@
 import {Palier, World} from "../world";
-import {Button} from "@mui/material";
+import {Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";
 
 type ManagerProps = {
     loadworld : World
+    onManagerHired : (manager:Palier)=>void;
+    loadsnackBarOpen : boolean;
 }
-export default function Manager({ loadworld}: ManagerProps){
+
+function CloseIcon(props: { fontSize: string }) {
+    return null;
+}
+
+export default function Manager({ loadworld, onManagerHired, loadsnackBarOpen}: ManagerProps){
     const [showManagers, setShowManagers] = useState(true);
     const [world, setWorld] = useState(loadworld);
+    const newWorld = {...world};
+    const [snackBarOpen, setSnackBarOpen] = useState(loadsnackBarOpen);
 
-    function hireManager(manager:Palier){
-
-    }
     return(
         <div> {showManagers &&
             <div className="modal">
@@ -34,8 +40,8 @@ export default function Manager({ loadworld}: ManagerProps){
                                         world.products[manager.idcible - 1].name} </div>
                                     <div className="managercost"> {manager.seuil} </div>
                                 </div>
-                                <div onClick={() => hireManager(manager)}>
-                                    <Button disabled={world.money < manager.seuil}>
+                                <div>
+                                    <Button onClick={() => onManagerHired(manager)} disabled={world.money < manager.seuil || world.products[manager.idcible-1].quantite == 0}>
                                         Hire !</Button>
                                 </div>
                             </div>
@@ -45,6 +51,22 @@ export default function Manager({ loadworld}: ManagerProps){
 
 
                 </div>
+                <Snackbar
+                    open={snackBarOpen}
+                    autoHideDuration={5000}
+                    message="Nouveau manager embauché !"
+                    action={
+                        <IconButton
+                            size="small"
+                            aria-label="close"
+                            color="secondary"
+                            onClick={() => setSnackBarOpen(false)}
+                            style={{backgroundColor: 'red'}}
+                        >
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    }
+                />
             </div>
         }</div>
     )

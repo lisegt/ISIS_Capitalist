@@ -1,8 +1,9 @@
-import {Product, World} from "./world";
+import {Palier, Product, World} from "./world";
 import React, {useEffect, useState} from "react";
 import ProductComponent from "./components/ProductComponent";
 import {transform} from "./utils";
 import Menu from "./components/Menu";
+import { Snackbar } from '@mui/material';
 import Manager from "./components/Manager";
 import {useInterval} from "./components/MyInterval";
 
@@ -22,14 +23,15 @@ export default function Main({ loadworld, username } : MainProps) {
     const[qtmulti, setQtmulti]=useState("x1");
     const[qtAcheter, setQtAcheter]=useState([1,1,1,1,1,1]);
     const newQtAcheter = [...qtAcheter];
-    const [quantite, setQuantite] = useState([world.products[0].quantite,
+    /*const [quantite, setQuantite] = useState([world.products[0].quantite,
         world.products[1].quantite,
         world.products[2].quantite,
         world.products[3].quantite,
         world.products[4].quantite,
         world.products[5].quantite])
     const newQuantite = [...quantite]; // créer une copie du tableau existant
-
+    */
+    const [snackBarOpen, setSnackBarOpen] = useState(false);
 
     useEffect(() => {
         setWorld(JSON.parse(JSON.stringify(loadworld)) as World)
@@ -69,10 +71,16 @@ export default function Main({ loadworld, username } : MainProps) {
         }
     }
     function addToScore(gain:number){
-        setScore(world.score+gain);
-        world.score = world.score + gain;
-        setMoney(world.money+gain);
-        world.money = world.money+gain;
+        const newScore = world.score + gain;
+        const newMoney = world.money + gain;
+        setWorld((prevWorld)=>{
+            return{...prevWorld, money : newMoney, score : newScore}
+        })
+        console.log(newScore)
+        //setScore(world.score+gain);
+        //world.score = world.score + gain;
+        //setMoney(world.money+gain);
+        //world.money = world.money+gain;
 
     }
     //un = u0 × q^n .
@@ -105,8 +113,12 @@ export default function Main({ loadworld, username } : MainProps) {
                 setMoney(money - coutAchat)
 
                 //on incrémente la qté
-                newQuantite[p.id] += qt; // incrémenter la première quantité dans la copie
-                setQuantite(newQuantite)
+                world.products[p.id-1].quantite += qt;
+                const newQuantite = [...world.products];
+                setWorld((prevWorld)=>{
+                    return{...prevWorld, newQuantite};
+                })
+                //console.log(world.products[p.id-1].quantite)
 
                 //màj du cout d'achat produit, coût du produit n+1
                 p.cout = Math.pow(q, qt) * p.cout
@@ -126,6 +138,22 @@ export default function Main({ loadworld, username } : MainProps) {
         }
     }
 
+    function onManagerHired(manager:Palier){
+        //console.log(world.products[manager.idcible-1].managerUnlocked)
+        manager.unlocked = true;
+        const newMoney = world.money - manager.seuil;
+        const newManagers = [...world.managers];
+        world.products[manager.idcible-1].managerUnlocked = true;
+        const newProductUnlocked = [...world.products]
+        setWorld((prevWorld) => {
+            return { ...prevWorld, money: newMoney, managers: newManagers, newProductUnlocked };
+        });
+        // Afficher le message de la SnackBar
+        setSnackBarOpen(true);
+
+        //console.log(manager.idcible)
+        //console.log(world.products[manager.idcible].managerUnlocked)
+    }
 
     return (
         <div className="App">
@@ -143,7 +171,9 @@ export default function Main({ loadworld, username } : MainProps) {
             </header>
             <main className="main">
                 <div className="partieGauche">
-                        <Menu world={world}></Menu>
+                        <Menu loadWorld={world}
+                              onManagerHired={onManagerHired}
+                              loadsnackBarOpen={snackBarOpen}></Menu>
 
                 </div>
                 <div className="partieCentrale">
@@ -198,4 +228,8 @@ export default function Main({ loadworld, username } : MainProps) {
     );
 }
 
-//page 34/50
+//page 37/50 d)
+//mettre à jour l'affichage du cout
+// verifier que le score s'incrémente pas un point en retard
+//corriger pb à l'achat d'un produit + affichage des quantités achetables
+//corriger pb affiche snackBar

@@ -65,6 +65,19 @@
 .p0:hover, .p1:hover, .p2:hover {
   background-color: #e0e0e0;
 }
+
+.modal {
+  position: fixed; /* reste en place */
+  z-index: 2; /* au dessus du reste */
+  width: 800px; /* largeur */
+  height: 800px; /* hauteur */
+  overflow: auto; /* barre de scroll si besoin */
+  background-color: white; /* opaque */
+  border: solid;
+  top:10; /* a 10% du haut */
+  left:20%; /* a 20% de la gauche */
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
