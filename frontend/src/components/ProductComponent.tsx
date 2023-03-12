@@ -12,19 +12,26 @@ type ProductProps = {
     qtAcheter : number[]
     loadworld : World
     onProductionBuy: (p: Product, qt: number)=>void;
+    loadproductPrice : number[];
 }
 
-export default function ProductComponent({ product, onProductionDone, qtmulti, qtAcheter, loadworld, onProductionBuy} : ProductProps) {
+export default function ProductComponent({ product, onProductionDone, qtmulti, qtAcheter, loadworld, onProductionBuy, loadproductPrice} : ProductProps) {
 
        const lastupdate= useRef(Date.now());
        const [timeleft, setTimeleft]=useState(product.timeleft);
        const [world, setWorld]=useState(loadworld);
+    const [productPrice, setProductPrice] = useState(loadproductPrice);
 
 
 
 
 
-    useInterval(() => calcScore(), 100)
+    useInterval(() => {calcScore()}, 100)
+
+    // Mettre à jour l'état productPrice lorsque loadproductPrice change
+    useEffect(() => {
+        setProductPrice(loadproductPrice);
+    }, [loadproductPrice]);
     function calcScore() {
         let temps_ecoule=Date.now()-lastupdate.current;
 
@@ -83,7 +90,7 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
                 <div className="partieBasse">
                     <button className="test2" onClick={() => onProductionBuy(product, qtAcheter[product.id])}
                     >{qtAcheter[product.id]}</button>
-                    <div>cout : {product.cout}</div>
+                    <div>cout : {productPrice[product.id-1]}</div>
                     <div>{timeleft}ms</div>
                 </div>
             </div>
@@ -92,4 +99,3 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
     )
 
 }
-//faire le code html d'affichage d'un produit

@@ -18,24 +18,26 @@ type MainProps = {
 export default function Main({ loadworld, username } : MainProps) {
     const [world, setWorld] = useState(JSON.parse(JSON.stringify(loadworld)) as
         World);
-    const [score, setScore] = useState(world.score);
+    //const [score, setScore] = useState(world.score);
     const [money, setMoney] = useState(world.money);
     const[qtmulti, setQtmulti]=useState("x1");
     const[qtAcheter, setQtAcheter]=useState([1,1,1,1,1,1]);
     const newQtAcheter = [...qtAcheter];
-    /*const [quantite, setQuantite] = useState([world.products[0].quantite,
-        world.products[1].quantite,
-        world.products[2].quantite,
-        world.products[3].quantite,
-        world.products[4].quantite,
-        world.products[5].quantite])
-    const newQuantite = [...quantite]; // créer une copie du tableau existant
-    */
+    const [productPrice, setProductPrice] = useState([world.products[0].cout,
+        world.products[1].cout,
+        world.products[2].cout,
+        world.products[3].cout,
+        world.products[4].cout,
+        world.products[5].cout])
+    const newProductPrice = [...productPrice]; // créer une copie du tableau existant
+
     const [snackBarOpen, setSnackBarOpen] = useState(false);
 
     useEffect(() => {
         setWorld(JSON.parse(JSON.stringify(loadworld)) as World)
     }, [loadworld])
+
+
 
     function qtAchetable(){
         if(qtmulti === "x1") {
@@ -76,11 +78,6 @@ export default function Main({ loadworld, username } : MainProps) {
         setWorld((prevWorld)=>{
             return{...prevWorld, money : newMoney, score : newScore}
         })
-        console.log(newScore)
-        //setScore(world.score+gain);
-        //world.score = world.score + gain;
-        //setMoney(world.money+gain);
-        //world.money = world.money+gain;
 
     }
     //un = u0 × q^n .
@@ -122,9 +119,12 @@ export default function Main({ loadworld, username } : MainProps) {
 
                 //màj du cout d'achat produit, coût du produit n+1
                 p.cout = Math.pow(q, qt) * p.cout
+                updateProductPrice(world.products)
             }
-        calcMaxCanBuy(p)
+        if(qtmulti=="Max"){
+            calcMaxCanBuy(p)
         }
+    }
 
     function toogleQtmulti(){
         if (qtmulti === "x1") {
@@ -136,6 +136,60 @@ export default function Main({ loadworld, username } : MainProps) {
         } else if (qtmulti === "Max"){
             setQtmulti("x1");
         }
+        updateProductPrice(world.products)
+    }
+
+    function updateProductPrice(p:Product[]){
+        if (qtmulti === "x1") {
+            for (let i = 0; i < p.length; i++) {
+                newProductPrice[i] = p[i].cout;
+            }
+        } else if (qtmulti === "x10") {
+            for(let i=0; i<p.length;i++) {
+                let u0 = p[i].cout;
+                let un = u0;
+                let q = p[i].croissance;
+                let n = 0;
+                let coutAchat = u0;
+                while (n < 10) {
+                    n++;
+                    un = u0 * q ** n;
+                    coutAchat = coutAchat + un;
+                }
+                newProductPrice[i] = coutAchat;
+            }
+        } else if (qtmulti === "x100") {
+            for(let i=0; i<p.length;i++) {
+                let u0 = p[i].cout;
+                let un = u0;
+                let q = p[i].croissance;
+                let n = 0;
+                let coutAchat = u0;
+                while (n < 100) {
+                    n++;
+                    un = u0 * q ** n;
+                    coutAchat = coutAchat + un;
+                }
+                newProductPrice[i] = coutAchat;
+            }
+        } else if (qtmulti === "Max"){
+
+            for(let i=0; i<p.length;i++) {
+                let u0 = p[i].cout;
+                let un = u0;
+                let q = p[i].croissance;
+                let n = 0;
+                let coutAchat = u0;
+                while (n < qtAcheter[i]) {
+                    n++;
+                    un = u0 * q ** n;
+                    coutAchat = coutAchat + un;
+                }
+                newProductPrice[i] = coutAchat;
+            }
+        }
+        setProductPrice(newProductPrice)
+        //console.log("here"+productPrice)
     }
 
     function onManagerHired(manager:Palier){
@@ -150,10 +204,18 @@ export default function Main({ loadworld, username } : MainProps) {
         });
         // Afficher le message de la SnackBar
         setSnackBarOpen(true);
-
-        //console.log(manager.idcible)
-        //console.log(world.products[manager.idcible].managerUnlocked)
     }
+
+    function buyManagerPossible(managers : Palier[]){
+        let r =0;
+        for(let i=0; i<managers.length;i++){
+            if(managers[i].seuil<=world.money && world.products[managers[i].idcible-1].quantite >0 && !managers[i].unlocked){
+                r ++;
+            }
+        }
+        return r;
+    }
+
 
     return (
         <div className="App">
@@ -173,7 +235,9 @@ export default function Main({ loadworld, username } : MainProps) {
                 <div className="partieGauche">
                         <Menu loadWorld={world}
                               onManagerHired={onManagerHired}
-                              loadsnackBarOpen={snackBarOpen}></Menu>
+                              loadsnackBarOpen={snackBarOpen}
+                              buyManagerPossible ={buyManagerPossible}/>
+
 
                 </div>
                 <div className="partieCentrale">
@@ -182,42 +246,48 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           product ={world.products[0]}
                                                           qtAcheter={qtAcheter}
                                                           loadworld={world}
-                                                          onProductionBuy={onProductionBuy}/>
+                                                          onProductionBuy={onProductionBuy}
+                                                          loadproductPrice={productPrice}/>
                     </div>
                     <div className="p1"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product ={world.products[1]}
                                                           qtAcheter={qtAcheter}
                                                           loadworld={world}
-                                                          onProductionBuy={onProductionBuy}/>
+                                                          onProductionBuy={onProductionBuy}
+                                                          loadproductPrice={productPrice}/>
                     </div>
                     <div className="p2"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product ={world.products[2]}
                                                           qtAcheter={qtAcheter}
                                                           loadworld={world}
-                                                          onProductionBuy={onProductionBuy}/>
+                                                          onProductionBuy={onProductionBuy}
+                                                          loadproductPrice={productPrice}/>
                     </div>
                     <div className="p2"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product ={world.products[3]}
                                                           qtAcheter={qtAcheter}
                                                           loadworld={world}
-                                                          onProductionBuy={onProductionBuy}/>
+                                                          onProductionBuy={onProductionBuy}
+                                                          loadproductPrice={productPrice}/>
                     </div>
                     <div className="p2"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product ={world.products[4]}
                                                           qtAcheter={qtAcheter}
                                                           loadworld={world}
-                                                          onProductionBuy={onProductionBuy}/>
+                                                          onProductionBuy={onProductionBuy}
+                                                          loadproductPrice={productPrice}/>
                     </div>
                     <div className="p2"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product ={world.products[5]}
                                                           qtAcheter={qtAcheter}
                                                           loadworld={world}
-                                                          onProductionBuy={onProductionBuy}/>
+                                                          onProductionBuy={onProductionBuy}
+                                                          loadproductPrice={productPrice}/>
                     </div>
 
 
@@ -228,8 +298,7 @@ export default function Main({ loadworld, username } : MainProps) {
     );
 }
 
-//page 37/50 d)
-//mettre à jour l'affichage du cout
-// verifier que le score s'incrémente pas un point en retard
-//corriger pb à l'achat d'un produit + affichage des quantités achetables
+//page 38/50 6)
+//mettre à jour l'affichage du cout d'un produit en fonction de qmulti
+// verifier que le score ne s'incrémente pas un point en retard
 //corriger pb affiche snackBar

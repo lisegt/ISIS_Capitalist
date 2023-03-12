@@ -1,22 +1,24 @@
 import {Palier, World} from "../world";
-import {Button, IconButton, Snackbar} from "@mui/material";
+import {Badge, Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";
-
 type ManagerProps = {
     loadworld : World
     onManagerHired : (manager:Palier)=>void;
     loadsnackBarOpen : boolean;
+    //buyManagerPossible : (manager:Palier[])=>number;
+    //loadnbManagersCanBuy: number;
+    updateNbManagerCanBuy : ()=>void;
 }
-
 function CloseIcon(props: { fontSize: string }) {
     return null;
 }
-
-export default function Manager({ loadworld, onManagerHired, loadsnackBarOpen}: ManagerProps){
+export default function Manager({ loadworld, onManagerHired, loadsnackBarOpen,updateNbManagerCanBuy }: ManagerProps){
     const [showManagers, setShowManagers] = useState(true);
     const [world, setWorld] = useState(loadworld);
     const newWorld = {...world};
     const [snackBarOpen, setSnackBarOpen] = useState(loadsnackBarOpen);
+    //const [NbManagersCanBuy, setNbManagersCanBuy] = useState(loadnbManagersCanBuy);
+
 
     return(
         <div> {showManagers &&
@@ -41,8 +43,9 @@ export default function Manager({ loadworld, onManagerHired, loadsnackBarOpen}: 
                                     <div className="managercost"> {manager.seuil} </div>
                                 </div>
                                 <div>
-                                    <Button onClick={() => onManagerHired(manager)} disabled={world.money < manager.seuil || world.products[manager.idcible-1].quantite == 0}>
-                                        Hire !</Button>
+                                    <Button onClick={() => {onManagerHired(manager); updateNbManagerCanBuy()}}
+                                            disabled={world.money < manager.seuil || world.products[manager.idcible-1].quantite == 0}>
+                                        Hire ! </Button>
                                 </div>
                             </div>
 
