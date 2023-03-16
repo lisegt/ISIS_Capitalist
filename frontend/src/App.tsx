@@ -77,26 +77,27 @@ const GET_WORLD=gql`
 }`
 
 function App() {
-    const [username, setUsername] = useState("")
+    const [username, setUsername] = useState(localStorage.getItem('username') || `Player${Math.floor(Math.random()*10000)}`);
     const client = useApolloClient();
-    useEffect(() => {
-        let username = localStorage.getItem("username");
-        if (username == undefined) {
-            localStorage.setItem("username", "Player" + Math.floor(Math.random() * 10000));
-        } else {
-            setUsername(username);
-        }
-    }, []);
-    const onUserNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
 
+    //Gérer l'id du joueur
+    const onUserNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
         localStorage.setItem("username", event.currentTarget.value);
         setUsername(event.currentTarget.value);
         //Quand le nom d'utilisateur change --> forcer le client à refabriquer la requête.
         client.resetStore();
     };
+
+    //Récupération des données du joueur lorsqu'on clique sur "entrer"
+    const pressEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            window.location.reload();
+        }
+    };
     const {loading, error, data, refetch} = useQuery(GET_WORLD, {
         context: {headers: {"x-user": username}}
     });
+
     let corps = undefined
     if (loading) corps = <div> Loading... </div>
     else if (error) corps = <div> Erreur de chargement du monde ! </div>
@@ -104,7 +105,7 @@ function App() {
     return (
         <div className = "nomJoueur">
             <div> Your ID :</div>
-            <input type="text" value={username} onChange={onUserNameChanged}/>
+            <input type="text" value={username} onChange={onUserNameChanged} onKeyPress = {pressEnter}/>
             {corps}
         </div>
     );

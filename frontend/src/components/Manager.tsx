@@ -3,21 +3,18 @@ import {Badge, Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";
 type ManagerProps = {
     loadworld : World
-    onManagerHired : (manager:Palier)=>void;
     loadsnackBarOpen : boolean;
-    //buyManagerPossible : (manager:Palier[])=>number;
-    //loadnbManagersCanBuy: number;
+    onManagerHired : (manager:Palier)=>void;
     updateNbManagerCanBuy : ()=>void;
 }
-function CloseIcon(props: { fontSize: string }) {
-    return null;
-}
+
 export default function Manager({ loadworld, onManagerHired, loadsnackBarOpen,updateNbManagerCanBuy }: ManagerProps){
-    const [showManagers, setShowManagers] = useState(true);
+
     const [world, setWorld] = useState(loadworld);
+    //Copie du monde pour mettre à jour le useState
     const newWorld = {...world};
+    const [showManagers, setShowManagers] = useState(true);
     const [snackBarOpen, setSnackBarOpen] = useState(loadsnackBarOpen);
-    //const [NbManagersCanBuy, setNbManagersCanBuy] = useState(loadnbManagersCanBuy);
 
 
     return(
@@ -54,22 +51,6 @@ export default function Manager({ loadworld, onManagerHired, loadsnackBarOpen,up
 
 
                 </div>
-                <Snackbar
-                    open={snackBarOpen}
-                    autoHideDuration={5000}
-                    message="Nouveau manager embauché !"
-                    action={
-                        <IconButton
-                            size="small"
-                            aria-label="close"
-                            color="secondary"
-                            onClick={() => setSnackBarOpen(false)}
-                            style={{backgroundColor: 'red'}}
-                        >
-                            <CloseIcon fontSize="small" />
-                        </IconButton>
-                    }
-                />
             </div>
         }</div>
     )
