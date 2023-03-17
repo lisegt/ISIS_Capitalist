@@ -299,7 +299,7 @@ export default function Main({ loadworld, username } : MainProps) {
                     qtAchetable()
                 }}>{qtmulti}</button>
 
-                <div> multiplicateur</div>
+
 
             </header>
             <main className="main">
@@ -327,7 +327,7 @@ export default function Main({ loadworld, username } : MainProps) {
                     />
                 </div>
                 <div className="partieCentrale">
-                    <div className="p0"><ProductComponent onProductionDone={onProductionDone}
+                    <div className="produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[0]}
                                                           qtAcheter={qtAcheter}
@@ -336,7 +336,7 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           loadproductPrice={productPrice}
                                                           loadusername={username}/>
                     </div>
-                    <div className="p1"><ProductComponent onProductionDone={onProductionDone}
+                    <div className="produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[1]}
                                                           qtAcheter={qtAcheter}
@@ -345,7 +345,7 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           loadproductPrice={productPrice}
                                                           loadusername={username}/>
                     </div>
-                    <div className="p2"><ProductComponent onProductionDone={onProductionDone}
+                    <div className="produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[2]}
                                                           qtAcheter={qtAcheter}
@@ -354,7 +354,7 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           loadproductPrice={productPrice}
                                                           loadusername={username}/>
                     </div>
-                    <div className="p2"><ProductComponent onProductionDone={onProductionDone}
+                    <div className="produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[3]}
                                                           qtAcheter={qtAcheter}
@@ -363,7 +363,7 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           loadproductPrice={productPrice}
                                                           loadusername={username}/>
                     </div>
-                    <div className="p2"><ProductComponent onProductionDone={onProductionDone}
+                    <div className="produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[4]}
                                                           qtAcheter={qtAcheter}
@@ -372,7 +372,7 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           loadproductPrice={productPrice}
                                                           loadusername={username}/>
                     </div>
-                    <div className="p2"><ProductComponent onProductionDone={onProductionDone}
+                    <div className="produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[5]}
                                                           qtAcheter={qtAcheter}

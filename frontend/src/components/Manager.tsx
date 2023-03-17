@@ -8,6 +8,8 @@ type ManagerProps = {
     updateNbManagerCanBuy : ()=>void;
 }
 
+const url = 'http://localhost:4000/'
+
 export default function Manager({ loadworld, onManagerHired, loadsnackBarOpen,updateNbManagerCanBuy }: ManagerProps){
 
     const [world, setWorld] = useState(loadworld);
@@ -29,7 +31,7 @@ export default function Manager({ loadworld, onManagerHired, loadsnackBarOpen,up
                             <div key={manager.idcible} className="managergrid">
                                 <div>
                                     <div className="logo">
-                                        <img alt="manager logo" className="round" src={
+                                        <img alt="manager logo" className="round" src={url +
                                             manager.logo}/>
                                     </div>
                                 </div>

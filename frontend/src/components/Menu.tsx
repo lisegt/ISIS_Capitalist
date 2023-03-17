@@ -33,11 +33,11 @@ export default function Menu({ loadWorld, onManagerHired, loadsnackBarOpen, buyM
     }
     // @ts-ignore
     return (
-        <div>
-            <h1>Menu</h1>
-            <button className="test" onClick={() => setShowManager(!showManager)}>Manager
+        <div className="coulisses">
+            <h1>Coulisses</h1>
+            <button className="btn_coulisses" onClick={() => setShowManager(!showManager)}>Managers
                 {(
-                    <Badge color="secondary" badgeContent={nbManagersCanBuy} sx={{ ml: 1 }}>
+                    <Badge color="primary" badgeContent={nbManagersCanBuy} sx={{ ml: 1 }}>
                         &nbsp;
                     </Badge>
                 )}</button>

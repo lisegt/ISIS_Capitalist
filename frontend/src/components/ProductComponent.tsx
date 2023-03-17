@@ -110,9 +110,9 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
             </div>
             <div className="productRight">
                 <div className="partieHaute">
-                    <MyProgressbar className="barstyle" vitesse={product.vitesse}
+                    <MyProgressbar className="progressbar" vitesse={product.vitesse}
                                                             initialvalue={product.vitesse - timeleft}
-                                                            run={product.managerUnlocked || timeleft>0} frontcolor="#ff8800" backcolor="#ffffff"
+                                                            run={product.managerUnlocked || timeleft>0}
                                                             auto={product.managerUnlocked}
                                                             orientation={Orientation.horizontal} />
                     <div className="gain">revenu : {product.revenu}</div>
