@@ -291,10 +291,12 @@ export default function Main({ loadworld, username } : MainProps) {
     return (
         <div className="App">
             <header className="header">
-                <div className="nomLogoWorld"><img className='round' src={url + world.logo}/>{world.name} </div>
+                <div className="nomLogoWorld">
+                    <img className='logo' src={url + world.logo}/>{world.name}
+                </div>
                 <span className="money" dangerouslySetInnerHTML={{__html: transform(world.money)}}></span>
 
-                <button className="test2" onClick={() => {
+                <button className="qmulti_mediator" onClick={() => {
                     toogleQtmulti()
                     qtAchetable()
                 }}>{qtmulti}</button>
@@ -327,7 +329,7 @@ export default function Main({ loadworld, username } : MainProps) {
                     />
                 </div>
                 <div className="partieCentrale">
-                    <div className="produit"><ProductComponent onProductionDone={onProductionDone}
+                    <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[0]}
                                                           qtAcheter={qtAcheter}
@@ -336,7 +338,7 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           loadproductPrice={productPrice}
                                                           loadusername={username}/>
                     </div>
-                    <div className="produit"><ProductComponent onProductionDone={onProductionDone}
+                    <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[1]}
                                                           qtAcheter={qtAcheter}
@@ -345,7 +347,7 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           loadproductPrice={productPrice}
                                                           loadusername={username}/>
                     </div>
-                    <div className="produit"><ProductComponent onProductionDone={onProductionDone}
+                    <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[2]}
                                                           qtAcheter={qtAcheter}
@@ -354,7 +356,7 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           loadproductPrice={productPrice}
                                                           loadusername={username}/>
                     </div>
-                    <div className="produit"><ProductComponent onProductionDone={onProductionDone}
+                    <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[3]}
                                                           qtAcheter={qtAcheter}
@@ -363,7 +365,7 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           loadproductPrice={productPrice}
                                                           loadusername={username}/>
                     </div>
-                    <div className="produit"><ProductComponent onProductionDone={onProductionDone}
+                    <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[4]}
                                                           qtAcheter={qtAcheter}
@@ -372,7 +374,7 @@ export default function Main({ loadworld, username } : MainProps) {
                                                           loadproductPrice={productPrice}
                                                           loadusername={username}/>
                     </div>
-                    <div className="produit"><ProductComponent onProductionDone={onProductionDone}
+                    <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[5]}
                                                           qtAcheter={qtAcheter}

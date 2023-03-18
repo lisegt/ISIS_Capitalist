@@ -8,5 +8,5 @@ export function transform(valeur: number): string {
         res = valeur.toPrecision(4);
         res = res.replace(/e\+(.*)/, " 10<sup>$1</sup>");
     }
-    return res;
+    return (res + " €");
 }

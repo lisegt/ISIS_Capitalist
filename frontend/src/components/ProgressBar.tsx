@@ -6,6 +6,7 @@ export enum Orientation {
 }
 
 type BarProps = {
+    children?: React.ReactNode;
     vitesse: number,
     initialvalue?: number
     className?: string
@@ -18,7 +19,7 @@ type BarProps = {
 }
 
 export default function MyProgressbar({
-                                          vitesse, initialvalue = 0, className, run, frontcolor = "#008800", backcolor = "#FFFFFF", auto = false, onCompleted, orientation = Orientation.horizontal
+                                          children, vitesse, initialvalue = 0, className, run, frontcolor = "#008800", backcolor = "#FFFFFF", auto = false, onCompleted, orientation = Orientation.horizontal
                                       }: BarProps) {
 
     const requestIdRef = useRef(0)
@@ -98,6 +99,7 @@ export default function MyProgressbar({
     })
 
     return (
-        <canvas className={className} ref={canvasRef}/>
+        <canvas className={className} ref={canvasRef}>{children}</canvas>
+
     )
 }
