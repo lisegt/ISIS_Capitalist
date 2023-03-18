@@ -28,7 +28,8 @@ export default function Menu({ loadWorld, onManagerHired, loadsnackBarManagers, 
     return (
         <div className="coulisses">
             <h1>Coulisses</h1>
-            <button className="btn_coulisses" onClick={() => setShowManager(!showManager)}>Managers
+            <button className="btn_coulisses" onClick={() => setShowManager(!showManager)}>
+                Managers
                 {(
                     <Badge color="primary" badgeContent={nbManagersCanBuy} sx={{ ml: 1 }}>
                         &nbsp;
@@ -39,7 +40,8 @@ export default function Menu({ loadWorld, onManagerHired, loadsnackBarManagers, 
                                      loadsnackBarManagers={loadsnackBarManagers}
                                      updateNbManagerCanBuy={updateNbManagerCanBuy}
                                      />}
-            <button className="btn_coulisses" onClick={() => setShowUnlocks(!showUnlocks)}>Unlock</button>
+
+            <button className="btn_coulisses" onClick={() => setShowUnlocks(!showUnlocks)}>Unlocks</button>
             {showUnlocks && <Unlocks loadworld={world}
                                      loadsnackBarUnlocks={loadsnackBarUnlocks}
             />}

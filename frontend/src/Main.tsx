@@ -368,7 +368,7 @@ export default function Main({ loadworld, username } : MainProps) {
         <div className="App">
             <header className="header">
                 <div className="nomLogoWorld">
-                    <img className='logo' src={url + world.logo}/>
+                    <img className={'logo'} src={url + world.logo}/>
                     {world.name}
                 </div>
                 <span className="money" dangerouslySetInnerHTML={{__html: transform(world.money)}}></span>
@@ -387,7 +387,7 @@ export default function Main({ loadworld, username } : MainProps) {
 
             </header>
             <main className="main">
-                <div className="partieGauche">
+                <div className="partieGaucheCoulisses">
                     <Menu loadWorld={world}
                           onManagerHired={onManagerHired}
                           loadsnackBarManagers={snackBarManagers}

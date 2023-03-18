@@ -8,9 +8,11 @@
   padding: 10px;
 }
 
-.partieGauche {
-  width: 20%;
+.partieGaucheCoulisses {
+  width: 17%;
   margin-right: 20px;
+  margin-top: 50px;
+  border-radius: 50px;
 }
 
 .partieCentrale {
@@ -19,28 +21,22 @@
   flex-wrap: wrap;
 }
 
-
-.p0:hover, .p1:hover, .p2:hover {
-  background-color: #e0e0e0;
-}
-
 .modal {
   position: fixed; /* reste en place */
-  z-index: 2; /* au dessus du reste */
-  width: 800px; /* largeur */
-  height: 800px; /* hauteur */
+  z-index: 3; /* au dessus du reste */
+  width: 40%; /* largeur */
+  height: 80%; /* hauteur */
   overflow: auto; /* barre de scroll si besoin */
-  background-color: white; /* opaque */
-  border: solid;
+  background-color: rgba(0,0,0); /* opaque */
+  border: solid #095228;
   top:10%; /* a 10% du haut */
-  left:20%; /* a 20% de la gauche */
+  left:30%; /* a 20% de la gauche */
+  border-radius: 50px;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
+  font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -51,7 +47,6 @@ body {
   background-attachment: fixed;
 
 }
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
   monospace;
@@ -61,12 +56,56 @@ code {
   width: 40%;
   height: auto;
 }
-.nomJoueur {
-  background-image: url("../public/scene.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
+
+
+/* joueur */
+.caseJoueur {
+  position: relative;
+}
+
+.case_id{
+  margin-left: 50px;
+  background-color: rgba(0,0,0,0.8);
+  width: 12%;
+  height: 15%;
+  border-radius: 50px;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: #C8AD7F;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.round_avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50% ;
+  border: 2px solid black;
+  background: none;
+}
+
+.id_form{
+  margin-top: 2%;
+  width: 100%;
+  display: flex;
+}
+
+.id_player{
+  width: 50%;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.input_id{
+  width: 50%;
 }
 
 /* header */
@@ -75,6 +114,7 @@ code {
   max-width: 50%;
   margin: 0 auto;
   margin-bottom: 2%;
+  margin-top: 2%;
 
   display: grid;
   grid-template-columns: 25% 50% 25%;
@@ -143,14 +183,16 @@ code {
   display: flex; /* Affiche les boutons en ligne */
   flex-direction: column; /* Aligne les boutons verticalement */
   align-items: center; /* Centre les boutons horizontalement */
-  background: black;
+  background: rgba(0,0,0,0.8);
   padding: 30px;
   color : white;
+  border-radius: 50px;
 }
 
 .btn_coulisses{
+  font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', sans-serif;
   padding: 10px 15px;
-  margin: 5px;
+  margin: 5%;
   background-color: darkred;
   color: #fff;
   border: none;
@@ -162,19 +204,6 @@ code {
 
 .btn_coulisses:hover {
   background-color: brown;
-}
-
-.test2 {
-  background-color: #C8AD7F;
-  color: white;
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 5px;
 }
 
 /* Style des produits */
@@ -223,6 +252,18 @@ code {
 .btn_acheterProduit {
   flex-grow: 1;
   flex-basis: 67%;
+  font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', sans-serif;
+
+  background-color: #C8AD7F;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .time_left {
@@ -273,18 +314,6 @@ code {
   background-color: white;
 }
 
-.modal {
-  position: fixed; /* reste en place */
-  z-index: 2; /* au dessus du reste */
-  width: 800px; /* largeur */
-  height: 800px; /* hauteur */
-  overflow: auto; /* barre de scroll si besoin */
-  background-color: black; /* opaque */
-  border: solid;
-  top:10%; /* a 10% du haut */
-  left:20%; /* a 20% de la gauche */
-}
-
 .quantite_produit {
   color: white;
   background-color: black;
@@ -319,3 +348,98 @@ code {
   z-index: 2;
   color: darkred;
 }
+
+/* managers */
+
+.liste_managers{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  color: #C8AD7F;
+}
+
+.manager {
+  width: 90%;
+  height: 100px;
+  display: flex;
+  margin: 2%;
+  position: relative;
+}
+
+.manager_logo{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-250%, -50%);
+  z-index: 1;
+}
+
+.round_manager {
+  width: 100px;
+  height: 100px;
+  border-radius: 50% ;
+  background-color: rgba(0,0,0);
+}
+
+.infos_manager {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #095228;
+  border-radius: 50%;
+
+
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  width: 70%;
+  height: 80px;
+}
+
+.managername{
+  color: #C8AD7F;
+  font-size: x-large;
+}
+
+.managercible{
+  color: black;
+  font-size: small;
+}
+
+.managercost{
+  color: black;
+  font-weight: bold ;
+}
+
+.div_acheterManager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(210%, -50%);
+  z-index: 1;
+}
+.btn_acheterManager{
+  font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', sans-serif;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #C8AD7F;
+}
+
+.btn_acheterManager:hover{
+  cursor: pointer;
+}
+
+/* unlocks */

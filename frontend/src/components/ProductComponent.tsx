@@ -106,7 +106,7 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
         <div className="produit_item">
             <div className={"partieGaucheProduit"}>
                 <button className="btn_produit" onClick={()=>{startFabrication()}}>
-                    <div className={"cercle_produit"}>
+                    <div>
                         <img className = 'round_produit' src={url + product.logo} />
                     </div>
                 </button>
@@ -131,7 +131,7 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
 
                 </div>
                 <div className="partieBasseProduit">
-                    <button className={"test2 btn_acheterProduit"} onClick={() => onProductionBuy(product, qtAcheter[product.id-1])}>
+                    <button className={"btn_acheterProduit"} onClick={() => onProductionBuy(product, qtAcheter[product.id-1])}>
                         <div>Acheter {qtAcheter[product.id]} pour : {productPrice[product.id-1].toFixed(3)} €</div>
                     </button>
                     <div className={"time_left"}>{timeleft} ms</div>

@@ -28,17 +28,16 @@ export default function Unlocks({ loadworld, loadsnackBarUnlocks }: ManagerProps
                     {world.products.map(prod => {
                         return prod.paliers.filter( unlock => !unlock.unlocked).map(
                         unlock =>
-                            <div key={unlock.name} className="unlockgrid">
+                            <div key={unlock.name} className="unlock">
                                 <div>
-                                    <div className="logo">
-                                        <img alt="unlock logo" className="round" src={url +
-                                            prod.logo}/>
+                                    <div className="unlock_logo">
+                                        <img alt="unlock logo" className="round_logo" src={url + prod.logo}/>
                                     </div>
                                 </div>
-                                <div className="infosunlock">
-                                    <div className="unlockproduct">{prod.name}</div>
+                                <div className="infos_sunlock">
+                                    <div className="unlockproduct">Bonus sur les {prod.name}s</div>
                                     <div className="unlockname"> {unlock.name} </div>
-                                    <div className="unlockcost"> {unlock.seuil} </div>
+                                    <div className="unlockcost"> {unlock.seuil} €</div>
                                     <div className="unlockratio"> {unlock.typeratio} : x{unlock.ratio} </div>
                                 </div>
                             </div>

@@ -23,28 +23,25 @@ export default function Manager({ loadworld, onManagerHired, loadsnackBarManager
         <div> {showManagers &&
             <div className="modal">
                 <div>
-                    <h1 className="title">Managers make you feel better !</h1>
+                    <h1 className="title">Engagez des managers !</h1>
                 </div>
-                <div>
+                <div className={"liste_managers"}>
                     {world.managers.filter( manager => !manager.unlocked).map(
                         manager =>
-                            <div key={manager.idcible} className="managergrid">
-                                <div>
-                                    <div className="logo">
-                                        <img alt="manager logo" className="round" src={url +
-                                            manager.logo}/>
-                                    </div>
+                            <div key={manager.idcible} className="manager">
+                                <div className="manager_logo">
+                                    <img alt="manager logo" className="round_manager" src={url + manager.logo}/>
                                 </div>
-                                <div className="infosmanager">
+                                <div className="infos_manager">
                                     <div className="managername"> {manager.name} </div>
-                                    <div className="managercible"> {
-                                        world.products[manager.idcible - 1].name} Tets</div>
-                                    <div className="managercost"> {manager.seuil} </div>
+                                    <div className="managercible"> Automatise les {
+                                        world.products[manager.idcible - 1].name}s</div>
+                                    <div className="managercost">{manager.seuil} € </div>
                                 </div>
-                                <div>
-                                    <Button onClick={() => {onManagerHired(manager); updateNbManagerCanBuy()}}
+                                <div className={"div_acheterManager"}>
+                                    <button className={"btn_acheterManager"} onClick={() => {onManagerHired(manager); updateNbManagerCanBuy()}}
                                             disabled={world.money < manager.seuil || world.products[manager.idcible-1].quantite == 0}>
-                                        Hire ! </Button>
+                                        ENGAGER ! </button>
                                 </div>
                             </div>
 

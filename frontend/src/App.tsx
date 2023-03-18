@@ -103,11 +103,19 @@ function App() {
     else if (error) corps = <div> Erreur de chargement du monde ! </div>
     else corps = <Main loadworld={data.getWorld} username={username} />
     return (
-        <div className = "nomJoueur">
-            <div> Your ID :</div>
-            <input type="text" value={username} onChange={onUserNameChanged} onKeyPress = {pressEnter}/>
-            {corps}
-        </div>
+            <div className={"caseJoueur"}>
+
+                <div className={"case_id"}>
+                        <img className = 'round_avatar' src={process.env.PUBLIC_URL + "/musician.png"} />
+                    <div className={"id_form"}>
+                        <div className={"id_player"}>Votre ID :</div>
+                        <input className={"input_id"} type="text" value={username} onChange={onUserNameChanged} onKeyPress = {pressEnter}/>
+                    </div>
+
+                </div>
+                <div className={"jeu"}>{corps}</div>
+
+            </div>
     );
 
 }
