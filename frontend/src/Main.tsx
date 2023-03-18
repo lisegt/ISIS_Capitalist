@@ -292,14 +292,20 @@ export default function Main({ loadworld, username } : MainProps) {
         <div className="App">
             <header className="header">
                 <div className="nomLogoWorld">
-                    <img className='logo' src={url + world.logo}/>{world.name}
+                    <img className='logo' src={url + world.logo}/>
+                    {world.name}
                 </div>
                 <span className="money" dangerouslySetInnerHTML={{__html: transform(world.money)}}></span>
 
-                <button className="qmulti_mediator" onClick={() => {
-                    toogleQtmulti()
-                    qtAchetable()
-                }}>{qtmulti}</button>
+                <div className="qmulti_mediator">
+                    <img src={process.env.PUBLIC_URL + "/mediator.png"} onClick={() => {
+                        toogleQtmulti()
+                        qtAchetable()
+                    }}
+                    />
+                    <p>{qtmulti}</p>
+
+                </div>
 
 
 
