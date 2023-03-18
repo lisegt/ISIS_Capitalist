@@ -38,7 +38,7 @@ export default function Manager({ loadworld, onManagerHired, loadsnackBarManager
                                 <div className="infosmanager">
                                     <div className="managername"> {manager.name} </div>
                                     <div className="managercible"> {
-                                        world.products[manager.idcible - 1].name} Tets</div>
+                                        world.products[manager.idcible - 1].name} </div>
                                     <div className="managercost"> {manager.seuil} </div>
                                 </div>
                                 <div>
