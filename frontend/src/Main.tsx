@@ -55,6 +55,7 @@ export default function Main({ loadworld, username } : MainProps) {
 
     const [snackBarManagers, setSnackBarManagers] = useState(false);
     const [snackBarUnlocks, setSnackBarUnlocks] = useState(false);
+    const [snackBarUpgrades, setSnackBarUpgrades] = useState(false);
 
     //Mutations
     const [acheterQtProduit] = useMutation(ACHETER_QT_PRODUIT,
@@ -275,6 +276,11 @@ export default function Main({ loadworld, username } : MainProps) {
 
     }
 
+    //A implementer
+    function onUpgradeBuy(upgrade:Palier){
+
+    }
+
     // Calcul du nombre de manager achetable pour l'afficher dans le badge
     function buyManagerPossible(managers : Palier[]){
         let r =0;
@@ -284,6 +290,12 @@ export default function Main({ loadworld, username } : MainProps) {
             }
         }
         return r;
+    }
+
+    //A implementer
+    function buyUpgradePossible(upgrades : Palier[]){
+        let r=0
+        return r
     }
 
     //Fermer la snackbar
@@ -389,10 +401,13 @@ export default function Main({ loadworld, username } : MainProps) {
             <main className="main">
                 <div className="partieGaucheCoulisses">
                     <Menu loadWorld={world}
-                          onManagerHired={onManagerHired}
                           loadsnackBarManagers={snackBarManagers}
                           loadsnackBarUnlocks={snackBarUnlocks}
-                          buyManagerPossible={buyManagerPossible}/>
+                          loadsnackBarUpgrades={snackBarUpgrades}
+                          onManagerHired={onManagerHired}
+                          onUpgradeBuy={onUpgradeBuy}
+                          buyManagerPossible={buyManagerPossible}
+                          buyUpgradePossible={buyUpgradePossible}/>
 
                     <Snackbar
                         open={snackBarManagers}
@@ -497,3 +512,4 @@ export default function Main({ loadworld, username } : MainProps) {
 // verifier que le score ne s'incrémente pas un point en retard
 // argent en négatif quand j'achete une trop grosse quantité de produit avec max
 // pb pour embaucher manager flute
+//Unlocks faire disparaitre le seuil, un fois qu'il est débloqué

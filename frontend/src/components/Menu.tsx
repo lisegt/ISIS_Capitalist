@@ -3,26 +3,38 @@ import React, {useEffect, useState} from 'react';
 import Manager from './Manager';
 import {Badge} from "@mui/material";
 import Unlocks from "./Unlocks";
+import Upgrades from "./Upgrades";
 
 
 type MenuProps = {
     loadWorld: World
-    onManagerHired:(manager:Palier)=>void;
     loadsnackBarManagers: boolean;
     loadsnackBarUnlocks: boolean;
+    loadsnackBarUpgrades: boolean;
+    onManagerHired:(manager:Palier)=>void;
+    onUpgradeBuy:(upgrade:Palier)=>void;
     buyManagerPossible: (managers : Palier[])=>number;
+    buyUpgradePossible:(upgrades: Palier[])=>number;
 
 }
 
 
-export default function Menu({ loadWorld, onManagerHired, loadsnackBarManagers, loadsnackBarUnlocks, buyManagerPossible} : MenuProps) {
-    const [showManager, setShowManager] = useState(false);
-    const [showUnlocks, setShowUnlocks] = useState(false);
+export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlocks, loadsnackBarUpgrades, onManagerHired, onUpgradeBuy, buyManagerPossible, buyUpgradePossible} : MenuProps) {
+
     const [world, setWorld] = useState(loadWorld);
-    const [nbManagersCanBuy, setNbManagersCanBuy] = useState(buyManagerPossible(world.managers));
+
+    const [showManager, setShowManager] = useState(false)
+    const [showUnlocks, setShowUnlocks] = useState(false)
+    const [showUpgrades, setShowUpgrades] = useState(false)
+
+    const [nbManagersCanBuy, setNbManagersCanBuy] = useState(buyManagerPossible(world.managers))
+    const [nbUpgradesCanBuy, setNbUpgradesCanBuy] = useState(buyUpgradePossible(world.upgrades))
 
     function updateNbManagerCanBuy() {
-        setNbManagersCanBuy(buyManagerPossible(world.managers));
+        setNbManagersCanBuy(buyManagerPossible(world.managers))
+    }
+    function updateNbUpgradeCanBuy(){
+        setNbUpgradesCanBuy(buyUpgradePossible(world.upgrades));
     }
     // @ts-ignore
     return (
@@ -44,6 +56,17 @@ export default function Menu({ loadWorld, onManagerHired, loadsnackBarManagers, 
             <button className="btn_coulisses" onClick={() => setShowUnlocks(!showUnlocks)}>Unlocks</button>
             {showUnlocks && <Unlocks loadworld={world}
                                      loadsnackBarUnlocks={loadsnackBarUnlocks}
+            />}
+            <button className="btn_coulisses" onClick={() => setShowUpgrades(!showUpgrades)}>Cash Updrages
+                {(
+                    <Badge color="primary" badgeContent={nbUpgradesCanBuy} sx={{ ml: 1 }}>
+                        &nbsp;
+                    </Badge>
+                )}</button>
+            {showUpgrades && <Upgrades loadworld={world}
+                                     onUpgradeBuy={onUpgradeBuy}
+                                     loadsnackBarUpgrades={loadsnackBarUpgrades}
+                                     updateNbUpgradeCanBuy={updateNbUpgradeCanBuy}
             />}
 
         </div>
