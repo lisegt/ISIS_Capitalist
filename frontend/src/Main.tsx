@@ -428,7 +428,7 @@ export default function Main({ loadworld, username } : MainProps) {
                     <Snackbar
                         open={snackBarUnlocks}
                         autoHideDuration={5000}
-                        message="Nouveau palier atteind !"
+                        message="Nouveau palier atteint !"
                         action={
                             <IconButton
                                 size="small"

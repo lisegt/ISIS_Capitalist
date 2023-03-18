@@ -24,7 +24,7 @@
 .modal {
   position: fixed; /* reste en place */
   z-index: 3; /* au dessus du reste */
-  width: 40%; /* largeur */
+  width: 50%; /* largeur */
   height: 80%; /* hauteur */
   overflow: auto; /* barre de scroll si besoin */
   background-color: rgba(0,0,0); /* opaque */
@@ -443,3 +443,116 @@ code {
 }
 
 /* unlocks */
+
+.liste_unlocks{
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+}
+
+.unlock {
+  height: 220px;
+  width: 20%;
+  margin: 2%;
+  padding: 10px;
+  background-color: rgba(9, 82, 40, 0.7);
+  border-radius: 50px;
+
+  display: inline-block;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.unlock_logo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30%;
+  margin-top: 10%;
+  margin-bottom: 20%;
+}
+
+.round_unlock {
+  width: 60%;
+}
+
+.unlockname{
+  margin-bottom: 15%;
+  color: #C8AD7F;
+  font-size: large;
+}
+
+.infos_unlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.unlockcost{
+  color: black;
+  font-size: medium;
+}
+
+.unlockratio{
+  color: black;
+  font-weight: bold ;
+}
+
+/* allunlocks */
+
+.liste_allunlocks{
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.allunlock {
+  height: 220px;
+  width: 30%;
+  margin: 2%;
+  padding: 10px;
+  background-color: rgba(9, 82, 40, 0.7);
+  border-radius: 50px;
+
+  display: inline-block;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.allunlock_logo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  margin-top: 10%;
+  margin-bottom: 20%;
+}
+
+.round_allunlock {
+  width: 40%;
+}
+
+.allunlockname{
+  margin-bottom: 20%;
+  color: #C8AD7F;
+  font-size: large;
+}
+
+.infos_allunlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.allunlockcost{
+  color: black;
+  font-size: medium;
+}
+
+.allunlockratio{
+  color: black;
+  font-weight: bold ;
+}
