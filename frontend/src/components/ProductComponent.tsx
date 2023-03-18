@@ -131,7 +131,7 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
 
                 </div>
                 <div className="partieBasseProduit">
-                    <button className={"test2 btn_acheterProduit"} onClick={() => onProductionBuy(product, qtAcheter[product.id])}>
+                    <button className={"test2 btn_acheterProduit"} onClick={() => onProductionBuy(product, qtAcheter[product.id-1])}>
                         <div>Acheter {qtAcheter[product.id]} pour : {productPrice[product.id-1].toFixed(3)} €</div>
                     </button>
                     <div className={"time_left"}>{timeleft} ms</div>

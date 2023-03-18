@@ -3,20 +3,20 @@ import {Badge, Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";
 type ManagerProps = {
     loadworld : World
-    loadsnackBarOpen : boolean;
+    loadsnackBarManagers : boolean;
     onManagerHired : (manager:Palier)=>void;
     updateNbManagerCanBuy : ()=>void;
 }
 
 const url = 'http://localhost:4000/'
 
-export default function Manager({ loadworld, onManagerHired, loadsnackBarOpen,updateNbManagerCanBuy }: ManagerProps){
+export default function Manager({ loadworld, onManagerHired, loadsnackBarManagers,updateNbManagerCanBuy }: ManagerProps){
 
     const [world, setWorld] = useState(loadworld);
     //Copie du monde pour mettre à jour le useState
     const newWorld = {...world};
     const [showManagers, setShowManagers] = useState(true);
-    const [snackBarOpen, setSnackBarOpen] = useState(loadsnackBarOpen);
+    const [snackBarManagers, setSnackBarManagers] = useState(loadsnackBarManagers);
 
 
     return(
@@ -38,7 +38,7 @@ export default function Manager({ loadworld, onManagerHired, loadsnackBarOpen,up
                                 <div className="infosmanager">
                                     <div className="managername"> {manager.name} </div>
                                     <div className="managercible"> {
-                                        world.products[manager.idcible - 1].name} </div>
+                                        world.products[manager.idcible - 1].name} Tets</div>
                                     <div className="managercost"> {manager.seuil} </div>
                                 </div>
                                 <div>
