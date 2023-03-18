@@ -1,17 +1,96 @@
+/* structure page */
+
+
+.main {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 10px;
+}
+
+.partieGauche {
+  width: 20%;
+  margin-right: 20px;
+}
+
+.partieCentrale {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+.p0:hover, .p1:hover, .p2:hover {
+  background-color: #e0e0e0;
+}
+
+.modal {
+  position: fixed; /* reste en place */
+  z-index: 2; /* au dessus du reste */
+  width: 800px; /* largeur */
+  height: 800px; /* hauteur */
+  overflow: auto; /* barre de scroll si besoin */
+  background-color: white; /* opaque */
+  border: solid;
+  top:10%; /* a 10% du haut */
+  left:20%; /* a 20% de la gauche */
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-image: url("../public/scene.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
+}
+
+.logo{
+  width: 40%;
+  height: auto;
+}
+.nomJoueur {
+  background-image: url("../public/scene.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
 /* header */
 
 .header {
+  max-width: 50%;
+  margin: 0 auto;
+  margin-bottom: 2%;
+
   display: grid;
-  grid-template-columns: 25% 25% 30% 20%;
+  grid-template-columns: 25% 50% 25%;
   justify-content: space-between;
   align-items: center;
-  background-color: #f0f0f0;
+  background-color: #cecece;
   padding: 10px;
+  border-radius: 50px;
+
+  position: relative;
 }
 
 .nomLogoWorld {
   display: flex;
   align-items: center;
+  font-size: x-large;
 }
 
 .nomLogoWorld img.round {
@@ -23,6 +102,40 @@
   font-size: 24px;
   font-weight: bold;
 }
+
+.qmulti_mediator {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.5s ease;
+}
+
+.qmulti_mediator img {
+  position: absolute;
+  top: 50%;
+  left: 70%;
+
+  width: 35%;
+  height: auto;
+  transform: translate(-50%, -50%); /* pour centrer le texte verticalement et horizontalement */
+
+}
+
+.qmulti_mediator:hover{
+  transform: scale(1.1);
+}
+
+.qmulti_mediator p {
+  position: absolute;
+  top: 25%;
+  left: 70%;
+  transform: translate(-50%, -50%); /* pour centrer le texte verticalement et horizontalement */
+  color: white;
+  text-shadow: 1px 1px black; /* pour ajouter une ombre au texte */
+}
+
 
 /* coulisses */
 
@@ -51,9 +164,8 @@
   background-color: brown;
 }
 
-
 .test2 {
-  background-color: #4CAF50;
+  background-color: #C8AD7F;
   color: white;
   padding: 10px;
   text-align: center;
@@ -66,58 +178,99 @@
 }
 
 /* Style des produits */
-.main {
-  background-image: url("../public/scene.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
+.case_produit {
+  width: 40%;
+  margin: 10px;
+  margin-bottom: 50px;
+  padding: 20px;
+  background-color: rgba(194, 53, 51, 0.7);
+  border-radius: 50px;
+  transition: transform 0.5s ease;
+}
+
+.case_produit:hover {
+  /* styles appliqués lorsque la div est survolée */
+  transform: scale(1.05);
+}
+
+.produit_item{
   display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  padding: 10px;
 }
 
-.partieGauche {
-  width: 20%;
-  margin-right: 20px;
-}
-
-.partieCentrale {
-  width: 80%;
+.partieGaucheProduit {
+  flex-grow: 1;
+  flex-basis: 33%;
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-.produit {
-  width: 33%;
-  margin-bottom: 20px;
+.partieDroiteProduit{
+  flex-grow: 1;
+  flex-basis: 67%;
+}
+
+.partieHauteProduit{
+  position: relative;
+  margin-bottom: 50px;
+}
+
+.partieBasseProduit{
+  display: flex;
+}
+
+.btn_acheterProduit {
+  flex-grow: 1;
+  flex-basis: 67%;
+}
+
+.time_left {
+  flex-grow: 1;
+  flex-basis: 33%;
+  background-color: #cecece;
   padding: 10px;
-  background-color: #f0f0f0;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
   border-radius: 5px;
+
+  display: flex;
+  align-items: center; /* Alignement vertical */
+  justify-content: center; /* Alignement horizontal */
 }
 
-/*
-.productRight{
-  border: 1px solid red;
-}*/
+.btn_produit {
+  border: none;
+  cursor: pointer;
+  border-radius: 1000px;
+  background: transparent;
 
-.progressbar{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
   width: 100%;
-  height: 15px;
-  background-color: #f5f5f5;
-  border-radius: 25px;
-  overflow: hidden;
+  height: 100%;
+
 }
 
-/*
-.partieBasse{
-  border: 1px solid blue;
+.round_produit {
+  width: 100px;
+  height: 100px;
+  border-radius: 50% ;
+  border: 1px solid black;
+  background: white;
 }
-*/
 
-.p0:hover, .p1:hover, .p2:hover {
-  background-color: #e0e0e0;
+.round_produit:hover {
+  background-color: darkred;
+}
+
+.round_produit:active {
+  background-color: white;
 }
 
 .modal {
@@ -132,16 +285,37 @@
   left:20%; /* a 20% de la gauche */
 }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.quantite_produit {
+  color: white;
+  background-color: black;
+  border-radius: 20px;
+  width: 100px;
+  height: 20px;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 200%);
+  z-index: 2;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.progressbar{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 40px;
+  background-color: rgba(0,0,0,0.5);
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+.revenu_produit{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  z-index: 2;
+  color: darkred;
 }

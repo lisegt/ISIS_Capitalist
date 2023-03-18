@@ -103,25 +103,38 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
     }
 
     return (
-        <div className="unproduit">
-            <div className="productLeft">
-                <button onClick={()=>{startFabrication()}}><img className = 'round' src={url + product.logo} /></button>
-                <div>{product.quantite}</div>
+        <div className="produit_item">
+            <div className={"partieGaucheProduit"}>
+                <button className="btn_produit" onClick={()=>{startFabrication()}}>
+                    <div className={"cercle_produit"}>
+                        <img className = 'round_produit' src={url + product.logo} />
+                    </div>
+                </button>
+                <div className={"quantite_produit"}>{product.quantite}</div>
+
             </div>
-            <div className="productRight">
-                <div className="partieHaute">
-                    <MyProgressbar className="progressbar" vitesse={product.vitesse}
-                                                            initialvalue={product.vitesse - timeleft}
-                                                            run={product.managerUnlocked || timeleft>0}
-                                                            auto={product.managerUnlocked}
-                                                            orientation={Orientation.horizontal} />
-                    <div className="gain">revenu : {product.revenu}</div>
+
+            <div className="partieDroiteProduit">
+                <div className="partieHauteProduit">
+                    <MyProgressbar
+                        className="progressbar"
+                        vitesse={product.vitesse}
+                        initialvalue={product.vitesse - timeleft}
+                        run={product.managerUnlocked || timeleft>0}
+                        frontcolor="#000000"
+                        backcolor="#ffffff"
+                        auto={product.managerUnlocked}
+                        orientation={Orientation.horizontal}>
+
+                    </MyProgressbar>
+                    <div className="revenu_produit">Revenu : {product.revenu} €</div>
+
                 </div>
-                <div className="partieBasse">
-                    <button className="test2" onClick={() => onProductionBuy(product, qtAcheter[product.id-1])}
-                    >{qtAcheter[product.id-1]}</button>
-                    <div>cout : {productPrice[product.id-1]}</div>
-                    <div>{timeleft}ms</div>
+                <div className="partieBasseProduit">
+                    <button className={"test2 btn_acheterProduit"} onClick={() => onProductionBuy(product, qtAcheter[product.id-1])}>
+                        <div>Acheter {qtAcheter[product.id]} pour : {productPrice[product.id-1].toFixed(3)} €</div>
+                    </button>
+                    <div className={"time_left"}>{timeleft} ms</div>
                 </div>
             </div>
         </div>
