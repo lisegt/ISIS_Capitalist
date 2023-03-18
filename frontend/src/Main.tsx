@@ -53,7 +53,8 @@ export default function Main({ loadworld, username } : MainProps) {
         world.products[5].cout])
     const newProductPrice = [...productPrice];
 
-    const [snackBarOpen, setSnackBarOpen] = useState(false);
+    const [snackBarManagers, setSnackBarManagers] = useState(false);
+    const [snackBarUnlocks, setSnackBarUnlocks] = useState(false);
 
     //Mutations
     const [acheterQtProduit] = useMutation(ACHETER_QT_PRODUIT,
@@ -179,6 +180,9 @@ export default function Main({ loadworld, username } : MainProps) {
         if(qtmulti=="Max"){
             calcMaxCanBuy(p)
         }
+        //Vérification qu'il n'y a pas un seuil à débloquer
+        seuilUnlocked(p)
+
         //Mutation
         acheterQtProduit({ variables: { id: p.id, quantite : qt } });
     }
@@ -264,7 +268,7 @@ export default function Main({ loadworld, username } : MainProps) {
             return { ...prevWorld, money: newMoney, managers: newManagers, newProductUnlocked };
         });
         // Afficher le message de la SnackBar
-        setSnackBarOpen(true);
+        setSnackBarManagers(true);
 
         //Mutation
         engagerManager({ variables: { name: manager.name } });
@@ -287,6 +291,78 @@ export default function Main({ loadworld, username } : MainProps) {
         return null;
     }
 
+    //Déblocage d'un seuil en fonction de la quantité de produit
+    function seuilUnlocked(p : Product){
+        //unlocks individuels
+        p.paliers.forEach(unlock => {
+            //Si le seuil n'est pas débloqué et que la quantité du produit vient de dépasser le seuil
+            if(unlock.unlocked===false && unlock.seuil <= p.quantite){
+
+                //Maj des données en fonction du type de l'amélioration
+                if (unlock.typeratio === "vitesse") {
+                    p.vitesse = Math.round(p.vitesse / unlock.ratio)
+                } else if (unlock.typeratio === "gain") {
+                    p.revenu = p.revenu * unlock.ratio
+                } else if (unlock.typeratio === "ange") {
+                    world.angelbonus += unlock.ratio
+                }
+
+                //Déblocage de l'unlock
+                unlock.unlocked = true
+                //maj du useState
+                const newUnlock = [...world.products]
+                setWorld((prevWorld)=>{
+                    return{...prevWorld, newUnlock}
+                })
+                //Affichage de la snackBar
+                setSnackBarUnlocks(true)
+            }
+        })
+
+        //allunlocks
+        //On parcourt tous les allunlocks
+        world.allunlocks.forEach(all => {
+            //on s'occupe que de ceux qui ne sont pas débloqués
+            if(!all.unlocked) {
+                //on initialise un compteur
+                let n = 0
+                //on compte combien de produit ont une quantité supérieur au seuil
+                world.products.forEach(prod => {
+                    if (all.seuil <= prod.quantite){
+                        n++
+                    }
+                        })
+                //Si on a le meme nombre de produit avec une quantité sup au seuil que le nombre de produit existant
+                if(n===world.products.length){
+                    //Maj des données des produits
+                    if(all.typeratio === "ange"){
+                        world.angelbonus = world.angelbonus + all.ratio
+                    }else{
+                        //on parcourt tous les produits pour mettre à jours chaque produit
+                        world.products.forEach(prod => {
+                            if(all.typeratio === "vitesse"){
+                                prod.vitesse = Math.round(prod.vitesse/all.ratio)
+                            }
+                            if(all.typeratio === "gain"){
+                                prod.revenu = Math.round(prod.revenu * all.ratio)
+                            }
+                        })
+                    }
+
+                    //Déblocage de l'unlock
+                    all.unlocked = true
+                    //maj du useState
+                    const newUnlock = [...world.allunlocks]
+                    setWorld((prevWorld)=>{
+                        return{...prevWorld, newUnlock}
+                    })
+                    //Affichage de la snackBar
+                    setSnackBarUnlocks(true)
+                }
+            }
+        })
+    }
+
 
     return (
         <div className="App">
@@ -306,11 +382,12 @@ export default function Main({ loadworld, username } : MainProps) {
                 <div className="partieGauche">
                     <Menu loadWorld={world}
                           onManagerHired={onManagerHired}
-                          loadsnackBarOpen={snackBarOpen}
+                          loadsnackBarManagers={snackBarManagers}
+                          loadsnackBarUnlocks={snackBarUnlocks}
                           buyManagerPossible={buyManagerPossible}/>
 
                     <Snackbar
-                        open={snackBarOpen}
+                        open={snackBarManagers}
                         autoHideDuration={5000}
                         message="Nouveau manager embauché !"
                         action={
@@ -318,7 +395,23 @@ export default function Main({ loadworld, username } : MainProps) {
                                 size="small"
                                 aria-label="close"
                                 color="secondary"
-                                onClick={() => setSnackBarOpen(false)}
+                                onClick={() => setSnackBarManagers(false)}
+                                style={{backgroundColor: 'red'}}
+                            >
+                                <CloseIcon fontSize="small"/>
+                            </IconButton>
+                        }
+                    />
+                    <Snackbar
+                        open={snackBarUnlocks}
+                        autoHideDuration={5000}
+                        message="Nouveau palier atteind !"
+                        action={
+                            <IconButton
+                                size="small"
+                                aria-label="close"
+                                color="secondary"
+                                onClick={() => setSnackBarUnlocks(false)}
                                 style={{backgroundColor: 'red'}}
                             >
                                 <CloseIcon fontSize="small"/>

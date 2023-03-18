@@ -2,32 +2,25 @@ import {Palier, World} from "../world";
 import React, {useEffect, useState} from 'react';
 import Manager from './Manager';
 import {Badge} from "@mui/material";
+import Unlocks from "./Unlocks";
 
 
 type MenuProps = {
     loadWorld: World
     onManagerHired:(manager:Palier)=>void;
-    loadsnackBarOpen: boolean;
+    loadsnackBarManagers: boolean;
+    loadsnackBarUnlocks: boolean;
     buyManagerPossible: (managers : Palier[])=>number;
 
 }
 
 
-export default function Menu({ loadWorld, onManagerHired, loadsnackBarOpen, buyManagerPossible} : MenuProps) {
+export default function Menu({ loadWorld, onManagerHired, loadsnackBarManagers, loadsnackBarUnlocks, buyManagerPossible} : MenuProps) {
     const [showManager, setShowManager] = useState(false);
+    const [showUnlocks, setShowUnlocks] = useState(false);
     const [world, setWorld] = useState(loadWorld);
     const [nbManagersCanBuy, setNbManagersCanBuy] = useState(buyManagerPossible(world.managers));
 
-/*
-    // appelé à chaque fois que world est mis à jour
-    useEffect(() => {
-        SetNbManagersCanBuy(buyManagerPossible(world.managers));
-    }, [nbManagersCanBuy]);
-
-    useEffect(()=>{
-        console.log(nbManagersCanBuy);
-    }, [world]);
-*/
     function updateNbManagerCanBuy() {
         setNbManagersCanBuy(buyManagerPossible(world.managers));
     }
@@ -43,9 +36,13 @@ export default function Menu({ loadWorld, onManagerHired, loadsnackBarOpen, buyM
                 )}</button>
             {showManager && <Manager loadworld={world}
                                      onManagerHired={onManagerHired}
-                                     loadsnackBarOpen={loadsnackBarOpen}
+                                     loadsnackBarManagers={loadsnackBarManagers}
                                      updateNbManagerCanBuy={updateNbManagerCanBuy}
                                      />}
+            <button className="btn_coulisses" onClick={() => setShowUnlocks(!showUnlocks)}>Unlock</button>
+            {showUnlocks && <Unlocks loadworld={world}
+                                     loadsnackBarUnlocks={loadsnackBarUnlocks}
+            />}
 
         </div>
     );

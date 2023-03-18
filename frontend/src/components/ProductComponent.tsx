@@ -118,8 +118,8 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
                     <div className="gain">revenu : {product.revenu}</div>
                 </div>
                 <div className="partieBasse">
-                    <button className="test2" onClick={() => onProductionBuy(product, qtAcheter[product.id])}
-                    >{qtAcheter[product.id]}</button>
+                    <button className="test2" onClick={() => onProductionBuy(product, qtAcheter[product.id-1])}
+                    >{qtAcheter[product.id-1]}</button>
                     <div>cout : {productPrice[product.id-1]}</div>
                     <div>{timeleft}ms</div>
                 </div>
