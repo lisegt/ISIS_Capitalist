@@ -19,7 +19,6 @@ type ProductProps = {
     loadusername : string ;
     product: Product
     qtmulti: string
-    loadcoutLot : number[]
     onProductionDone: (product:Product, qt: number)=>void;
     onProductionBuy: (p: Product, qt: number, prix : number)=>void;
 
@@ -27,12 +26,11 @@ type ProductProps = {
 
 }
 
-export default function ProductComponent({ product, onProductionDone, qtmulti, loadworld, onProductionBuy, loadcoutLot, loadusername} : ProductProps) {
+export default function ProductComponent({ product, onProductionDone, qtmulti, loadworld, onProductionBuy, loadusername} : ProductProps) {
     const [world, setWorld]=useState(loadworld);
     const username = loadusername;
     const lastupdate= useRef(Date.now());
     const [timeleft, setTimeleft]=useState(product.timeleft);
-    const [coutLot, setCoutLot]=useState(loadcoutLot)
 
     //qtAcheter a une copie car c'est un tableau, on utilise la copie pour mettre le useState à jour en modifiant que la valeur que l'on souhaite modifier
     //const[qtAcheter, setQtAcheter]=useState(0)

@@ -1,3 +1,6 @@
+import './css/App.css';
+import './css/Produit.css';
+
 import {Palier, Product, World} from "./world";
 import React, {useEffect, useState} from "react";
 import ProductComponent from "./components/ProductComponent";
@@ -45,8 +48,72 @@ const ANGEL_UPGRADE = gql`
 
 const RESET_WORLD = gql`
   mutation resetWorld {
-    resetWorld {
-      name
+    resetWorld{
+        activeangels
+        allunlocks {
+        idcible
+        logo
+        name
+        ratio
+        seuil
+        typeratio
+        unlocked
+        }
+        angelbonus
+        angelupgrades {
+        idcible
+        logo
+        name
+        ratio
+        seuil
+        typeratio
+        unlocked
+        }
+        lastupdate
+        logo
+        managers {
+        idcible
+        logo
+        name
+        ratio
+        seuil
+        typeratio
+        unlocked
+        }
+        money
+        name
+        products {
+        cout
+        id
+        croissance
+        logo
+        managerUnlocked
+        name
+        paliers {
+            idcible
+            logo
+            name
+            ratio
+            seuil
+            typeratio
+            unlocked
+        }
+        quantite
+        revenu
+        timeleft
+        vitesse
+        }
+        score
+        totalangels
+        upgrades {
+        idcible
+        logo
+        name
+        ratio
+        seuil
+        typeratio
+        unlocked
+        }
     }
   }
 `;
@@ -67,9 +134,6 @@ export default function Main({ loadworld, username } : MainProps) {
     const [bonusAnges, setBonusAnges] = useState(world.angelbonus);
     const [resetAnge, setResetAnge] = useState(0);
 
-    //Cout du lot
-    const [coutLot, setCoutLot] = useState(world.products.map((prod => prod.cout)))
-
     //productPrice a une copie car c'est un tableau, on utilise la copie pour mettre le useState à jour en modifiant que la valeur que l'on souhaite modifier
     const [productPrice, setProductPrice] = useState([world.products[0].cout,
         world.products[1].cout,
@@ -84,29 +148,32 @@ export default function Main({ loadworld, username } : MainProps) {
     const [snackBarUnlocks, setSnackBarUnlocks] = useState(false);
     const [snackBarUpgrades, setSnackBarUpgrades] = useState(false);
     const [snackBarAngelUpgrades, setSnackBarAngelUpgrades] = useState(false);
+    const [snackBarResetWorld, setSnackBarResetWorld] = useState(false);
 
-    //Mutations
+    //Téléchargement du world quand il est modifié
+    useEffect(() => {
+        setWorld(JSON.parse(JSON.stringify(loadworld)) as World)
+    }, [loadworld])
+
+    // ==================== Début Mutations =============================
     const [acheterQtProduit] = useMutation(ACHETER_QT_PRODUIT,
-        {
-            context: {headers: {"x-user": username}},
+        { context: { headers: { "x-user": username }},
             onError: (error): void => {
                 // actions en cas d'erreur
             }
         }
     )
     const [engagerManager] = useMutation(ENGAGER_MANAGER,
-        {
-            context: {headers: {"x-user": username}},
+        { context: { headers: { "x-user": username }},
             onError: (error): void => {
                 // actions en cas d'erreur
             }
         }
     )
 
-
     const [acheterCashUpgrade] = useMutation(CASH_UPGRADE,
         {
-            context: {headers: {"x-user": username}},
+            context: { headers: { "x-user": username } },
             onError: (error): void => {
 
             }
@@ -115,16 +182,16 @@ export default function Main({ loadworld, username } : MainProps) {
 
     const [acheterAngelUpgrade] = useMutation(ANGEL_UPGRADE,
         {
-            context: {headers: {"x-user": username}},
+            context: { headers: { "x-user": username } },
             onError: (error): void => {
 
             }
         }
     )
 
-    const [newWorld] = useMutation(RESET_WORLD,
+    const [resetWorld] = useMutation(RESET_WORLD,
         {
-            context: {headers: {"x-user": username}},
+            context: { headers: { "x-user": username } },
             onError: (error): void => {
 
             }
@@ -132,10 +199,6 @@ export default function Main({ loadworld, username } : MainProps) {
     )
 
 
-    //Téléchargement du world quand il est modifié
-    useEffect(() => {
-        setWorld(JSON.parse(JSON.stringify(loadworld)) as World)
-    }, [loadworld])
 
     //Combien de quantité je peux acheter avec tout l'argent que j'ai ?
     function setMultiplier() {
@@ -183,77 +246,6 @@ export default function Main({ loadworld, username } : MainProps) {
 
     }
 
-    //Calcul de la quantité de produit maximale achetable avec la money qu'on a.
-    // Idée de la suite géométrique un = u0 × q^n .
-
-    /*
-    function calcMaxCanBuy(p: Product){
-        //Initialisation
-        let u0 = p.cout;
-        let un = u0;
-        //Raison
-        let q = p.croissance;
-        //Compteur
-        let n = 0;
-        let coutAchatMoins1 = u0;
-        let coutAchat = u0;
-        //tant qu'on a plus d'argent que le coutAchat
-        while (world.money>=coutAchat){
-            n ++;
-            un = u0 * q**n;
-            coutAchatMoins1=coutAchat
-            coutAchat = coutAchat + un;
-        }
-
-        //Maj du cout du lot
-        setCoutLot((prevCoutLot)=>{
-            const newCoutLot = [...prevCoutLot]
-            newCoutLot[p.id-1] = coutAchatMoins1
-            return newCoutLot
-        })
-
-        return n
-    }
-
-     */
-
-
-    /*
-        function calcCoutLot(stop : number){
-            console.log("stop : "+stop+"; qtmulti :"+qtmulti)
-            world.products.forEach(p => {
-
-                //Initialisation
-                let u0 = p.cout;
-                let un = u0;
-                //Raison
-                let q = p.croissance;
-                //Compteur
-                let n = 0;
-                let coutAchatMoins1 = u0;
-                let coutAchat = u0;
-
-                //tant qu'on a pas atteint la valeur de qtmulti on ne stop pas
-                while (n<stop){
-                    n ++;
-                    un = u0 * q**n;
-                    coutAchatMoins1=coutAchat
-                    coutAchat = coutAchat + un;
-                }
-                if(qtmulti != "Max") {
-                    //Maj du cout du lot
-                    setCoutLot((prevCoutLot) => {
-                        const newCoutLot = [...prevCoutLot]
-                        newCoutLot[p.id - 1] = coutAchatMoins1
-                        return newCoutLot
-                    })
-                }
-
-
-            })
-        }
-
-     */
 
 
     //on déduit le cout de l'achat à l'argent du monde
@@ -291,98 +283,6 @@ export default function Main({ loadworld, username } : MainProps) {
         //Mutation
         acheterQtProduit({ variables: { id: p.id, quantite : quant } });
     }
-
-
-    /*//on déduit le cout de l'achat à l'argent du monde
-function onProductionBuy(p: Product, qt: number){
-
-let q = p.croissance
-let n = 0
-//Calcul du cout de l'achat en fonction de la quantité et du produit
-//let coutAchat = p.cout * ((1 - Math.pow(q, qt)) / (1 - q))
-let coutUltimProd = p.cout
-let coutAchat = p.cout
-while (n<qt){
-    n++
-    coutUltimProd = coutUltimProd * q
-    coutAchat = coutAchat + coutUltimProd
-}
-    //Si on a assez d'argent
-    if (world.money >= coutAchat) {
-        //maj money
-        world.money = world.money - coutAchat;
-        setMoney(money - coutAchat)
-
-        //on incrémente la qté
-        world.products[p.id-1].quantite += qt;
-        const newQuantite = [...world.products];
-        setWorld((prevWorld)=>{
-            return{...prevWorld, newQuantite};
-        })
-
-    }
-
-     */
-
-
-
-    //Changer la valeur de qtmulti en fonction de sa valeur précédente
-
-    /*
-    //mettre à jour le prix du lot en fonction de la taille du lot
-    function updateProductPrice(p:Product[]){
-        if (qtmulti === "x1") {
-            for (let i = 0; i < p.length; i++) {
-                newProductPrice[i] = p[i].cout;
-            }
-        } else if (qtmulti === "x10") {
-            for(let i=0; i<p.length;i++) {
-                let u0 = p[i].cout;
-                let un = u0;
-                let q = p[i].croissance;
-                let n = 0;
-                let coutAchat = u0;
-                while (n < 10) {
-                    n++;
-                    un = u0 * q ** n;
-                    coutAchat = coutAchat + un;
-                }
-                newProductPrice[i] = coutAchat;
-            }
-        } else if (qtmulti === "x100") {
-            for(let i=0; i<p.length;i++) {
-                let u0 = p[i].cout;
-                let un = u0;
-                let q = p[i].croissance;
-                let n = 0;
-                let coutAchat = u0;
-                while (n < 100) {
-                    n++;
-                    un = u0 * q ** n;
-                    coutAchat = coutAchat + un;
-                }
-                newProductPrice[i] = coutAchat;
-            }
-        } else if (qtmulti === "Max"){
-
-            for(let i=0; i<p.length;i++) {
-                let u0 = p[i].cout;
-                let un = u0;
-                let q = p[i].croissance;
-                let n = 0;
-                let coutAchat = u0;
-                while (n < qtAcheter[i]) {
-                    n++;
-                    un = u0 * q ** n;
-                    coutAchat = coutAchat + un;
-                }
-                newProductPrice[i] = coutAchat;
-            }
-        }
-        setProductPrice(newProductPrice)
-    }
-    */
-
 
     // Embaucher un manager
     function onManagerHired(manager:Palier){
@@ -468,11 +368,28 @@ while (n<qt){
         angelUpgrade.unlocked = true
 
         //on déduit le coût de l'angel upgrade au nombre d'anges actifs
-        world.activeangels -= angelUpgrade.seuil
+        let newNbAnges = world.activeangels - angelUpgrade.seuil
+        const newAngelUpgrades = [...world.angelupgrades]
 
         //appliquer le boost
         appliquerBoost(angelUpgrade);
 
+        setWorld((prevWorld) => {
+            return { ...prevWorld, activeangels: newNbAnges, upgrades: newAngelUpgrades };
+        });
+
+        //mutation
+        acheterAngelUpgrade({ variables: { name: angelupgrade.name } })
+
+    }
+
+    async function onResetWorld() {
+
+        //appel de la mutation
+        const {data} = await resetWorld({variables: {name: username}})
+        loadworld = data.resetWorld
+
+        setWorld(JSON.parse(JSON.stringify(data.resetWorld)) as World);
     }
 
     // Calcul du nombre de manager achetable pour l'afficher dans le badge
@@ -513,6 +430,14 @@ while (n<qt){
         return r
     }
 
+    function buyInvestorsPossible(){
+        let r=0
+        if ((150 * Math.sqrt(world.score/Math.pow(10, 15))-world.totalangels) > 0) {
+            r = Math.floor(150 * Math.sqrt(world.score/Math.pow(10, 15))-world.totalangels)
+        }
+        return r
+    }
+
     //Fermer la snackbar
     function CloseIcon(props: { fontSize: string }) {
         return null;
@@ -537,9 +462,9 @@ while (n<qt){
                 //Déblocage de l'unlock
                 unlock.unlocked = true
                 //maj du useState
-                const newUnlock = [...world.products]
+                const newUnlocks = [...world.products]
                 setWorld((prevWorld)=>{
-                    return{...prevWorld, newUnlock}
+                    return{...prevWorld, products:newUnlocks}
                 })
                 //Affichage de la snackBar
                 setSnackBarUnlocks(true)
@@ -581,7 +506,7 @@ while (n<qt){
                     //maj du useState
                     const newUnlock = [...world.allunlocks]
                     setWorld((prevWorld)=>{
-                        return{...prevWorld, newUnlock}
+                        return{...prevWorld, allunlocks:newUnlock}
                     })
                     //Affichage de la snackBar
                     setSnackBarUnlocks(true)
@@ -589,8 +514,6 @@ while (n<qt){
             }
         })
     }
-
-
 
 
     return (
@@ -621,12 +544,15 @@ while (n<qt){
                           loadsnackBarUnlocks={snackBarUnlocks}
                           loadsnackBarUpgrades={snackBarUpgrades}
                           loadsnackBarAngelUpgrades={snackBarAngelUpgrades}
+                          loadsnackBarResetWorld={snackBarResetWorld}
                           onManagerHired={onManagerHired}
                           onUpgradeBuy={onUpgradeBuy}
                           onAngelUpgradeBuy={onAngelUpgradeBuy}
+                          onResetWorld = {onResetWorld}
                           buyManagerPossible={buyManagerPossible}
                           buyUpgradePossible={buyUpgradePossible}
                           buyAngelUpgradePossible={buyAngelUpgradePossible}
+                          buyInvestorsPossible = {buyInvestorsPossible}
                     />
 
                     <Snackbar
@@ -693,12 +619,28 @@ while (n<qt){
                             </IconButton>
                         }
                     />
+
+                    <Snackbar
+                        open={snackBarResetWorld}
+                        autoHideDuration={5000}
+                        message="Reset du monde !"
+                        action={
+                            <IconButton
+                                size="small"
+                                aria-label="close"
+                                color="secondary"
+                                onClick={() => setSnackBarResetWorld(false)}
+                                style={{backgroundColor: 'red'}}
+                            >
+                                <CloseIcon fontSize="small"/>
+                            </IconButton>
+                        }
+                    />
                 </div>
                 <div className="partieCentrale">
                     <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[0]}
-                                                            loadcoutLot={coutLot}
                                                           loadworld={world}
                                                           onProductionBuy={onProductionBuy}
                                                           loadusername={username}
@@ -707,7 +649,6 @@ while (n<qt){
                     <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[1]}
-                                                                    loadcoutLot={coutLot}
                                                           loadworld={world}
                                                           onProductionBuy={onProductionBuy}
                                                           loadusername={username}
@@ -716,7 +657,6 @@ while (n<qt){
                     <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[2]}
-                                                                    loadcoutLot={coutLot}
                                                           loadworld={world}
                                                           onProductionBuy={onProductionBuy}
                                                           loadusername={username}
@@ -725,7 +665,6 @@ while (n<qt){
                     <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[3]}
-                                                                    loadcoutLot={coutLot}
                                                           loadworld={world}
                                                           onProductionBuy={onProductionBuy}
                                                           loadusername={username}
@@ -734,7 +673,6 @@ while (n<qt){
                     <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[4]}
-                                                                    loadcoutLot={coutLot}
                                                           loadworld={world}
                                                           onProductionBuy={onProductionBuy}
                                                           loadusername={username}
@@ -743,7 +681,6 @@ while (n<qt){
                     <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[5]}
-                                                                    loadcoutLot={coutLot}
                                                           loadworld={world}
                                                           onProductionBuy={onProductionBuy}
                                                           loadusername={username}
@@ -757,8 +694,3 @@ while (n<qt){
         </div>
     );
 }
-
-//page 43/50
-// mettre à jour l'affichage du cout d'un produit en fonction de qmulti --> manque plus que le max
-// bloquer bouton achat quand pas assez de sous
-// argent en négatif quand j'achete une trop grosse quantité de produit avec max -->

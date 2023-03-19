@@ -1,0 +1,150 @@
+/* unlocks */
+
+.liste_unlocks{
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+}
+
+.unlock_debloque {
+    height: 220px;
+    width: 20%;
+    margin: 2%;
+    padding: 10px;
+    background-color: rgba(9, 82, 40, 0.7);
+    border-radius: 50px;
+
+    display: inline-block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.unlock_bloque {
+    height: 220px;
+    width: 20%;
+    margin: 2%;
+    padding: 10px;
+    background-color: darkred;
+    border-radius: 50px;
+
+    display: inline-block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.texte_bloque{
+    margin-bottom: 0px;
+}
+
+.unlock_logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35%;
+    margin-top: 10%;
+    margin-bottom: 10px;
+}
+
+.round_unlock {
+    width: 45%;
+}
+
+.unlockname{
+    margin-bottom: 15%;
+    color: #C8AD7F;
+    font-size: large;
+}
+
+.infos_unlock {
+    display: flex;
+    flex-direction: column;
+}
+
+.unlockcost{
+    color: black;
+    font-size: medium;
+    margin-bottom: 0px;
+}
+
+.unlockratio{
+    color: black;
+    font-weight: bold ;
+    margin-bottom: 0px;
+}
+
+/* allunlocks */
+
+.liste_allunlocks{
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.allunlock_debloque {
+    height: 220px;
+    width: 30%;
+    margin: 2%;
+    padding: 10px;
+    background-color: rgba(9, 82, 40, 0.7);
+    border-radius: 50px;
+
+    display: inline-block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.allunlock_bloque {
+    height: 220px;
+    width: 30%;
+    margin: 2%;
+    padding: 10px;
+    background-color: darkred;
+    border-radius: 50px;
+
+    display: inline-block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.allunlock_logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15%;
+    margin-top: 10%;
+    margin-bottom: 20%;
+}
+
+.round_allunlock {
+    width: 30%;
+}
+
+.allunlockname{
+    margin-bottom: 20%;
+    color: #C8AD7F;
+    font-size: large;
+}
+
+.infos_allunlock {
+    display: flex;
+    flex-direction: column;
+}
+
+.allunlockcost{
+    color: black;
+    font-size: medium;
+}
+
+.allunlockratio{
+    color: black;
+    font-weight: bold ;
+}

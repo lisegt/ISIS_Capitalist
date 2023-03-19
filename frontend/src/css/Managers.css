@@ -1,0 +1,97 @@
+/* managers */
+
+.liste_managers{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    color: #C8AD7F;
+}
+
+.manager {
+    width: 90%;
+    height: 100px;
+    display: flex;
+    margin: 2%;
+    position: relative;
+}
+
+.manager_logo{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-250%, -50%);
+    z-index: 1;
+}
+
+.round_manager {
+    width: 100px;
+    height: 100px;
+    border-radius: 50% ;
+    background-color: rgba(0,0,0);
+}
+
+.infos_manager {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #095228;
+    border-radius: 50%;
+
+
+    position: absolute;
+    top: 10%;
+    left: 15%;
+    width: 70%;
+    height: 80px;
+}
+
+.managername{
+    color: #C8AD7F;
+    font-size: x-large;
+}
+
+.managercible{
+    color: black;
+    font-size: small;
+}
+
+.managercost{
+    color: black;
+    font-weight: bold ;
+}
+
+.div_acheterManager {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(210%, -50%);
+    z-index: 1;
+}
+.btn_acheterManager{
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', sans-serif;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #C8AD7F;
+}
+
+.btn_acheterManager:hover{
+    cursor: pointer;
+}
+
+.btn_acheterManager:disabled{
+    background-color: #cecece;
+    cursor: default;
+}

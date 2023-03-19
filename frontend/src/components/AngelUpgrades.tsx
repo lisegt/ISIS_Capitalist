@@ -1,18 +1,20 @@
+import '../css/App.css';
+import '../css/AngelUpgrades.css';
+
 import {Palier, World} from "../world";
 import {Badge, Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";
-type AngeProps = {
+type AngelUpgradeProps = {
     loadworld : World
     loadsnackBarAngelUpgrades : boolean;
     onAngelUpgradeBuy : (ange : Palier)=>void;
     updateNbAngelUpgradeCanBuy : ()=>void;
 
-
 }
 
 const url = 'http://localhost:4000/'
 
-export default function Ange({ loadworld, onAngelUpgradeBuy, loadsnackBarAngelUpgrades,updateNbAngelUpgradeCanBuy }: AngeProps){
+export default function AngelUpgrade({ loadworld, onAngelUpgradeBuy, loadsnackBarAngelUpgrades,updateNbAngelUpgradeCanBuy }: AngelUpgradeProps){
 
     const [world, setWorld] = useState(loadworld);
     //Copie du monde pour mettre à jour le useState
@@ -46,14 +48,22 @@ export default function Ange({ loadworld, onAngelUpgradeBuy, loadsnackBarAngelUp
                                             )
                                         }
                                     </div>
-                                    <div className="angelupgradecost">Coût : {angelupgrade.seuil} €</div>
+                                    <div className="angelupgradecost">Coût : {angelupgrade.seuil} anges</div>
                                     <div className="angelupgraderatio"> {angelupgrade.typeratio} : x{angelupgrade.ratio} </div>
 
                                 </div>
                                 <div className={"div_acheterAngelupgrade"}>
-                                    <button className={"btn_acheterAngelupgrade"}  onClick={() => {onAngelUpgradeBuy(angelupgrade); updateNbAngelUpgradeCanBuy()}}
-                                            disabled={world.activeangels < angelupgrade.seuil || world.products[angelupgrade.idcible-1].quantite == 0}>
-                                        ACHETER ! </button>
+                                    {((angelupgrade.idcible)<=0) ? (
+                                        <button className={"btn_acheterAngelupgrade"}  onClick={() => {onAngelUpgradeBuy(angelupgrade); updateNbAngelUpgradeCanBuy()}}
+                                                disabled={world.activeangels < angelupgrade.seuil}>
+                                            ACHETER ! </button>
+                                    ) : (
+                                        <button className={"btn_acheterAngelupgrade"}  onClick={() => {onAngelUpgradeBuy(angelupgrade); updateNbAngelUpgradeCanBuy()}}
+                                                disabled={world.activeangels < angelupgrade.seuil || world.products[angelupgrade.idcible-1].quantite == 0}>
+                                            ACHETER ! </button>
+                                    )
+                                    }
+
                                 </div>
                             </div>
                     )

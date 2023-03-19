@@ -1,0 +1,66 @@
+.modal_anges {
+    position: fixed; /* reste en place */
+    z-index: 3; /* au dessus du reste */
+    width: 50%; /* largeur */
+    height: 40%; /* hauteur */
+    overflow: auto; /* barre de scroll si besoin */
+    background-color: rgba(0,0,0); /* opaque */
+    border: solid #095228;
+    top:10%; /* a 10% du haut */
+    left:30%; /* a 20% de la gauche */
+    border-radius: 50px;
+}
+
+.investors{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.contenu_anges{
+    display: flex;
+    justify-content: space-around;
+}
+
+.img_ange {
+}
+
+.logo_ange{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+.anges_en_poche{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.div_acheterAnges {
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+}
+.btn_acheterAnges{
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', sans-serif;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #C8AD7F;
+}
+
+.btn_acheterAnges:hover{
+    cursor: pointer;
+}
+
+.btn_acheterAnges:disabled{
+    background-color: #cecece;
+    cursor: default;
+}
+
