@@ -58,6 +58,11 @@
     border-radius: 5px;
 }
 
+.btn_acheterProduit:disabled{
+    background-color: #cecece;
+    cursor: default;
+}
+
 .time_left {
     flex-grow: 1;
     flex-basis: 33%;
@@ -89,6 +94,8 @@
     height: 100%;
 
 }
+
+
 
 .round_produit {
     width: 100px;

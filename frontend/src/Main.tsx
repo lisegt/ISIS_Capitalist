@@ -157,7 +157,12 @@ export default function Main({ loadworld, username } : MainProps) {
     const [snackBarAngelUpgrades, setSnackBarAngelUpgrades] = useState(false);
     const [snackBarResetWorld, setSnackBarResetWorld] = useState(false);
 
-    //Mutations
+    //Téléchargement du world quand il est modifié
+    useEffect(() => {
+        setWorld(JSON.parse(JSON.stringify(loadworld)) as World)
+    }, [loadworld])
+
+    // ==================== Début Mutations =============================
     const [acheterQtProduit] = useMutation(ACHETER_QT_PRODUIT,
         { context: { headers: { "x-user": username }},
             onError: (error): void => {
@@ -204,11 +209,48 @@ export default function Main({ loadworld, username } : MainProps) {
         }
     )
 
+    // ==================== Fin Mutations =============================
 
-    //Téléchargement du world quand il est modifié
-    useEffect(() => {
-        setWorld(JSON.parse(JSON.stringify(loadworld)) as World)
-    }, [loadworld])
+    //on déduit le cout de l'achat à l'argent du monde
+    function onProductionBuy(p: Product, quantiteAjout: number){
+
+        let q = p.croissance
+        //Calcul du cout de l'achat en fonction de la quantité et du produit
+        let coutAchat = p.cout * ((1 - Math.pow(q, quantiteAjout)) / (1 - q))
+        //Si on a assez d'argent
+        if (world.money >= coutAchat) {
+            //maj money
+            world.money = world.money - coutAchat;
+            setMoney(money - coutAchat)
+
+            //on incrémente la qté
+            p.quantite += quantiteAjout;
+            //const newQuantite = [...world.products];
+            /*
+            setWorld((prevWorld)=>{
+                return{...prevWorld, newQuantite};
+            })
+            */
+
+            //màj du cout d'achat produit, coût du produit n+1
+            //p.cout = Math.pow(q, qt) * p.cout
+            updateCoutLot()
+        }
+
+        //Recalcule de la quantité achetable si qtmulti = "Max" --> doit peut etre etre = à "100" à cause du décallage
+        if(qtmulti=="Max"){
+            updateCalcMaxCanBuy()
+
+        }
+        //Vérification qu'il n'y a pas un seuil à débloquer
+        seuilUnlocked(p)
+
+        //Mutation
+        acheterQtProduit({ variables: { id: p.id, quantite : quantiteAjout } });
+
+
+    }
+
 
     //Combien de quantité je peux acheter avec tout l'argent que j'ai ?
     function setMultiplier() {
@@ -412,43 +454,6 @@ export default function Main({ loadworld, username } : MainProps) {
 
     }
 
-    //on déduit le cout de l'achat à l'argent du monde
-    function onProductionBuy(p: Product, qt: number){
-
-        let q = p.croissance
-        //Calcul du cout de l'achat en fonction de la quantité et du produit
-        let coutAchat = p.cout * ((1 - Math.pow(q, qt)) / (1 - q))
-            //Si on a assez d'argent
-            if (world.money >= coutAchat) {
-                //maj money
-                world.money = world.money - coutAchat;
-                setMoney(money - coutAchat)
-
-                //on incrémente la qté
-                world.products[p.id-1].quantite += qt;
-                const newQuantite = [...world.products];
-                setWorld((prevWorld)=>{
-                    return{...prevWorld, newQuantite};
-                })
-
-                //màj du cout d'achat produit, coût du produit n+1
-                //p.cout = Math.pow(q, qt) * p.cout
-                updateCoutLot()
-
-            }
-
-        //Recalcule de la quantité achetable si qtmulti = "Max" --> doit peut etre etre = à "100" à cause du décallage
-        if(qtmulti=="Max"){
-                updateCalcMaxCanBuy()
-
-        }
-        //Vérification qu'il n'y a pas un seuil à débloquer
-        seuilUnlocked(p)
-
-        //Mutation
-        acheterQtProduit({ variables: { id: p.id, quantite : qt } });
-    }
-
     //Changer la valeur de qtmulti en fonction de sa valeur précédente
 
     /*
@@ -602,11 +607,10 @@ export default function Main({ loadworld, username } : MainProps) {
         });
 
         //mutation
-        acheterAngelUpgrade()
-        acheterCashUpgrade({ variables: { name: angelupgrade.name } });
+        acheterAngelUpgrade({ variables: { name: angelupgrade.name } })
 
     }
-    // A implémenter
+
     async function onResetWorld() {
 
         //appel de la mutation
