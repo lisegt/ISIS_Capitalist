@@ -635,3 +635,82 @@ code {
 .btn_acheterUpgrade:hover{
   cursor: pointer;
 }
+
+/* Angel Upgrades */
+.liste_angelupgrades{
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+}
+
+.angelupgrade {
+  height: 300px;
+  width: 230px;
+  margin: 2%;
+  padding: 10px;
+  background-color: rgba(9, 82, 40, 0.7);
+  border-radius: 50px;
+
+  display: inline-block;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.angelupgrade_logo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30%;
+  margin: 25px;
+  margin-bottom: 10px;
+}
+
+.round_angelupgrade {
+  width: 60%;
+}
+
+.angelupgradename{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #C8AD7F;
+  font-size: large;
+}
+
+.infos_angelupgrade {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.angelupgradecost{
+  color: black;
+  font-size: medium;
+}
+
+.angelupgraderatio{
+  color: black;
+  font-weight: bold ;
+}
+
+.div_acheterAngelUpgrade {
+  display: flex;
+  justify-content: center;
+}
+.btn_acheterAngelUpgrade{
+  font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', sans-serif;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #C8AD7F;
+  margin-top: 10px;
+}
+
+.btn_acheterAngelUpgrade:hover{
+  cursor: pointer;
+}

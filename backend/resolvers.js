@@ -61,7 +61,7 @@ function calcul_score(context) {
     context.world.money += gain
 
 }
-
+//fonction pour appliquer le boost passé en paramètre
 function appliquerBoost(palier, context){
 
     //on récupère l'id du produit associé à l'unlock
@@ -83,7 +83,7 @@ function appliquerBoost(palier, context){
         appliquerBoostSurAnge(palier, context)
     }
 }
-
+//fonction pour appliquer le boost sur le produit passé en paramètre
 function appliquerBoostSurProduit(produit,palier, context){
     //type de boost
     //boost de revenu
@@ -91,11 +91,12 @@ function appliquerBoostSurProduit(produit,palier, context){
         produit.revenu = produit.revenu*palier.ratio
     } else if (palier.typeratio === "vitesse"){ // boost de vitesse
         produit.vitesse = Math.round(produit.vitesse/palier.ratio)
-    } else { //boost d'ange --> est-il possible d'avoir un idcible différent de -1 et de booster les anges ?
+    } else { //boost d'ange
         appliquerBoostSurAnge(palier, context)
     }
 }
 
+//fonction qui applique le bonus sur les anges
 function appliquerBoostSurAnge(palier, context){
     //on augmente le bonus de production apporté par les anges selon la quantité de bonus de l’upgrade
     context.world.angelbonus += palier.ratio

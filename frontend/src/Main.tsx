@@ -17,9 +17,35 @@ const ACHETER_QT_PRODUIT = gql`
       id
     }
   }
-`;const ENGAGER_MANAGER = gql`
+`;
+
+const ENGAGER_MANAGER = gql`
   mutation engagerManager($name : String!) {
     engagerManager(name : $name) {
+      name
+    }
+  }
+`;
+
+const CASH_UPGRADE = gql`
+  mutation acheterCashUpgrade($name : String!) {
+    acheterCashUpgrade(name : $name) {
+      name
+    }
+  }
+`;
+
+const ANGEL_UPGRADE = gql`
+  mutation acheterAngelUpgrade($name : String!) {
+    acheterAngelUpgrade(name : $name) {
+      name
+    }
+  }
+`;
+
+const RESET_WORLD = gql`
+  mutation resetWorld {
+    resetWorld {
       name
     }
   }
@@ -37,8 +63,9 @@ export default function Main({ loadworld, username } : MainProps) {
     const [world, setWorld] = useState(JSON.parse(JSON.stringify(loadworld)) as World);
 
     const [money, setMoney] = useState(world.money);
-
-    const[qtmulti, setQtmulti]=useState("x1");
+    const [qtmulti, setQtmulti]=useState("x1");
+    const [bonusAnges, setBonusAnges]=useState(world.angelbonus);
+    const [resetAnge, setResetAnge] = useState(0);
 
     //qtAcheter a une copie car c'est un tableau, on utilise la copie pour mettre le useState à jour en modifiant que la valeur que l'on souhaite modifier
     const[qtAcheter, setQtAcheter]=useState([1,1,1,1,1,1]);
@@ -56,6 +83,7 @@ export default function Main({ loadworld, username } : MainProps) {
     const [snackBarManagers, setSnackBarManagers] = useState(false);
     const [snackBarUnlocks, setSnackBarUnlocks] = useState(false);
     const [snackBarUpgrades, setSnackBarUpgrades] = useState(false);
+    const [snackBarAngelUpgrades, setSnackBarAngelUpgrades] = useState(false);
 
     //Mutations
     const [acheterQtProduit] = useMutation(ACHETER_QT_PRODUIT,
@@ -72,6 +100,34 @@ export default function Main({ loadworld, username } : MainProps) {
             }
         }
     )
+
+    const [acheterCashUpgrade] = useMutation(CASH_UPGRADE,
+        {
+            context: { headers: { "x-user": username } },
+            onError: (error): void => {
+
+            }
+        }
+    )
+
+    const [acheterAngelUpgrade] = useMutation(ANGEL_UPGRADE,
+        {
+            context: { headers: { "x-user": username } },
+            onError: (error): void => {
+
+            }
+        }
+    )
+
+    const [newWorld] = useMutation(RESET_WORLD,
+        {
+            context: { headers: { "x-user": username } },
+            onError: (error): void => {
+
+            }
+        }
+    )
+
 
     //Téléchargement du world quand il est modifié
     useEffect(() => {
@@ -275,9 +331,73 @@ export default function Main({ loadworld, username } : MainProps) {
         engagerManager({ variables: { name: manager.name } });
 
     }
+    //fonction pour appliquer le bonus passé en paramètre
+    function appliquerBoost(upgrade:Palier):void{
+        //on récupère l'id du produit associé à l'unlock
+        let idProduit = upgrade.idcible;
+        //on récupère le produit grâce à son id
+        if (idProduit > 0) {
+            let produit = world.products.find((p) => p.id === idProduit) as Product
+            appliquerBoostSurProduit(produit,upgrade)
 
-    //A implementer
-    function onUpgradeBuy(upgrade:Palier){
+        } else if (idProduit === 0){ //concerne tous les produits
+            world.products.forEach((produit) => {
+                appliquerBoostSurProduit(produit, upgrade)
+            })
+        } else { // si -1 : le bonus augmente l'efficacité des anges
+            appliquerBoostSurAnge(upgrade)
+        }
+    }
+
+    //fonction pour appliquer le boost sur le produit passé en paramètre
+    function appliquerBoostSurProduit(produit:Product,upgrade:Palier){
+        //type de boost
+        //boost de revenu
+        if (upgrade.typeratio === "gain") {
+            produit.revenu = produit.revenu*upgrade.ratio
+        } else if (upgrade.typeratio === "vitesse"){ // boost de vitesse
+            produit.vitesse = Math.round(produit.vitesse/upgrade.ratio)
+        } else { //boost d'ange
+            appliquerBoostSurAnge(upgrade)
+        }
+    }
+
+    //fonction qui applique le bonus sur les anges
+    function appliquerBoostSurAnge(upgrade:Palier){
+        //on augmente le bonus de production apporté par les anges selon la quantité de bonus de l’upgrade
+        world.angelbonus += upgrade.ratio
+    }
+
+
+    function onUpgradeBuy(upgrade:Palier):void{
+        //on débloque l'upgrade
+        upgrade.unlocked = true;
+        let newMoney = world.money - upgrade.seuil
+        const newUpgrades = [...world.upgrades]
+
+
+        appliquerBoost(upgrade)
+        setWorld((prevWorld) => {
+            return { ...prevWorld, money: newMoney, upgrades: newUpgrades };
+        });
+
+        //mutation
+        acheterCashUpgrade({ variables: { name: upgrade.name } });
+    }
+
+    function onAngelUpgradeBuy(angelupgrade:Palier){
+        //on cherche le cashUpgrade d'après son nom
+        let nomAngelUpgrade = angelupgrade.name
+        let angelUpgrade = world.angelupgrades.find((au) => au.name === nomAngelUpgrade) as Palier
+
+        //on débloque l'angel upgrade
+        angelUpgrade.unlocked = true
+
+        //on déduit le coût de l'angel upgrade au nombre d'anges actifs
+        world.activeangels -= angelUpgrade.seuil
+
+        //appliquer le boost
+        appliquerBoost(angelUpgrade);
 
     }
 
@@ -295,6 +415,27 @@ export default function Main({ loadworld, username } : MainProps) {
     //A implementer
     function buyUpgradePossible(upgrades : Palier[]){
         let r=0
+        for(let i=0; i<upgrades.length;i++){
+            if(upgrades[i].seuil<=world.money && world.products[upgrades[i].idcible-1].quantite >0 && !upgrades[i].unlocked){
+                r ++;
+            }
+        }
+        return r
+    }
+
+    function buyAngelUpgradePossible(angelupgrades : Palier[]){
+        let r=0
+        for(let i=0; i<angelupgrades.length;i++){
+            if (angelupgrades[i].idcible-1<=0){
+                if(angelupgrades[i].seuil<=world.activeangels && !angelupgrades[i].unlocked){
+                    r ++;
+                }
+            } else {
+                if(angelupgrades[i].seuil<=world.activeangels && world.products[angelupgrades[i].idcible-1].quantite >0 && !angelupgrades[i].unlocked){
+                    r ++;
+                }
+            }
+        }
         return r
     }
 
@@ -404,10 +545,14 @@ export default function Main({ loadworld, username } : MainProps) {
                           loadsnackBarManagers={snackBarManagers}
                           loadsnackBarUnlocks={snackBarUnlocks}
                           loadsnackBarUpgrades={snackBarUpgrades}
+                          loadsnackBarAngelUpgrades={snackBarAngelUpgrades}
                           onManagerHired={onManagerHired}
                           onUpgradeBuy={onUpgradeBuy}
+                          onAngelUpgradeBuy={onAngelUpgradeBuy}
                           buyManagerPossible={buyManagerPossible}
-                          buyUpgradePossible={buyUpgradePossible}/>
+                          buyUpgradePossible={buyUpgradePossible}
+                          buyAngelUpgradePossible={buyAngelUpgradePossible}
+                    />
 
                     <Snackbar
                         open={snackBarManagers}
@@ -435,6 +580,38 @@ export default function Main({ loadworld, username } : MainProps) {
                                 aria-label="close"
                                 color="secondary"
                                 onClick={() => setSnackBarUnlocks(false)}
+                                style={{backgroundColor: 'red'}}
+                            >
+                                <CloseIcon fontSize="small"/>
+                            </IconButton>
+                        }
+                    />
+                    <Snackbar
+                        open={snackBarUpgrades}
+                        autoHideDuration={5000}
+                        message="Nouveau upgrade acheté !"
+                        action={
+                            <IconButton
+                                size="small"
+                                aria-label="close"
+                                color="secondary"
+                                onClick={() => setSnackBarUpgrades(false)}
+                                style={{backgroundColor: 'red'}}
+                            >
+                                <CloseIcon fontSize="small"/>
+                            </IconButton>
+                        }
+                    />
+                    <Snackbar
+                        open={snackBarAngelUpgrades}
+                        autoHideDuration={5000}
+                        message="Nouvel upgrade d'ange débloqué !"
+                        action={
+                            <IconButton
+                                size="small"
+                                aria-label="close"
+                                color="secondary"
+                                onClick={() => setSnackBarAngelUpgrades(false)}
                                 style={{backgroundColor: 'red'}}
                             >
                                 <CloseIcon fontSize="small"/>
