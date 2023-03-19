@@ -42,7 +42,7 @@ export default function Investor({ loadworld, loadsnackBarResetWorld,onResetWorl
                         </div>
 
                         <div className={"div_acheterAnges"}>
-                            {((150 * Math.sqrt(world.score/Math.pow(10, 15))-world.totalangels) <= 0) ? (
+                            {((150 * Math.sqrt(world.score/Math.pow(10, 15))-world.totalangels) <= 1) ? (
                                 <button className={"btn_acheterAnges"}  onClick={() => {onResetWorld() ; updateNbInvestorsCanBuy() }}
                                         disabled={Math.floor(150 * Math.sqrt(world.score/Math.pow(10, 15))-world.totalangels) <= 0}>
                                     VOUS N'AVEZ PAS ASSEZ GAGNÉ D'ARGENT POUR INVESTIR DANS DES ANGES !
