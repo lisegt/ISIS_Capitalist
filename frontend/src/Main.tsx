@@ -45,8 +45,72 @@ const ANGEL_UPGRADE = gql`
 
 const RESET_WORLD = gql`
   mutation resetWorld {
-    resetWorld {
-      name
+    resetWorld{
+        activeangels
+        allunlocks {
+        idcible
+        logo
+        name
+        ratio
+        seuil
+        typeratio
+        unlocked
+        }
+        angelbonus
+        angelupgrades {
+        idcible
+        logo
+        name
+        ratio
+        seuil
+        typeratio
+        unlocked
+        }
+        lastupdate
+        logo
+        managers {
+        idcible
+        logo
+        name
+        ratio
+        seuil
+        typeratio
+        unlocked
+        }
+        money
+        name
+        products {
+        cout
+        id
+        croissance
+        logo
+        managerUnlocked
+        name
+        paliers {
+            idcible
+            logo
+            name
+            ratio
+            seuil
+            typeratio
+            unlocked
+        }
+        quantite
+        revenu
+        timeleft
+        vitesse
+        }
+        score
+        totalangels
+        upgrades {
+        idcible
+        logo
+        name
+        ratio
+        seuil
+        typeratio
+        unlocked
+        }
     }
   }
 `;
@@ -88,6 +152,7 @@ export default function Main({ loadworld, username } : MainProps) {
     const [snackBarUnlocks, setSnackBarUnlocks] = useState(false);
     const [snackBarUpgrades, setSnackBarUpgrades] = useState(false);
     const [snackBarAngelUpgrades, setSnackBarAngelUpgrades] = useState(false);
+    const [snackBarResetWorld, setSnackBarResetWorld] = useState(false);
 
     //Mutations
     const [acheterQtProduit] = useMutation(ACHETER_QT_PRODUIT,
@@ -127,7 +192,7 @@ export default function Main({ loadworld, username } : MainProps) {
         }
     )
 
-    const [newWorld] = useMutation(RESET_WORLD,
+    const [resetWorld] = useMutation(RESET_WORLD,
         {
             context: { headers: { "x-user": username } },
             onError: (error): void => {
@@ -182,8 +247,6 @@ export default function Main({ loadworld, username } : MainProps) {
         setQtAcheter(qta)
         //updateCoutLot()
         }
-
-
 
 
     //Une fois un produit produit, mise à jour du gain
@@ -525,11 +588,29 @@ export default function Main({ loadworld, username } : MainProps) {
         angelUpgrade.unlocked = true
 
         //on déduit le coût de l'angel upgrade au nombre d'anges actifs
-        world.activeangels -= angelUpgrade.seuil
+        let newNbAnges = world.activeangels - angelUpgrade.seuil
+        const newAngelUpgrades = [...world.angelupgrades]
 
         //appliquer le boost
         appliquerBoost(angelUpgrade);
 
+        setWorld((prevWorld) => {
+            return { ...prevWorld, activeangels: newNbAnges, upgrades: newAngelUpgrades };
+        });
+
+        //mutation
+        acheterAngelUpgrade()
+        acheterCashUpgrade({ variables: { name: angelupgrade.name } });
+
+    }
+    // A implémenter
+    async function onResetWorld() {
+
+        //appel de la mutation
+        const {data} = await resetWorld({variables: {name: username}})
+        loadworld = data.resetWorld
+
+        setWorld(JSON.parse(JSON.stringify(data.resetWorld)) as World);
     }
 
     // Calcul du nombre de manager achetable pour l'afficher dans le badge
@@ -566,6 +647,14 @@ export default function Main({ loadworld, username } : MainProps) {
                     r ++;
                 }
             }
+        }
+        return r
+    }
+
+    function buyInvestorsPossible(){
+        let r=0
+        if ((150 * Math.sqrt(world.score/Math.pow(10, 15))-world.totalangels) > 0) {
+            r = Math.floor(150 * Math.sqrt(world.score/Math.pow(10, 15))-world.totalangels)
         }
         return r
     }
@@ -677,12 +766,15 @@ export default function Main({ loadworld, username } : MainProps) {
                           loadsnackBarUnlocks={snackBarUnlocks}
                           loadsnackBarUpgrades={snackBarUpgrades}
                           loadsnackBarAngelUpgrades={snackBarAngelUpgrades}
+                          loadsnackBarResetWorld={snackBarResetWorld}
                           onManagerHired={onManagerHired}
                           onUpgradeBuy={onUpgradeBuy}
                           onAngelUpgradeBuy={onAngelUpgradeBuy}
+                          onResetWorld = {onResetWorld}
                           buyManagerPossible={buyManagerPossible}
                           buyUpgradePossible={buyUpgradePossible}
                           buyAngelUpgradePossible={buyAngelUpgradePossible}
+                          buyInvestorsPossible = {buyInvestorsPossible}
                     />
 
                     <Snackbar
@@ -743,6 +835,23 @@ export default function Main({ loadworld, username } : MainProps) {
                                 aria-label="close"
                                 color="secondary"
                                 onClick={() => setSnackBarAngelUpgrades(false)}
+                                style={{backgroundColor: 'red'}}
+                            >
+                                <CloseIcon fontSize="small"/>
+                            </IconButton>
+                        }
+                    />
+
+                    <Snackbar
+                        open={snackBarResetWorld}
+                        autoHideDuration={5000}
+                        message="Reset du monde !"
+                        action={
+                            <IconButton
+                                size="small"
+                                aria-label="close"
+                                color="secondary"
+                                onClick={() => setSnackBarResetWorld(false)}
                                 style={{backgroundColor: 'red'}}
                             >
                                 <CloseIcon fontSize="small"/>

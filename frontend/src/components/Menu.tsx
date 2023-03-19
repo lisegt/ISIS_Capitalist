@@ -4,7 +4,8 @@ import Manager from './Manager';
 import {Badge} from "@mui/material";
 import Unlocks from "./Unlocks";
 import Upgrades from "./Upgrades";
-import AngelUpgrades from "./Anges";
+import AngelUpgrades from "./AngelUpgrades";
+import Investor from "./Investors";
 
 
 type MenuProps = {
@@ -13,17 +14,20 @@ type MenuProps = {
     loadsnackBarUnlocks: boolean;
     loadsnackBarUpgrades: boolean;
     loadsnackBarAngelUpgrades: boolean;
+    loadsnackBarResetWorld: boolean;
     onManagerHired:(manager:Palier)=>void;
     onUpgradeBuy:(upgrade:Palier)=>void;
     onAngelUpgradeBuy : (ange : Palier)=>void;
+    onResetWorld : () => void;
     buyManagerPossible: (managers : Palier[])=>number;
     buyUpgradePossible:(upgrades: Palier[])=>number;
     buyAngelUpgradePossible:(angelupgrades: Palier[])=>number;
+    buyInvestorsPossible : () => number;
 
 }
 
 
-export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlocks, loadsnackBarUpgrades, loadsnackBarAngelUpgrades, onManagerHired, onUpgradeBuy, onAngelUpgradeBuy, buyManagerPossible, buyUpgradePossible, buyAngelUpgradePossible} : MenuProps) {
+export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlocks, loadsnackBarUpgrades, loadsnackBarAngelUpgrades, loadsnackBarResetWorld, onManagerHired, onUpgradeBuy, onAngelUpgradeBuy, onResetWorld, buyManagerPossible, buyUpgradePossible, buyAngelUpgradePossible, buyInvestorsPossible} : MenuProps) {
 
     const [world, setWorld] = useState(loadWorld);
 
@@ -31,10 +35,12 @@ export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlo
     const [showUnlocks, setShowUnlocks] = useState(false)
     const [showUpgrades, setShowUpgrades] = useState(false)
     const [showAngelUpgrades, setShowAngelUpgrades] = useState(false)
+    const [showInvestors, setShowInvestors] = useState(false)
 
     const [nbManagersCanBuy, setNbManagersCanBuy] = useState(buyManagerPossible(world.managers))
     const [nbUpgradesCanBuy, setNbUpgradesCanBuy] = useState(buyUpgradePossible(world.upgrades))
     const [nbAngelUpgradesCanBuy, setNbAngelUpgradesCanBuy] = useState(buyAngelUpgradePossible(world.angelupgrades))
+    const [nbAngelInvestorsCanBuy, setNbInvestisorsCanBuy] = useState(buyInvestorsPossible())
 
     function updateNbManagerCanBuy() {
         setNbManagersCanBuy(buyManagerPossible(world.managers))
@@ -46,6 +52,11 @@ export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlo
     function updateNbAngelUpgradeCanBuy(){
         setNbAngelUpgradesCanBuy(buyAngelUpgradePossible(world.angelupgrades));
     }
+
+    function updateNbInvestisorsCanBuy(){
+        setNbInvestisorsCanBuy(buyInvestorsPossible());
+    }
+
     // @ts-ignore
     return (
         <div className="coulisses">
@@ -89,6 +100,18 @@ export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlo
                                        onAngelUpgradeBuy={onAngelUpgradeBuy}
                                        loadsnackBarAngelUpgrades={loadsnackBarAngelUpgrades}
                                        updateNbAngelUpgradeCanBuy={updateNbAngelUpgradeCanBuy}
+            />}
+
+            <button className="btn_coulisses" onClick={() => setShowInvestors(!showInvestors)}>Anges
+            {(
+                <Badge color="success" badgeContent={nbAngelInvestorsCanBuy} sx={{ ml: 1 }}>
+                    &nbsp;
+                </Badge>
+            )}</button>
+            {showInvestors && <Investor loadworld={world}
+                                     loadsnackBarResetWorld={loadsnackBarResetWorld}
+                                    onResetWorld={onResetWorld}
+                                     updateNbInvestorsCanBuy={updateNbInvestisorsCanBuy}
             />}
 
         </div>

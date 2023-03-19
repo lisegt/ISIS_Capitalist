@@ -46,14 +46,22 @@ export default function Ange({ loadworld, onAngelUpgradeBuy, loadsnackBarAngelUp
                                             )
                                         }
                                     </div>
-                                    <div className="angelupgradecost">Coût : {angelupgrade.seuil} €</div>
+                                    <div className="angelupgradecost">Coût : {angelupgrade.seuil} anges</div>
                                     <div className="angelupgraderatio"> {angelupgrade.typeratio} : x{angelupgrade.ratio} </div>
 
                                 </div>
                                 <div className={"div_acheterAngelupgrade"}>
-                                    <button className={"btn_acheterAngelupgrade"}  onClick={() => {onAngelUpgradeBuy(angelupgrade); updateNbAngelUpgradeCanBuy()}}
-                                            disabled={world.activeangels < angelupgrade.seuil || world.products[angelupgrade.idcible-1].quantite == 0}>
-                                        ACHETER ! </button>
+                                    {((angelupgrade.idcible)<=0) ? (
+                                        <button className={"btn_acheterAngelupgrade"}  onClick={() => {onAngelUpgradeBuy(angelupgrade); updateNbAngelUpgradeCanBuy()}}
+                                                disabled={world.activeangels < angelupgrade.seuil}>
+                                            ACHETER ! </button>
+                                    ) : (
+                                        <button className={"btn_acheterAngelupgrade"}  onClick={() => {onAngelUpgradeBuy(angelupgrade); updateNbAngelUpgradeCanBuy()}}
+                                                disabled={world.activeangels < angelupgrade.seuil || world.products[angelupgrade.idcible-1].quantite == 0}>
+                                            ACHETER ! </button>
+                                    )
+                                    }
+
                                 </div>
                             </div>
                     )

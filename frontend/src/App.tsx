@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './css/App.css';
 import {gql, useApolloClient, useQuery} from "@apollo/client";
 import Main from "./Main";
 import './assets/styles.css';

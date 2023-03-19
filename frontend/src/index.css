@@ -445,6 +445,12 @@ code {
   cursor: pointer;
 }
 
+.btn_acheterManager:disabled{
+  background-color: #cecece;
+  cursor: default;
+}
+
+
 /* unlocks */
 
 .liste_unlocks{
@@ -636,6 +642,11 @@ code {
   cursor: pointer;
 }
 
+.btn_acheterUpgrade:disabled{
+  background-color: #cecece;
+  cursor: default;
+}
+
 /* Angel Upgrades */
 .liste_angelupgrades{
   display: inline-block;
@@ -663,8 +674,7 @@ code {
   justify-content: center;
   align-items: center;
   height: 30%;
-  margin: 25px;
-  margin-bottom: 10px;
+  margin: 10px;
 }
 
 .round_angelupgrade {
@@ -680,7 +690,6 @@ code {
 
 .infos_angelupgrade {
   margin-top: 10px;
-  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
 }
@@ -695,11 +704,11 @@ code {
   font-weight: bold ;
 }
 
-.div_acheterAngelUpgrade {
+.div_acheterAngelupgrade {
   display: flex;
   justify-content: center;
 }
-.btn_acheterAngelUpgrade{
+.btn_acheterAngelupgrade{
   font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', sans-serif;
   color: black;
   display: flex;
@@ -711,6 +720,11 @@ code {
   margin-top: 10px;
 }
 
-.btn_acheterAngelUpgrade:hover{
+.btn_acheterAngelupgrade:hover{
   cursor: pointer;
+}
+
+.btn_acheterAngelupgrade:disabled{
+  background-color: #cecece;
+  cursor: default;
 }
