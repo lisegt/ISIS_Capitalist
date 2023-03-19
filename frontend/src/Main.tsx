@@ -690,9 +690,9 @@ export default function Main({ loadworld, username } : MainProps) {
                 //Déblocage de l'unlock
                 unlock.unlocked = true
                 //maj du useState
-                const newUnlock = [...world.products]
+                const newUnlocks = [...world.products]
                 setWorld((prevWorld)=>{
-                    return{...prevWorld, newUnlock}
+                    return{...prevWorld, products:newUnlocks}
                 })
                 //Affichage de la snackBar
                 setSnackBarUnlocks(true)
@@ -734,7 +734,7 @@ export default function Main({ loadworld, username } : MainProps) {
                     //maj du useState
                     const newUnlock = [...world.allunlocks]
                     setWorld((prevWorld)=>{
-                        return{...prevWorld, newUnlock}
+                        return{...prevWorld, allunlocks:newUnlock}
                     })
                     //Affichage de la snackBar
                     setSnackBarUnlocks(true)
