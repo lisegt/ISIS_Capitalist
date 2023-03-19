@@ -250,38 +250,39 @@ export default function Main({ loadworld, username } : MainProps) {
 
     //on déduit le cout de l'achat à l'argent du monde
     function onProductionBuy(p: Product, qt: number, prix: number) {
-        let quant = 0
-        switch (qtmulti) {
-            case "x1":
-                quant = 1
-                break
-            case "x10":
-                quant = 10
-                break
-            case "x100":
-                quant = 100
-                break
-            case "Max":
-                quant = qt
-                break
+        if (world.money >= prix) {
+            let quant = 0
+            switch (qtmulti) {
+                case "x1":
+                    quant = 1
+                    break
+                case "x10":
+                    quant = 10
+                    break
+                case "x100":
+                    quant = 100
+                    break
+                case "Max":
+                    quant = qt
+                    break
+            }
+            p.cout = p.cout * p.croissance ** quant
+            p.quantite = p.quantite + quant
+
+            const newProduct = [...world.products]
+
+            //maj money
+            const newMoney = world.money - prix
+            setWorld((prevWorld) => {
+                return {...prevWorld, money: newMoney, products: newProduct}
+            })
+
+            //Vérification qu'il n'y a pas un seuil à débloquer
+            seuilUnlocked(p)
+
+            //Mutation
+            acheterQtProduit({variables: {id: p.id, quantite: quant}});
         }
-        p.cout = p.cout * p.croissance ** quant
-        p.quantite = p.quantite +quant
-
-        console.log(p.quantite)
-        const newProduct = [...world.products]
-
-        //maj money
-        const newMoney = world.money - prix
-        setWorld((prevWorld) => {
-            return {...prevWorld, money: newMoney, products : newProduct}
-        })
-
-        //Vérification qu'il n'y a pas un seuil à débloquer
-        seuilUnlocked(p)
-
-        //Mutation
-        acheterQtProduit({ variables: { id: p.id, quantite : quant } });
     }
 
     // Embaucher un manager
