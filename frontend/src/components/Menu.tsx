@@ -40,9 +40,10 @@ export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlo
     return (
         <div className="coulisses">
             <h1>Coulisses</h1>
-            <button className="btn_coulisses" onClick={() => setShowManager(!showManager)}>Managers
+            <button className="btn_coulisses" onClick={() => setShowManager(!showManager)}>
+                Managers
                 {(
-                    <Badge color="primary" badgeContent={nbManagersCanBuy} sx={{ ml: 1 }}>
+                    <Badge color="success" badgeContent={nbManagersCanBuy} sx={{ ml: 1 }}>
                         &nbsp;
                     </Badge>
                 )}</button>
@@ -51,13 +52,14 @@ export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlo
                                      loadsnackBarManagers={loadsnackBarManagers}
                                      updateNbManagerCanBuy={updateNbManagerCanBuy}
                                      />}
-            <button className="btn_coulisses" onClick={() => setShowUnlocks(!showUnlocks)}>Unlock</button>
+
+            <button className="btn_coulisses" onClick={() => setShowUnlocks(!showUnlocks)}>Unlocks</button>
             {showUnlocks && <Unlocks loadworld={world}
                                      loadsnackBarUnlocks={loadsnackBarUnlocks}
             />}
-            <button className="btn_coulisses" onClick={() => setShowUpgrades(!showUpgrades)}>Cash Updrages
+            <button className="btn_coulisses" onClick={() => setShowUpgrades(!showUpgrades)}>Cash Upgrades
                 {(
-                    <Badge color="primary" badgeContent={nbUpgradesCanBuy} sx={{ ml: 1 }}>
+                    <Badge color="success" badgeContent={nbUpgradesCanBuy} sx={{ ml: 1 }}>
                         &nbsp;
                     </Badge>
                 )}</button>

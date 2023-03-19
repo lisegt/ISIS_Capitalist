@@ -27,7 +27,7 @@ type ProductProps = {
 
 }
 
-export default function ProductComponent({ product, onProductionDone, qtmulti, qtAcheter, loadcoutLot, loadworld, onProductionBuy, loadusername} : ProductProps) {
+export default function ProductComponent({ product, onProductionDone, qtmulti, qtAcheter, loadworld, onProductionBuy, loadcoutLot, loadusername} : ProductProps) {
     const [world, setWorld]=useState(loadworld);
     const username = loadusername;
     const lastupdate= useRef(Date.now());
@@ -96,7 +96,6 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
             lancerProduction({ variables: { id: product.id } });
         }
     }
-
     /*
     function desactiverButton() {
         let maxCanBuy = loadcalcMaxCanBuy(product)
@@ -140,9 +139,8 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
 
                 </div>
                 <div className="partieBasseProduit">
-                    <button className={"test2 btn_acheterProduit"} onClick={() => onProductionBuy(product, qtAcheter[product.id-1])}
-                            >
-                        <div>Acheter {qtAcheter[product.id-1]} pour : {loadcoutLot[product.id-1]} €</div>
+                    <button className={"btn_acheterProduit"} onClick={() => onProductionBuy(product, qtAcheter[product.id-1])}>
+                        <div>Acheter {qtAcheter[product.id-1]} pour : {loadcoutLot[product.id-1].toFixed(3)} €</div>
                     </button>
                     <div className={"time_left"}>{timeleft} ms</div>
                 </div>

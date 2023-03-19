@@ -23,51 +23,46 @@ export default function Unlocks({ loadworld, loadsnackBarUnlocks }: ManagerProps
                 <div>
                     <h1 className="title">Unlocks</h1>
                 </div>
-                <div>
+                <div className={"liste_unlocks"}>
                     <h2>Unlocks par produit</h2>
-                    {world.products.map(prod => {
-                        return prod.paliers.filter( unlock => !unlock.unlocked).map(
-                        unlock =>
-                            <div key={unlock.name} className="unlockgrid">
-                                <div>
-                                    <div className="logo">
-                                        <img alt="unlock logo" className="round" src={url +
-                                            prod.logo}/>
+                    <div>
+                        {world.products.map(prod => {
+                            return prod.paliers.filter( unlock => !unlock.unlocked).map(
+                                unlock =>
+                                    <div key={unlock.name} className="unlock">
+                                        <div className="unlockname">{unlock.name}</div>
+                                        <div className="unlock_logo">
+                                            <img alt="unlock logo" className="round_unlock" src={url + prod.logo}/>
+                                        </div>
+                                        <div className="infos_unlock">
+                                            <div className="unlockcost">Débloqué au bout de {unlock.seuil} {prod.name}s</div>
+                                            <div className="unlockratio"> {unlock.typeratio} : x{unlock.ratio} </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="infosunlock">
-                                    <div className="unlockproduct">{prod.name}</div>
-                                    <div className="unlockname"> {unlock.name} </div>
-                                    <div className="unlockcost"> {unlock.seuil} </div>
-                                    <div className="unlockratio"> {unlock.typeratio} : x{unlock.ratio} </div>
-                                </div>
-                            </div>
 
-                    )
-                    })}
-
+                            )
+                        })}
+                    </div>
                 </div>
-                <div>
+                <div className={"liste_allunlocks"}>
                     <h2>Unlocks de tous les produits</h2>
-                    {world.allunlocks.filter( all => !all.unlocked).map(
-                        all =>
-                            <div key={all.name} className="unlockgrid">
-                                <div>
-                                    <div className="logo">
-                                        <img alt="unlock logo" className="round" src={url +
-                                            all.logo}/>
+                    <div>
+                        {world.allunlocks.filter( all => !all.unlocked).map(
+                            all =>
+                                <div key={all.name} className="allunlock">
+                                    <div className="allunlockname"> {all.name} </div>
+                                    <div className="allunlock_logo">
+                                        <img alt="allunlock logo" className="round_allunlock" src={url + all.logo}/>
+                                    </div>
+                                    <div className="infos_allunlock">
+
+                                        <div className="allunlockcost">Débloqué au bout de {all.seuil} instruments</div>
+                                        <div className="allunlockratio"> {all.typeratio} : x{all.ratio} </div>
                                     </div>
                                 </div>
-                                <div className="infosunlock">
-                                    <div className="unlockname"> {all.name} </div>
-                                    <div className="unlockcost"> {all.seuil} </div>
-                                    <div className="unlockratio"> {all.typeratio} : x{all.ratio} </div>
-                                </div>
-                            </div>
-
-                    )
-                    }
-
+                        )
+                        }
+                    </div>
 
                 </div>
             </div>

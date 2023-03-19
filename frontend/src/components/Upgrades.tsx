@@ -25,33 +25,28 @@ export default function Upgrade({ loadworld, onUpgradeBuy, loadsnackBarUpgrades,
                 <div>
                     <h1 className="title">Upgrades</h1>
                 </div>
-                <div>
+                <div className={"liste_upgrades"}>
                     {world.upgrades.filter( upgrade => !upgrade.unlocked).map(
                         upgrade =>
-                            <div key={upgrade.name} className="upgradegrid">
-                                <div>
-                                    <div className="logo">
-                                        <img alt="upgrade logo" className="round" src={url +
-                                            upgrade.logo}/>
-                                    </div>
+                            <div key={upgrade.name} className="upgrade">
+                                <div className="upgradename"> {upgrade.name} </div>
+                                <div className="upgrade_logo">
+                                    <img alt="upgrade logo" className="round_upgrade" src={url + upgrade.logo}/>
                                 </div>
-                                <div className="infosupgrade">
-                                    <div className="upgradename"> {upgrade.name} </div>
-                                    <div className="upgradecible"> {
-                                        world.products[upgrade.idcible - 1].name} </div>
-                                    <div className="upgradecost"> {upgrade.seuil} </div>
+                                <div className="infos_upgrade">
+                                    <div className="upgradecible">Upgrade appliqué sur les {world.products[upgrade.idcible - 1].name}s</div>
+                                    <div className="upgradecost">Coût : {upgrade.seuil} €</div>
                                     <div className="upgraderatio"> {upgrade.typeratio} : x{upgrade.ratio} </div>
+
                                 </div>
-                                <div>
-                                    <Button onClick={() => {onUpgradeBuy(upgrade); updateNbUpgradeCanBuy()}}
+                                <div className={"div_acheterUpgrade"}>
+                                    <button className={"btn_acheterUpgrade"}  onClick={() => {onUpgradeBuy(upgrade); updateNbUpgradeCanBuy()}}
                                             disabled={world.money < upgrade.seuil || world.products[upgrade.idcible-1].quantite == 0}>
-                                        Buy ! </Button>
+                                        ACHETER ! </button>
                                 </div>
                             </div>
-
                     )
                     }
-
 
                 </div>
             </div>
