@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from "react"
 
+//================================== Progress Bar ===================================
 export enum Orientation {
     horizontal = "horizontal",
     vertical = "vertical"
@@ -22,6 +23,7 @@ export default function MyProgressbar({
                                           children, vitesse, initialvalue = 0, className, run, frontcolor = "#008800", backcolor = "#FFFFFF", auto = false, onCompleted, orientation = Orientation.horizontal
                                       }: BarProps) {
 
+    //================================== UseRefs ===================================
     const requestIdRef = useRef(0)
     const canvasRef = useRef<HTMLCanvasElement>( null)
     const widthRef = useRef(0)

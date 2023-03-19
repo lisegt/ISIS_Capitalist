@@ -1,25 +1,23 @@
 import '../css/App.css';
 import '../css/Managers.css';
-
 import {Palier, World} from "../world";
 import {Badge, Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";
+
+//========================================== Managers =====================================
 type ManagerProps = {
     loadworld : World
-    loadsnackBarManagers : boolean;
     onManagerHired : (manager:Palier)=>void;
     updateNbManagerCanBuy : ()=>void;
 }
 
 const url = 'http://localhost:4000/'
 
-export default function Manager({ loadworld, onManagerHired, loadsnackBarManagers,updateNbManagerCanBuy }: ManagerProps){
-
+export default function Manager({ loadworld, onManagerHired,updateNbManagerCanBuy }: ManagerProps){
+//========================================== UseStates =====================================
     const [world, setWorld] = useState(loadworld);
-    //Copie du monde pour mettre à jour le useState
-    const newWorld = {...world};
+
     const [showManagers, setShowManagers] = useState(true);
-    const [snackBarManagers, setSnackBarManagers] = useState(loadsnackBarManagers);
 
 
     return(

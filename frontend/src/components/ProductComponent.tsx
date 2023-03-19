@@ -4,7 +4,10 @@ import MyProgressbar, {Orientation} from "./ProgressBar";
 import {useInterval} from "./MyInterval";
 import {gql, useMutation} from "@apollo/client";
 import {transform} from "../utils";
+
 const url = 'http://localhost:4000/'
+
+//===================== Mutation ============================
 const LANCER_PRODUCTION = gql`
   mutation lancerProductionProduit($id: Int!) {
     lancerProductionProduit(id: $id) {
@@ -13,7 +16,7 @@ const LANCER_PRODUCTION = gql`
   }
 `;
 
-
+//===================== Product ============================
 type ProductProps = {
     loadworld : World
     loadusername : string ;
@@ -22,24 +25,26 @@ type ProductProps = {
     onProductionDone: (product:Product, qt: number)=>void;
     onProductionBuy: (p: Product, qt: number, prix : number)=>void;
 
-
-
 }
 
 export default function ProductComponent({ product, onProductionDone, qtmulti, loadworld, onProductionBuy, loadusername} : ProductProps) {
+    //================================== UseStates ===================================
     const [world, setWorld]=useState(loadworld);
-    const username = loadusername;
+
     const lastupdate= useRef(Date.now());
     const [timeleft, setTimeleft]=useState(product.timeleft);
 
-    //qtAcheter a une copie car c'est un tableau, on utilise la copie pour mettre le useState à jour en modifiant que la valeur que l'on souhaite modifier
-    //const[qtAcheter, setQtAcheter]=useState(0)
-    const qtAcheter = useRef(0)
+    //================================== UseRefs ===================================
+    //Prix d'un lot --> modifié en fonction de la quantité du lot
+    const prixLot = useRef(0)
+    //Quantité d'un lot maximal
+    const qtLot = useRef(0)
 
-    const n = useRef(0)
+
+    const username = loadusername;
 
 
-    //Mutation
+    //================================== Mutation ===================================
     const [lancerProduction] = useMutation(LANCER_PRODUCTION,
     { context: { headers: { "x-user": username }},
         onError: (error): void => {
@@ -48,11 +53,12 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, l
         }
     )
 
+    //================================== UseInterval ===================================
     //Calculer le score toutes les 100 secondes
     useInterval(() => {calcScore()}, 100)
 
 
-
+    //================================== Fonctions =====================================
     //Calculer le score du joueur
     function calcScore() {
         let temps_ecoule=Date.now()-lastupdate.current;
@@ -104,37 +110,41 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, l
         }
     }
 
+    //Calcul de la quantité de produit maximale que l'user peut acheter avec son argent actuel
     function calcMaxCanBuy():
         number {
-        n.current = Math.trunc((Math.log10(-(world.money * (1 - product.croissance) / product.cout - 1)) / Math.log10(product.croissance)))
+        //Suit la logique d'une suite géométrique
+        qtLot.current = Math.trunc((Math.log10(-(world.money * (1 - product.croissance) / product.cout - 1)) / Math.log10(product.croissance)))
 
-        return n.current
+        return qtLot.current
     }
 
-    function updateQtAcheter():number{
-
+    //Maj du prix d'un lot en fonction de la quantité que l'on souhaite acheter en un clic
+    function updatePrixLot():number{
+        //On passe toutes possibilités de qtmulti
         switch (qtmulti) {
             case "x1":
-                qtAcheter.current=product.cout
+                prixLot.current=product.cout
             break
             case "x10":
-                qtAcheter.current=product.cout * (1 - product.croissance ** 10) / (1 - product.croissance)
+                prixLot.current=product.cout * (1 - product.croissance ** 10) / (1 - product.croissance)
 
                 break
             case "x100":
-                qtAcheter.current=product.cout * (1 - product.croissance ** 100) / (1 - product.croissance)
+                prixLot.current=product.cout * (1 - product.croissance ** 100) / (1 - product.croissance)
                 break
             case "Max":
-                qtAcheter.current=product.cout * (1 - product.croissance ** calcMaxCanBuy()) / (1 - product.croissance)
+                //On utilise calMaxCanBuy comme quantité de produit que l'user veut acheter
+                prixLot.current=product.cout * (1 - product.croissance ** calcMaxCanBuy()) / (1 - product.croissance)
                 break
         }
-        return qtAcheter.current
+        return prixLot.current
     }
 
-
+    //On active la possibilité d'acheter un produit que si l'user a assez d'argent
     function buttonOn() {
         let r = false
-        if ( qtmulti != "Max" && updateQtAcheter() <= loadworld.money) {
+        if ( qtmulti != "Max" && updatePrixLot() <= loadworld.money) {
             r = true
         }
         if(qtmulti === "Max" && calcMaxCanBuy()!=0){
@@ -172,10 +182,10 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, l
 
                 </div>
                 <div className="partieBasseProduit">
-                    <button className={"btn_acheterProduit"} onClick={() => onProductionBuy(product, n.current, qtAcheter.current)}
+                    <button className={"btn_acheterProduit"} onClick={() => onProductionBuy(product, qtLot.current, prixLot.current)}
                     disabled={!buttonOn()}>
                         <div>
-                            Acheter {qtmulti==="Max" && <span> {Math.trunc(n.current)}</span>} pour { <span dangerouslySetInnerHTML={{ __html: transform(Math.round(updateQtAcheter() * 100) / 100) }}/>}
+                            Acheter {qtmulti==="Max" && <span> {Math.trunc(qtLot.current)}</span>} pour { <span dangerouslySetInnerHTML={{ __html: transform(Math.round(updatePrixLot() * 100) / 100) }}/>}
                         </div>
                     </button>
                     <div className={"time_left"}>{timeleft} ms</div>

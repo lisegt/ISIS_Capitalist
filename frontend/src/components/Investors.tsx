@@ -1,25 +1,23 @@
 import '../css/App.css';
 import '../css/Investors.css';
-
 import {Palier, World} from "../world";
 import {Badge, Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";
+
+//================================== Investors ===================================
 type InvestorProps = {
     loadworld : World
-    loadsnackBarResetWorld : boolean;
     onResetWorld: () => void
     updateNbInvestorsCanBuy : () => void;
 }
 
 const url = 'http://localhost:4000/'
 
-export default function Investor({ loadworld, loadsnackBarResetWorld,onResetWorld, updateNbInvestorsCanBuy }: InvestorProps){
-
+export default function Investor({ loadworld,onResetWorld, updateNbInvestorsCanBuy }: InvestorProps){
+    //================================== UseStates ===================================
     const [world, setWorld] = useState(loadworld);
-    //Copie du monde pour mettre à jour le useState
-    const newWorld = {...world};
+
     const [showInvestors, setShowInvestors] = useState(true);
-    const [snackBarResetWorld, setSnackBarResetWorld] = useState(loadsnackBarResetWorld);
 
 
     return(

@@ -4,20 +4,19 @@ import '../css/Unlocks.css';
 import {Palier, World} from "../world";
 import {Badge, Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";
+
+//================================== Unlocks ===================================
 type UnlockProps = {
     loadworld : World
-    loadsnackBarUnlocks : boolean;
 }
 
 const url = 'http://localhost:4000/'
 
-export default function Unlocks({ loadworld, loadsnackBarUnlocks }: UnlockProps){
-
+export default function Unlocks({ loadworld }: UnlockProps){
+    //================================== UseStates ===================================
     const [world, setWorld] = useState(loadworld);
-    //Copie du monde pour mettre à jour le useState
-    const newWorld = {...world};
+
     const [showUnlocks, setShowUnlocks] = useState(true);
-    const [snackBarUnlocks, setSnackBarUnlocks] = useState(loadsnackBarUnlocks);
 
 
     return(

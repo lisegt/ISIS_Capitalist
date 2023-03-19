@@ -10,7 +10,7 @@ import Upgrades from "./Upgrades";
 import AngelUpgrades from "./AngelUpgrades";
 import Investor from "./Investors";
 
-
+//===================== Menu ============================
 type MenuProps = {
     loadWorld: World
     loadsnackBarManagers: boolean;
@@ -31,7 +31,7 @@ type MenuProps = {
 
 
 export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlocks, loadsnackBarUpgrades, loadsnackBarAngelUpgrades, loadsnackBarResetWorld, onManagerHired, onUpgradeBuy, onAngelUpgradeBuy, onResetWorld, buyManagerPossible, buyUpgradePossible, buyAngelUpgradePossible, buyInvestorsPossible} : MenuProps) {
-
+    //========================================== UseStates =====================================
     const [world, setWorld] = useState(loadWorld);
 
     const [showManager, setShowManager] = useState(false)
@@ -45,22 +45,21 @@ export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlo
     const [nbAngelUpgradesCanBuy, setNbAngelUpgradesCanBuy] = useState(buyAngelUpgradePossible(world.angelupgrades))
     const [nbAngelInvestorsCanBuy, setNbInvestisorsCanBuy] = useState(buyInvestorsPossible())
 
+    //========================================== Updates =====================================
     function updateNbManagerCanBuy() {
         setNbManagersCanBuy(buyManagerPossible(world.managers))
     }
     function updateNbUpgradeCanBuy(){
         setNbUpgradesCanBuy(buyUpgradePossible(world.upgrades));
     }
-
     function updateNbAngelUpgradeCanBuy(){
         setNbAngelUpgradesCanBuy(buyAngelUpgradePossible(world.angelupgrades));
     }
-
     function updateNbInvestisorsCanBuy(){
         setNbInvestisorsCanBuy(buyInvestorsPossible());
     }
 
-    // @ts-ignore
+
     return (
         <div className="coulisses">
             <h1>Coulisses</h1>
@@ -73,13 +72,11 @@ export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlo
                 )}</button>
             {showManager && <Manager loadworld={world}
                                      onManagerHired={onManagerHired}
-                                     loadsnackBarManagers={loadsnackBarManagers}
                                      updateNbManagerCanBuy={updateNbManagerCanBuy}
                                      />}
 
             <button className="btn_coulisses" onClick={() => setShowUnlocks(!showUnlocks)}>Unlocks</button>
             {showUnlocks && <Unlocks loadworld={world}
-                                     loadsnackBarUnlocks={loadsnackBarUnlocks}
             />}
             <button className="btn_coulisses" onClick={() => setShowUpgrades(!showUpgrades)}>Cash Upgrades
                 {(
@@ -89,7 +86,6 @@ export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlo
                 )}</button>
             {showUpgrades && <Upgrades loadworld={world}
                                      onUpgradeBuy={onUpgradeBuy}
-                                     loadsnackBarUpgrades={loadsnackBarUpgrades}
                                      updateNbUpgradeCanBuy={updateNbUpgradeCanBuy}
             />}
 
@@ -101,7 +97,6 @@ export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlo
                 )}</button>
             {showAngelUpgrades && <AngelUpgrades loadworld={world}
                                        onAngelUpgradeBuy={onAngelUpgradeBuy}
-                                       loadsnackBarAngelUpgrades={loadsnackBarAngelUpgrades}
                                        updateNbAngelUpgradeCanBuy={updateNbAngelUpgradeCanBuy}
             />}
 
@@ -112,7 +107,6 @@ export default function Menu({ loadWorld, loadsnackBarManagers, loadsnackBarUnlo
                 </Badge>
             )}</button>
             {showInvestors && <Investor loadworld={world}
-                                     loadsnackBarResetWorld={loadsnackBarResetWorld}
                                     onResetWorld={onResetWorld}
                                      updateNbInvestorsCanBuy={updateNbInvestisorsCanBuy}
             />}

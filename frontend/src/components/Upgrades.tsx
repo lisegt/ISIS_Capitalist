@@ -4,22 +4,21 @@ import '../css/Upgrades.css';
 import {Palier, World} from "../world";
 import {Badge, Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";
+
+//================================== Upgrades ===================================
 type UpgradeProps = {
     loadworld : World
-    loadsnackBarUpgrades : boolean;
     onUpgradeBuy : (upgrade : Palier)=>void;
     updateNbUpgradeCanBuy : ()=>void;
 }
 
 const url = 'http://localhost:4000/'
 
-export default function Upgrade({ loadworld, onUpgradeBuy, loadsnackBarUpgrades,updateNbUpgradeCanBuy }: UpgradeProps){
-
+export default function Upgrade({ loadworld, onUpgradeBuy,updateNbUpgradeCanBuy }: UpgradeProps){
+    //================================== UseStates ===================================
     const [world, setWorld] = useState(loadworld);
-    //Copie du monde pour mettre à jour le useState
-    const newWorld = {...world};
+
     const [showUpgrades, setShowUpgrades] = useState(true);
-    const [snackBarUpgrades, setSnackBarUpgrades] = useState(loadsnackBarUpgrades);
 
 
     return(

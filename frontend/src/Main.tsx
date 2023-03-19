@@ -13,7 +13,7 @@ import {gql, useMutation} from "@apollo/client";
 
 const url = 'http://localhost:4000/'
 
-//Mutations
+//===================== Mutations ============================
 const ACHETER_QT_PRODUIT = gql`
   mutation acheterQtProduit($id: Int!, $quantite: Int!) {
     acheterQtProduit(id: $id, quantite: $quantite) {
@@ -118,30 +118,23 @@ const RESET_WORLD = gql`
   }
 `;
 
-
-// Affiche l'interface principale
+//================================== Affichage Principale =============================
 type MainProps = {
     loadworld: World
     username: string
 }
 export default function Main({ loadworld, username } : MainProps) {
 
+    //================================== UseStates ===================================
     //Téléchargement du monde
     const [world, setWorld] = useState(JSON.parse(JSON.stringify(loadworld)) as World);
 
-    const [money, setMoney] = useState(world.money);
+    //Qtmulti peut prendre comme valeur :  x1 ; x10 ; x100 ; Max  Il correspond au nombre d'exemplaires d'un produit que l'ont veut acheter en un click sur le bouton du produit
     const [qtmulti, setQtmulti] = useState("x1");
+
+    //Anges
     const [bonusAnges, setBonusAnges] = useState(world.angelbonus);
     const [resetAnge, setResetAnge] = useState(0);
-
-    //productPrice a une copie car c'est un tableau, on utilise la copie pour mettre le useState à jour en modifiant que la valeur que l'on souhaite modifier
-    const [productPrice, setProductPrice] = useState([world.products[0].cout,
-        world.products[1].cout,
-        world.products[2].cout,
-        world.products[3].cout,
-        world.products[4].cout,
-        world.products[5].cout])
-    const newProductPrice = [...productPrice];
 
     //Les snackbar servent à notifier le joueur du message que l'on souhaite
     const [snackBarManagers, setSnackBarManagers] = useState(false);
@@ -150,12 +143,13 @@ export default function Main({ loadworld, username } : MainProps) {
     const [snackBarAngelUpgrades, setSnackBarAngelUpgrades] = useState(false);
     const [snackBarResetWorld, setSnackBarResetWorld] = useState(false);
 
+    //================================== UseEffect ===================================
     //Téléchargement du world quand il est modifié
     useEffect(() => {
         setWorld(JSON.parse(JSON.stringify(loadworld)) as World)
     }, [loadworld])
 
-    // ==================== Début Mutations =============================
+    // ==================== Mutations =============================
     const [acheterQtProduit] = useMutation(ACHETER_QT_PRODUIT,
         { context: { headers: { "x-user": username }},
             onError: (error): void => {
@@ -198,29 +192,26 @@ export default function Main({ loadworld, username } : MainProps) {
         }
     )
 
+    //========================== Functions =======================================
 
-
-    //Combien de quantité je peux acheter avec tout l'argent que j'ai ?
+    //Maj de la valeur de qtmulti en fonction de sa valeur actuelle
     function setMultiplier() {
-        //Il y a un décallage des qtmulti (lorsque qtmulti=x1 il faut que la quantité achetable soit 10 sinon problèmes dans l'affichage
         let qtm = ""
         switch (qtmulti) {
             case "x1":
                 qtm = "x10"
-
                 break
             case "x10":
                 qtm = "x100"
                 break
             case "x100":
                 qtm = "Max"
-
                 break
             case "Max":
                 qtm = "x1"
-
                 break
         }
+        //Maj du useState qtmulti
         setQtmulti((prevQtMulti) => {
             let newQtMulti = prevQtMulti
             newQtMulti = qtm
@@ -229,14 +220,15 @@ export default function Main({ loadworld, username } : MainProps) {
     }
 
 
-    //Une fois un produit produit, mise à jour du gain
+    //Une fois qu'un produit est produit, on met à jour le gain (score et money)
     function onProductionDone(p: Product, qt: number): void {
+        //Calcul du gain (score et money) en fonction de la quantité de la production
         let gain = qt * (p.quantite * p.revenu);
-        //Modification des useStates, mise à jour du world
+        //Maj du world pour sauvegarder le score et la money calculés
         addToScore(gain);
     }
 
-    //Modification des useStates, mise à jour du world
+    //Maj du world pour sauvegarder le score et la money calculés
     function addToScore(gain: number) {
         const newScore = world.score + gain;
         const newMoney = world.money + gain;
@@ -248,9 +240,12 @@ export default function Main({ loadworld, username } : MainProps) {
 
 
 
-    //on déduit le cout de l'achat à l'argent du monde
+    //Une fois un produit acheté, on maj la quantité du produit, son cout et l'argent de l'user
+    //En paramètre : le produit, le nombre d'exemplaire et le cout du lot que l'on veut acheter
     function onProductionBuy(p: Product, qt: number, prix: number) {
+        //Si notre porte-monnaie nous permet l'achat
         if (world.money >= prix) {
+            //On sélectionne la quantité de produit que l'on veut acheter
             let quant = 0
             switch (qtmulti) {
                 case "x1":
@@ -266,18 +261,18 @@ export default function Main({ loadworld, username } : MainProps) {
                     quant = qt
                     break
             }
+            //On calcule le nouveau cout et la nouvelle quantité
             p.cout = p.cout * p.croissance ** quant
             p.quantite = p.quantite + quant
-
             const newProduct = [...world.products]
-
-            //maj money
+            //On calcule l'argent restant de l'user
             const newMoney = world.money - prix
+            //Maj du produit et de la money
             setWorld((prevWorld) => {
                 return {...prevWorld, money: newMoney, products: newProduct}
             })
 
-            //Vérification qu'il n'y a pas un seuil à débloquer
+            //Vérification qu'il n'y ait pas un seuil à débloquer
             seuilUnlocked(p)
 
             //Mutation
@@ -287,25 +282,27 @@ export default function Main({ loadworld, username } : MainProps) {
 
     // Embaucher un manager
     function onManagerHired(manager:Palier){
-        // Débloquer le manager
+        // Débloquer le manager que s'il n'est pas déjà débloqué
         if(manager.unlocked===false) {
 
-            // Mise à jour de tous les hooks d'état
+            //Calcul de l'argent restant
             world.money = world.money - manager.seuil;
+            //Passage du manager à "débloqué"
             world.products[manager.idcible - 1].managerUnlocked = true;
+            // Mise à jour de tous les hooks d'état
             const newManagers = [...world.managers];
-            world.products[manager.idcible-1].managerUnlocked = true;
             const newProductUnlocked = [...world.products]
             setWorld((prevWorld) => {
                 return {...prevWorld, money: world.money, managers: newManagers, newProductUnlocked};
             });
-            // Afficher le message de la SnackBar
+            // Afficher d'un message qui confirme l'embauche
             setSnackBarManagers(true);
 
             //Mutation
             engagerManager({variables: {name: manager.name}});
         }
     }
+
     //fonction pour appliquer le bonus passé en paramètre
     function appliquerBoost(upgrade:Palier):void{
         //on récupère l'id du produit associé à l'unlock
@@ -393,10 +390,15 @@ export default function Main({ loadworld, username } : MainProps) {
         setWorld(JSON.parse(JSON.stringify(data.resetWorld)) as World);
     }
 
-    // Calcul du nombre de manager achetable pour l'afficher dans le badge
+    // Calcul du nombre de manager engageable pour l'afficher dans le badge
     function buyManagerPossible(managers : Palier[]){
+        //On parcourt les managers pour compter ceux que l'on peut engager
         let r =0;
         for(let i=0; i<managers.length;i++){
+            //Engageable que si :
+                //le seuil du manager est inférieur à l'argent de l'user
+                //l'user possède au moins 1 produit sur lequel le manager peut travailler
+                //il n'est pas déjà engagé
             if(managers[i].seuil<=world.money && world.products[managers[i].idcible-1].quantite >0 && !managers[i].unlocked){
                 r ++;
             }
@@ -404,7 +406,6 @@ export default function Main({ loadworld, username } : MainProps) {
         return r;
     }
 
-    //A implementer
     function buyUpgradePossible(upgrades : Palier[]){
         let r=0
         for(let i=0; i<upgrades.length;i++){

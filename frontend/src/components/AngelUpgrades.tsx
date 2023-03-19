@@ -1,12 +1,12 @@
 import '../css/App.css';
 import '../css/AngelUpgrades.css';
-
 import {Palier, World} from "../world";
 import {Badge, Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";
+
+//================================== Angel Upgrades ===================================
 type AngelUpgradeProps = {
     loadworld : World
-    loadsnackBarAngelUpgrades : boolean;
     onAngelUpgradeBuy : (ange : Palier)=>void;
     updateNbAngelUpgradeCanBuy : ()=>void;
 
@@ -14,13 +14,11 @@ type AngelUpgradeProps = {
 
 const url = 'http://localhost:4000/'
 
-export default function AngelUpgrade({ loadworld, onAngelUpgradeBuy, loadsnackBarAngelUpgrades,updateNbAngelUpgradeCanBuy }: AngelUpgradeProps){
-
+export default function AngelUpgrade({ loadworld, onAngelUpgradeBuy,updateNbAngelUpgradeCanBuy }: AngelUpgradeProps){
+    //================================== UseStates ===================================
     const [world, setWorld] = useState(loadworld);
-    //Copie du monde pour mettre à jour le useState
-    const newWorld = {...world};
+
     const [showAnges, setShowAnges] = useState(true);
-    const [snackBarAnges, setSnackBarAnges] = useState(loadsnackBarAngelUpgrades);
 
 
     return(

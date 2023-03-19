@@ -1,4 +1,6 @@
 import {useEffect, useRef} from 'react';
+
+//================================== My Interval ===================================
 export function useInterval(callback: () => void, delay: number) {
     const savedCallback = useRef(callback);
     // Se souvenir de la dernière fonction de rappel.
