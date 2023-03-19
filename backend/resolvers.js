@@ -146,6 +146,9 @@ module.exports = {
         acheterQtProduit(parent, args, context) {
             calcul_score(context)
 
+            console.log(`produit ${args.id} acheté`)
+            console.log(context.world.money)
+
             //trouver le produit
             let idProduit = args.id;
             let quantiteAjout = args.quantite;
@@ -158,6 +161,7 @@ module.exports = {
 
             if (produit === undefined) {
                 throw new Error(`Le produit avec l'id ${args.id} n'existe pas.`)
+
             } else {
 
                 //on déduit le cout de l'achat de l'argent du monde = somme d'une suite géométrique
@@ -165,6 +169,7 @@ module.exports = {
                 let coutAchat = produit.cout*((1-Math.pow(q,quantiteAjout))/(1-q))
 
                 context.world.money = context.world.money-coutAchat ;
+                console.log(context.world.money)
 
                 //on incrémente la qté
                 produit.quantite += quantiteAjout ;
@@ -191,7 +196,7 @@ module.exports = {
 
             //sauver le monde pour mémoriser changements opérés
             saveWorld(context) ;
-
+            console.log(context.world.money)
             return produit ;
         },
 

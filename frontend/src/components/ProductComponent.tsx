@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import MyProgressbar, {Orientation} from "./ProgressBar";
 import {useInterval} from "./MyInterval";
 import {gql, useMutation} from "@apollo/client";
+import {transform} from "../utils";
 const url = 'http://localhost:4000/'
 const LANCER_PRODUCTION = gql`
   mutation lancerProductionProduit($id: Int!) {
@@ -18,21 +19,27 @@ type ProductProps = {
     loadusername : string ;
     product: Product
     qtmulti: string
-    qtAcheter : number[]
     loadcoutLot : number[]
     onProductionDone: (product:Product, qt: number)=>void;
-    onProductionBuy: (p: Product, qt: number)=>void;
+    onProductionBuy: (p: Product, qt: number, prix : number)=>void;
 
 
 
 }
 
-export default function ProductComponent({ product, onProductionDone, qtmulti, qtAcheter, loadworld, onProductionBuy, loadcoutLot, loadusername} : ProductProps) {
+export default function ProductComponent({ product, onProductionDone, qtmulti, loadworld, onProductionBuy, loadcoutLot, loadusername} : ProductProps) {
     const [world, setWorld]=useState(loadworld);
     const username = loadusername;
     const lastupdate= useRef(Date.now());
     const [timeleft, setTimeleft]=useState(product.timeleft);
     const [coutLot, setCoutLot]=useState(loadcoutLot)
+
+    //qtAcheter a une copie car c'est un tableau, on utilise la copie pour mettre le useState à jour en modifiant que la valeur que l'on souhaite modifier
+    //const[qtAcheter, setQtAcheter]=useState(0)
+    const qtAcheter = useRef(0)
+
+    const n = useRef(0)
+
 
     //Mutation
     const [lancerProduction] = useMutation(LANCER_PRODUCTION,
@@ -45,6 +52,8 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
 
     //Calculer le score toutes les 100 secondes
     useInterval(() => {calcScore()}, 100)
+
+
 
     //Calculer le score du joueur
     function calcScore() {
@@ -96,19 +105,45 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
             lancerProduction({ variables: { id: product.id } });
         }
     }
-    /*
-    function desactiverButton() {
-        let maxCanBuy = loadcalcMaxCanBuy(product)
-        if ( (qtmulti == "Max" && maxCanBuy == 0) || (qtmulti !== "Max" && maxCanBuy < parseInt(qtmulti.substring(1))) ) {
-            return true
 
-        }else{
-            return false
-        }
+    function calcMaxCanBuy():
+        number {
+        n.current = Math.trunc((Math.log10(-(world.money * (1 - product.croissance) / product.cout - 1)) / Math.log10(product.croissance)))
 
+        return n.current
     }
 
-     */
+    function updateQtAcheter():number{
+
+        switch (qtmulti) {
+            case "x1":
+                qtAcheter.current=product.cout
+            break
+            case "x10":
+                qtAcheter.current=product.cout * (1 - product.croissance ** 10) / (1 - product.croissance)
+
+                break
+            case "x100":
+                qtAcheter.current=product.cout * (1 - product.croissance ** 100) / (1 - product.croissance)
+                break
+            case "Max":
+                qtAcheter.current=product.cout * (1 - product.croissance ** calcMaxCanBuy()) / (1 - product.croissance)
+                break
+        }
+        return qtAcheter.current
+    }
+
+
+    function buttonOn() {
+        let r = false
+        if ( qtmulti != "Max" && updateQtAcheter() <= loadworld.money) {
+            r = true
+        }
+        if(qtmulti === "Max" && calcMaxCanBuy()!=0){
+            r = true
+        }
+        return r
+    }
 
     return (
         <div className="produit_item">
@@ -139,8 +174,11 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
 
                 </div>
                 <div className="partieBasseProduit">
-                    <button className={"btn_acheterProduit"} onClick={() => onProductionBuy(product, qtAcheter[product.id-1])}>
-                        <div>Acheter {qtAcheter[product.id-1]} pour : {loadcoutLot[product.id-1].toFixed(3)} €</div>
+                    <button className={"btn_acheterProduit"} onClick={() => onProductionBuy(product, n.current, qtAcheter.current)}
+                    disabled={!buttonOn()}>
+                        <div>
+                            Acheter {qtmulti==="Max" && <span> {Math.trunc(n.current)}</span>} pour { <span dangerouslySetInnerHTML={{ __html: transform(Math.round(updateQtAcheter() * 100) / 100) }}/>}
+                        </div>
                     </button>
                     <div className={"time_left"}>{timeleft} ms</div>
                 </div>

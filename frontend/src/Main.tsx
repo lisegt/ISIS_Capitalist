@@ -63,16 +63,12 @@ export default function Main({ loadworld, username } : MainProps) {
     const [world, setWorld] = useState(JSON.parse(JSON.stringify(loadworld)) as World);
 
     const [money, setMoney] = useState(world.money);
-    const [qtmulti, setQtmulti]=useState("x1");
-    const [bonusAnges, setBonusAnges]=useState(world.angelbonus);
+    const [qtmulti, setQtmulti] = useState("x1");
+    const [bonusAnges, setBonusAnges] = useState(world.angelbonus);
     const [resetAnge, setResetAnge] = useState(0);
 
-    //qtAcheter a une copie car c'est un tableau, on utilise la copie pour mettre le useState à jour en modifiant que la valeur que l'on souhaite modifier
-    const[qtAcheter, setQtAcheter]=useState([1,1,1,1,1,1]);
-    const newQtAcheter = [...qtAcheter];
-
     //Cout du lot
-    const [coutLot, setCoutLot]=useState(world.products.map((prod => prod.cout)))
+    const [coutLot, setCoutLot] = useState(world.products.map((prod => prod.cout)))
 
     //productPrice a une copie car c'est un tableau, on utilise la copie pour mettre le useState à jour en modifiant que la valeur que l'on souhaite modifier
     const [productPrice, setProductPrice] = useState([world.products[0].cout,
@@ -91,27 +87,26 @@ export default function Main({ loadworld, username } : MainProps) {
 
     //Mutations
     const [acheterQtProduit] = useMutation(ACHETER_QT_PRODUIT,
-        { context: { headers: { "x-user": username }},
+        {
+            context: {headers: {"x-user": username}},
             onError: (error): void => {
                 // actions en cas d'erreur
             }
         }
     )
     const [engagerManager] = useMutation(ENGAGER_MANAGER,
-        { context: { headers: { "x-user": username }},
+        {
+            context: {headers: {"x-user": username}},
             onError: (error): void => {
                 // actions en cas d'erreur
             }
         }
     )
-    useEffect(() => {
-        console.log(qtmulti);
-        calcCoutLot(parseInt(qtmulti.substring(1)))
-    }, [qtmulti]);
+
 
     const [acheterCashUpgrade] = useMutation(CASH_UPGRADE,
         {
-            context: { headers: { "x-user": username } },
+            context: {headers: {"x-user": username}},
             onError: (error): void => {
 
             }
@@ -120,7 +115,7 @@ export default function Main({ loadworld, username } : MainProps) {
 
     const [acheterAngelUpgrade] = useMutation(ANGEL_UPGRADE,
         {
-            context: { headers: { "x-user": username } },
+            context: {headers: {"x-user": username}},
             onError: (error): void => {
 
             }
@@ -129,7 +124,7 @@ export default function Main({ loadworld, username } : MainProps) {
 
     const [newWorld] = useMutation(RESET_WORLD,
         {
-            context: { headers: { "x-user": username } },
+            context: {headers: {"x-user": username}},
             onError: (error): void => {
 
             }
@@ -146,63 +141,44 @@ export default function Main({ loadworld, username } : MainProps) {
     function setMultiplier() {
         //Il y a un décallage des qtmulti (lorsque qtmulti=x1 il faut que la quantité achetable soit 10 sinon problèmes dans l'affichage
         let qtm = ""
-        let qta = [0,0,0,0,0,0]
         switch (qtmulti) {
             case "x1":
                 qtm = "x10"
-                world.products.forEach(prod => {
-                    qta[prod.id - 1] = 10
-                })
+
                 break
             case "x10":
-                    qtm = "x100"
-                    world.products.forEach(prod => {
-                        qta[prod.id - 1] = 100
-                    })
+                qtm = "x100"
                 break
             case "x100":
-                    qtm = "Max"
-                    world.products.forEach(prod => {
-                        qta[prod.id-1]=calcMaxCanBuy(prod)
-                    })
+                qtm = "Max"
+
                 break
             case "Max":
-                    qtm = "x1"
-                    world.products.forEach(prod => {
-                        qta[prod.id - 1] = 1
-                    })
+                qtm = "x1"
+
                 break
-                }
+        }
         setQtmulti((prevQtMulti) => {
             let newQtMulti = prevQtMulti
             newQtMulti = qtm
             return newQtMulti
         })
-        //setQtmulti(qtm)
-        setQtAcheter(qta)
-        //updateCoutLot()
-        }
-
-
+    }
 
 
     //Une fois un produit produit, mise à jour du gain
-    function onProductionDone(p:Product, qt:number):void{
-        let gain = qt*(p.quantite*p.revenu);
+    function onProductionDone(p: Product, qt: number): void {
+        let gain = qt * (p.quantite * p.revenu);
         //Modification des useStates, mise à jour du world
         addToScore(gain);
-        //Recalcule de la quantité achetable si qtmulti = "Max" --> doit peut etre etre = à "100" à cause du décallage
-        if(qtmulti==="Max") {
-            updateCalcMaxCanBuy()
-        }
     }
 
     //Modification des useStates, mise à jour du world
-    function addToScore(gain:number){
+    function addToScore(gain: number) {
         const newScore = world.score + gain;
         const newMoney = world.money + gain;
-        setWorld((prevWorld)=>{
-            return{...prevWorld, money : newMoney, score : newScore}
+        setWorld((prevWorld) => {
+            return {...prevWorld, money: newMoney, score: newScore}
         })
 
     }
@@ -241,147 +217,114 @@ export default function Main({ loadworld, username } : MainProps) {
 
      */
 
-    function calcMaxCanBuy(p: Product){
-        //Compteur
-        let n = 0;
-        let q = p.croissance
-        let coutAchatMoins1 = 0;
-        let coutUltimProd = p.cout;
-        let coutAchat = p.cout;
-        //tant qu'on a plus d'argent que le coutAchat
-        while (world.money>=coutAchat){
-            n ++;
-            coutAchatMoins1=coutAchat
-            coutUltimProd = coutUltimProd * q
-            coutAchat = coutAchat + coutUltimProd
+
+    /*
+        function calcCoutLot(stop : number){
+            console.log("stop : "+stop+"; qtmulti :"+qtmulti)
+            world.products.forEach(p => {
+
+                //Initialisation
+                let u0 = p.cout;
+                let un = u0;
+                //Raison
+                let q = p.croissance;
+                //Compteur
+                let n = 0;
+                let coutAchatMoins1 = u0;
+                let coutAchat = u0;
+
+                //tant qu'on a pas atteint la valeur de qtmulti on ne stop pas
+                while (n<stop){
+                    n ++;
+                    un = u0 * q**n;
+                    coutAchatMoins1=coutAchat
+                    coutAchat = coutAchat + un;
+                }
+                if(qtmulti != "Max") {
+                    //Maj du cout du lot
+                    setCoutLot((prevCoutLot) => {
+                        const newCoutLot = [...prevCoutLot]
+                        newCoutLot[p.id - 1] = coutAchatMoins1
+                        return newCoutLot
+                    })
+                }
+
+
+            })
         }
 
-        //Maj du cout du lot
-        setCoutLot((prevCoutLot)=>{
-            const newCoutLot = [...prevCoutLot]
-            newCoutLot[p.id-1] = coutAchatMoins1
-            return newCoutLot
-        })
+     */
 
-        return n
-    }
-
-    function updateCoutLot(){
-        world.products.forEach(p => {
-            calcCoutLot(parseInt(qtmulti.substring(1)))
-        })
-    }
-/*
-    function calcCoutLot(stop : number){
-        console.log("stop : "+stop+"; qtmulti :"+qtmulti)
-        world.products.forEach(p => {
-
-            //Initialisation
-            let u0 = p.cout;
-            let un = u0;
-            //Raison
-            let q = p.croissance;
-            //Compteur
-            let n = 0;
-            let coutAchatMoins1 = u0;
-            let coutAchat = u0;
-
-            //tant qu'on a pas atteint la valeur de qtmulti on ne stop pas
-            while (n<stop){
-                n ++;
-                un = u0 * q**n;
-                coutAchatMoins1=coutAchat
-                coutAchat = coutAchat + un;
-            }
-            if(qtmulti != "Max") {
-                //Maj du cout du lot
-                setCoutLot((prevCoutLot) => {
-                    const newCoutLot = [...prevCoutLot]
-                    newCoutLot[p.id - 1] = coutAchatMoins1
-                    return newCoutLot
-                })
-            }
-
-
-        })
-    }
-
- */
-    function calcCoutLot(stop : number){
-        console.log("stop : "+stop+"; qtmulti :"+qtmulti)
-        world.products.forEach(p => {
-            //Raison
-            let q = p.croissance;
-            //Compteur
-            let n = 0;
-            let coutAchatMoins1 = 0;
-            let coutUltimProd = p.cout;
-            let coutAchat = p.cout;
-
-            //tant qu'on a pas atteint la valeur de qtmulti on ne stop pas
-            while (n<stop-1){
-                n ++;
-                coutAchatMoins1=coutAchat
-                coutUltimProd = coutUltimProd * q
-                coutAchat = coutAchat + coutUltimProd
-            }
-            if(qtmulti != "Max") {
-                //Maj du cout du lot
-                setCoutLot((prevCoutLot) => {
-                    const newCoutLot = [...prevCoutLot]
-                    newCoutLot[p.id - 1] = coutAchatMoins1
-                    return newCoutLot
-                })
-            }
-
-
-        })
-    }
-
-    function updateCalcMaxCanBuy(){
-        world.products.forEach(prod => {
-            newQtAcheter[prod.id-1] =calcMaxCanBuy(prod)
-        })
-        setQtAcheter(newQtAcheter)
-
-    }
 
     //on déduit le cout de l'achat à l'argent du monde
-    function onProductionBuy(p: Product, qt: number){
-
-        let q = p.croissance
-        //Calcul du cout de l'achat en fonction de la quantité et du produit
-        let coutAchat = p.cout * ((1 - Math.pow(q, qt)) / (1 - q))
-            //Si on a assez d'argent
-            if (world.money >= coutAchat) {
-                //maj money
-                world.money = world.money - coutAchat;
-                setMoney(money - coutAchat)
-
-                //on incrémente la qté
-                world.products[p.id-1].quantite += qt;
-                const newQuantite = [...world.products];
-                setWorld((prevWorld)=>{
-                    return{...prevWorld, newQuantite};
-                })
-
-                //màj du cout d'achat produit, coût du produit n+1
-                //p.cout = Math.pow(q, qt) * p.cout
-                updateCoutLot()
-
-            }
-
-        //Recalcule de la quantité achetable si qtmulti = "Max" --> doit peut etre etre = à "100" à cause du décallage
-        if(qtmulti=="Max"){
-                updateCalcMaxCanBuy()
-
+    function onProductionBuy(p: Product, qt: number, prix: number) {
+        let quant = 0
+        switch (qtmulti) {
+            case "x1":
+                quant = 1
+                break
+            case "x10":
+                quant = 10
+                break
+            case "x100":
+                quant = 100
+                break
+            case "Max":
+                quant = qt
+                break
         }
+        p.cout = p.cout * p.croissance ** quant
+        p.quantite = p.quantite +quant
+
+        console.log(p.quantite)
+        const newProduct = [...world.products]
+
+        //maj money
+        const newMoney = world.money - prix
+        setWorld((prevWorld) => {
+            return {...prevWorld, money: newMoney, products : newProduct}
+        })
+
         //Vérification qu'il n'y a pas un seuil à débloquer
         seuilUnlocked(p)
 
         //Mutation
-        acheterQtProduit({ variables: { id: p.id, quantite : qt } });
+        acheterQtProduit({ variables: { id: p.id, quantite : quant } });
     }
+
+
+    /*//on déduit le cout de l'achat à l'argent du monde
+function onProductionBuy(p: Product, qt: number){
+
+let q = p.croissance
+let n = 0
+//Calcul du cout de l'achat en fonction de la quantité et du produit
+//let coutAchat = p.cout * ((1 - Math.pow(q, qt)) / (1 - q))
+let coutUltimProd = p.cout
+let coutAchat = p.cout
+while (n<qt){
+    n++
+    coutUltimProd = coutUltimProd * q
+    coutAchat = coutAchat + coutUltimProd
+}
+    //Si on a assez d'argent
+    if (world.money >= coutAchat) {
+        //maj money
+        world.money = world.money - coutAchat;
+        setMoney(money - coutAchat)
+
+        //on incrémente la qté
+        world.products[p.id-1].quantite += qt;
+        const newQuantite = [...world.products];
+        setWorld((prevWorld)=>{
+            return{...prevWorld, newQuantite};
+        })
+
+    }
+
+     */
+
+
 
     //Changer la valeur de qtmulti en fonction de sa valeur précédente
 
@@ -648,6 +591,8 @@ export default function Main({ loadworld, username } : MainProps) {
     }
 
 
+
+
     return (
         <div className="App">
             <header className="header">
@@ -660,7 +605,6 @@ export default function Main({ loadworld, username } : MainProps) {
                 <div className="qmulti_mediator">
                     <img src={process.env.PUBLIC_URL + "/mediator.png"} onClick={() => {
                         setMultiplier()
-                        updateCoutLot()
                     }}
                     />
                     <p>{qtmulti}</p>
@@ -754,7 +698,6 @@ export default function Main({ loadworld, username } : MainProps) {
                     <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[0]}
-                                                          qtAcheter={qtAcheter}
                                                             loadcoutLot={coutLot}
                                                           loadworld={world}
                                                           onProductionBuy={onProductionBuy}
@@ -764,7 +707,6 @@ export default function Main({ loadworld, username } : MainProps) {
                     <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[1]}
-                                                          qtAcheter={qtAcheter}
                                                                     loadcoutLot={coutLot}
                                                           loadworld={world}
                                                           onProductionBuy={onProductionBuy}
@@ -774,7 +716,6 @@ export default function Main({ loadworld, username } : MainProps) {
                     <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[2]}
-                                                          qtAcheter={qtAcheter}
                                                                     loadcoutLot={coutLot}
                                                           loadworld={world}
                                                           onProductionBuy={onProductionBuy}
@@ -784,7 +725,6 @@ export default function Main({ loadworld, username } : MainProps) {
                     <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[3]}
-                                                          qtAcheter={qtAcheter}
                                                                     loadcoutLot={coutLot}
                                                           loadworld={world}
                                                           onProductionBuy={onProductionBuy}
@@ -794,7 +734,6 @@ export default function Main({ loadworld, username } : MainProps) {
                     <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[4]}
-                                                          qtAcheter={qtAcheter}
                                                                     loadcoutLot={coutLot}
                                                           loadworld={world}
                                                           onProductionBuy={onProductionBuy}
@@ -804,7 +743,6 @@ export default function Main({ loadworld, username } : MainProps) {
                     <div className="case_produit"><ProductComponent onProductionDone={onProductionDone}
                                                           qtmulti={qtmulti}
                                                           product={world.products[5]}
-                                                          qtAcheter={qtAcheter}
                                                                     loadcoutLot={coutLot}
                                                           loadworld={world}
                                                           onProductionBuy={onProductionBuy}
