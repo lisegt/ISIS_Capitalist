@@ -1,0 +1,28 @@
+/* coulisses */
+
+.coulisses {
+    display: flex; /* Affiche les boutons en ligne */
+    flex-direction: column; /* Aligne les boutons verticalement */
+    align-items: center; /* Centre les boutons horizontalement */
+    background: rgba(0,0,0,0.8);
+    padding: 30px;
+    color : white;
+    border-radius: 50px;
+}
+
+.btn_coulisses{
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', sans-serif;
+    padding: 10px 15px;
+    margin: 5%;
+    background-color: darkred;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out; /* Transition de couleur en douceur */
+}
+
+.btn_coulisses:hover {
+    background-color: brown;
+}

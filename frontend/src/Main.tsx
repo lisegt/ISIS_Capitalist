@@ -1,3 +1,6 @@
+import './css/App.css';
+import './css/Produit.css';
+
 import {Palier, Product, World} from "./world";
 import React, {useEffect, useState} from "react";
 import ProductComponent from "./components/ProductComponent";

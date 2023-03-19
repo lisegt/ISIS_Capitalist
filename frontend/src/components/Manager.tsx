@@ -1,3 +1,6 @@
+import '../css/App.css';
+import '../css/Managers.css';
+
 import {Palier, World} from "../world";
 import {Badge, Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";

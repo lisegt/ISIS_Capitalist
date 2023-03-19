@@ -1,3 +1,6 @@
+import '../css/App.css';
+import '../css/Menu.css';
+
 import {Palier, World} from "../world";
 import React, {useEffect, useState} from 'react';
 import Manager from './Manager';

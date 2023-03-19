@@ -1,14 +1,17 @@
+import '../css/App.css';
+import '../css/Unlocks.css';
+
 import {Palier, World} from "../world";
 import {Badge, Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";
-type ManagerProps = {
+type UnlockProps = {
     loadworld : World
     loadsnackBarUnlocks : boolean;
 }
 
 const url = 'http://localhost:4000/'
 
-export default function Unlocks({ loadworld, loadsnackBarUnlocks }: ManagerProps){
+export default function Unlocks({ loadworld, loadsnackBarUnlocks }: UnlockProps){
 
     const [world, setWorld] = useState(loadworld);
     //Copie du monde pour mettre à jour le useState

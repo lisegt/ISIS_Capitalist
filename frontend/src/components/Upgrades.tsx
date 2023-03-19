@@ -1,7 +1,10 @@
+import '../css/App.css';
+import '../css/Upgrades.css';
+
 import {Palier, World} from "../world";
 import {Badge, Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";
-type ManagerProps = {
+type UpgradeProps = {
     loadworld : World
     loadsnackBarUpgrades : boolean;
     onUpgradeBuy : (upgrade : Palier)=>void;
@@ -10,7 +13,7 @@ type ManagerProps = {
 
 const url = 'http://localhost:4000/'
 
-export default function Upgrade({ loadworld, onUpgradeBuy, loadsnackBarUpgrades,updateNbUpgradeCanBuy }: ManagerProps){
+export default function Upgrade({ loadworld, onUpgradeBuy, loadsnackBarUpgrades,updateNbUpgradeCanBuy }: UpgradeProps){
 
     const [world, setWorld] = useState(loadworld);
     //Copie du monde pour mettre à jour le useState

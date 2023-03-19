@@ -1,18 +1,20 @@
+import '../css/App.css';
+import '../css/AngelUpgrades.css';
+
 import {Palier, World} from "../world";
 import {Badge, Button, IconButton, Snackbar} from "@mui/material";
 import React, {useState} from "react";
-type AngeProps = {
+type AngelUpgradeProps = {
     loadworld : World
     loadsnackBarAngelUpgrades : boolean;
     onAngelUpgradeBuy : (ange : Palier)=>void;
     updateNbAngelUpgradeCanBuy : ()=>void;
 
-
 }
 
 const url = 'http://localhost:4000/'
 
-export default function Ange({ loadworld, onAngelUpgradeBuy, loadsnackBarAngelUpgrades,updateNbAngelUpgradeCanBuy }: AngeProps){
+export default function AngelUpgrade({ loadworld, onAngelUpgradeBuy, loadsnackBarAngelUpgrades,updateNbAngelUpgradeCanBuy }: AngelUpgradeProps){
 
     const [world, setWorld] = useState(loadworld);
     //Copie du monde pour mettre à jour le useState
