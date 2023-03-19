@@ -45,7 +45,7 @@ export default function Upgrade({ loadworld, onUpgradeBuy, loadsnackBarUpgrades,
                                 <div>
                                     <Button onClick={() => {onUpgradeBuy(upgrade); updateNbUpgradeCanBuy()}}
                                             disabled={world.money < upgrade.seuil || world.products[upgrade.idcible-1].quantite == 0}>
-                                        Hire ! </Button>
+                                        Buy ! </Button>
                                 </div>
                             </div>
 

@@ -19,7 +19,7 @@ type ProductProps = {
     product: Product
     qtmulti: string
     qtAcheter : number[]
-    loadproductPrice : number[];
+    loadcoutLot : number[]
     onProductionDone: (product:Product, qt: number)=>void;
     onProductionBuy: (p: Product, qt: number)=>void;
 
@@ -27,12 +27,12 @@ type ProductProps = {
 
 }
 
-export default function ProductComponent({ product, onProductionDone, qtmulti, qtAcheter, loadworld, onProductionBuy, loadproductPrice, loadusername} : ProductProps) {
+export default function ProductComponent({ product, onProductionDone, qtmulti, qtAcheter, loadcoutLot, loadworld, onProductionBuy, loadusername} : ProductProps) {
     const [world, setWorld]=useState(loadworld);
     const username = loadusername;
     const lastupdate= useRef(Date.now());
     const [timeleft, setTimeleft]=useState(product.timeleft);
-    const [productPrice, setProductPrice] = useState(loadproductPrice);
+    const [coutLot, setCoutLot]=useState(loadcoutLot)
 
     //Mutation
     const [lancerProduction] = useMutation(LANCER_PRODUCTION,
@@ -45,11 +45,6 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
 
     //Calculer le score toutes les 100 secondes
     useInterval(() => {calcScore()}, 100)
-
-    // Mettre à jour l'état productPrice lorsque loadproductPrice change
-    useEffect(() => {
-        setProductPrice(loadproductPrice);
-    }, [loadproductPrice]);
 
     //Calculer le score du joueur
     function calcScore() {
@@ -102,6 +97,20 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
         }
     }
 
+    /*
+    function desactiverButton() {
+        let maxCanBuy = loadcalcMaxCanBuy(product)
+        if ( (qtmulti == "Max" && maxCanBuy == 0) || (qtmulti !== "Max" && maxCanBuy < parseInt(qtmulti.substring(1))) ) {
+            return true
+
+        }else{
+            return false
+        }
+
+    }
+
+     */
+
     return (
         <div className="produit_item">
             <div className={"partieGaucheProduit"}>
@@ -131,8 +140,9 @@ export default function ProductComponent({ product, onProductionDone, qtmulti, q
 
                 </div>
                 <div className="partieBasseProduit">
-                    <button className={"test2 btn_acheterProduit"} onClick={() => onProductionBuy(product, qtAcheter[product.id-1])}>
-                        <div>Acheter {qtAcheter[product.id]} pour : {productPrice[product.id-1].toFixed(3)} €</div>
+                    <button className={"test2 btn_acheterProduit"} onClick={() => onProductionBuy(product, qtAcheter[product.id-1])}
+                            >
+                        <div>Acheter {qtAcheter[product.id-1]} pour : {loadcoutLot[product.id-1]} €</div>
                     </button>
                     <div className={"time_left"}>{timeleft} ms</div>
                 </div>
